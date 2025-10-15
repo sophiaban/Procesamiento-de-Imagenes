@@ -136,10 +136,10 @@
             embedded
             vr-mode-ui="enabled: false">
             
-            <a-camera active="true" position="0 0 0"></a-camera>
+            <a-camera mindar-image-camera active="true" position="0 0 0"></a-camera>
 
             <!-- TARGET 0 - Argentina -->
-            <a-entity mindar-image-target="targetIndex: 0" class="country-target">
+            <a-entity mindar-image-target="targetIndex: 0" class="country-target" data-country="Argentina">
                 <a-entity id="argentina-model" visible="false">
                     <a-box position="0 0.5 0" color="#74ACDF" depth="0.1" height="0.8" width="0.5"
                            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
@@ -162,7 +162,7 @@
             </a-entity>
 
             <!-- TARGET 1 - Brasil -->
-            <a-entity mindar-image-target="targetIndex: 1" class="country-target">
+            <a-entity mindar-image-target="targetIndex: 1" class="country-target" data-country="Brasil">
                 <a-entity id="brasil-model" visible="false">
                     <a-cone position="0 0.5 0" color="#009C3B" radius-bottom="0.3" radius-top="0.1"
                            animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation">
@@ -435,13 +435,29 @@
             alert('ℹ️ Mundial 2026 AR\n\nAplicación de Realidad Aumentada para el Mundial de Fútbol 2026. Escanea banderas para ver contenido interactivo.');
         }
 
-        const scene = document.querySelector('a-scene');
-        scene.addEventListener('targetFound', event => {
-            document.getElementById('scanningStatus').textContent = '✅ Bandera detectada! Usa los botones AR';
-        });
+        // Wait for A-Frame scene to be ready, then attach per-target listeners
+        document.querySelectorAll('.country-target').forEach(targetEl => {
+            // targetFound and targetLost events are emitted on the target entity by MindAR
+            targetEl.addEventListener('targetFound', (e) => {
+                const country = targetEl.getAttribute('data-country') || 'bandera';
+                document.getElementById('scanningStatus').textContent = `✅ ${country} detectada! Usa los botones AR`;
 
-        scene.addEventListener('targetLost', event => {
-            document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
+                // show models related to this target if they exist
+                const model = targetEl.querySelector('[id$="-model"]');
+                if (model) model.setAttribute('visible', 'true');
+                const text = targetEl.querySelector('[id$="-text"]');
+                if (text) text.setAttribute('visible', 'false');
+            });
+
+            targetEl.addEventListener('targetLost', (e) => {
+                document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
+
+                // hide models when target lost
+                const model = targetEl.querySelector('[id$="-model"]');
+                if (model) model.setAttribute('visible', 'false');
+                const text = targetEl.querySelector('[id$="-text"]');
+                if (text) text.setAttribute('visible', 'false');
+            });
         });
     </script>
 </body>
