@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundial 2026 AR - Banderas</title>
+    
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(135deg, #0056A5 0%, #E20020 100%);
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .ar-container { 
+            width: 100%; 
+            height: 80vh; 
+            margin-top: 60px;
+        }
+        .control-panel {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+        .control-btn {
+            background: #0056A5;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .control-btn:hover {
+            background: #E20020;
+            transform: scale(1.1);
+        }
+        .scanning-status {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            z-index: 1000;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            z-index: 2000;
+            min-width: 300px;
+            max-width: 90%;
+            display: none;
+        }
+        .modal.active {
+            display: block;
+        }
+        .modal-content {
+            text-align: center;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .trivia-option {
+            background: #0056A5;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .trivia-option:hover {
+            background: #E20020;
+        }
+        .video-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
+        }
+        video {
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🇦🇷 Mundial 2026 AR - Banderas 🇧🇷</h1>
+    </div>
+    
+    <div class="scanning-status" id="scanningStatus">
+        🔍 Enfoca la cámara a una bandera
+    </div>
+    
+    <div class="ar-container">
+        <a-scene 
+            mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.3/examples/image-tracking/assets/banderas/mind-ar-image-targets.mind; autoStart: true;" 
+            embedded
+            vr-mode-ui="enabled: false">
+            
+            <a-camera active="true" position="0 0 0"></a-camera>
+
+            <!-- TARGET 0 - Argentina -->
+            <a-entity mindar-image-target="targetIndex: 0" class="country-target">
+                <!-- Modelo 3D que se activa con botón -->
+                <a-entity id="argentina-model" visible="false">
+                    <a-box position="0 0.5 0" color="#74ACDF" depth="0.1" height="0.8" width="0.5"
+                           animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
+                    </a-box>
+                    <a-text id="argentina-text" value="Argentina\nCampeón 2022" 
+                           position="0 1.2 0" align="center" color="#FFD700" 
+                           visible="false">
+                    </a-text>
+                </a-entity>
+                
+                <!-- Botones AR flotantes -->
+                <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="argentina">
+                    <a-ring color="#0056A5" radius-inner="0.03" radius-outer="0.05"></a-ring>
+                    <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+                </a-entity>
+                
+                <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="argentina">
+                    <a-ring color="#E20020" radius-inner="0.03" radius-outer="0.05"></a-ring>
+                    <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+                </a-entity>
+            </a-entity>
+
+            <!-- TARGET 1 - Brasil -->
+            <a-entity mindar-image-target="targetIndex: 1" class="country-target">
+                <a-entity id="brasil-model" visible="false">
+                    <a-cone position="0 0.5 0" color="#009C3B" radius-bottom="0.3" radius-top="0.1"
+                           animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation">
+                    </a-cone>
+                    <a-text id="brasil-text" value="Brasil\n5 Copas del Mundo" 
+                           position="0 1.2 0" align="center" color="#FFD700" 
+                           visible="false">
+                    </a-text>
+                </a-entity>
+                
+                <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="brasil">
+                    <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
+                    <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+                </a-entity>
+                
+                <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="brasil">
+                    <a-ring color="#FFDF00" radius-inner="0.03" radius-outer="0.05"></a-ring>
+                    <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+                </a-entity>
+            </a-entity>
+
+        </a-scene>
+    </div>
+    
+    <!-- Panel de Control Principal -->
+    <div class="control-panel">
+        <button class="control-btn" onclick="openVideoModal()">🎥</button>
+        <button class="control-btn" onclick="openTriviaModal()">❓</button>
+        <button class="control-btn" onclick="showStats()">📊</button>
+        <button class="control-btn" onclick="resetAR()">🔄</button>
+        <button class="control-btn" onclick="showInfo()">ℹ️</button>
+    </div>
+
+    <!-- Modal de Videos -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeVideoModal()">×</button>
+            <h2>🎥 Videos del Mundial</h2>
+            
+            <div class="video-option">
+                <h3>Argentina vs Brasil</h3>
+                <div class="video-container">
+                    <video id="video1" controls>
+                        <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
+                        Tu navegador no soporta video.
+                    </video>
+                </div>
+                <button class="trivia-option" onclick="playVideo('video1')">Reproducir Video</button>
+            </div>
+            
+            <div class="video-option" style="margin-top: 20px;">
+                <h3>Francia vs Alemania</h3>
+                <div class="video-container">
+                    <video id="video2" controls>
+                        <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
+                        Tu navegador no soporta video.
+                    </video>
+                </div>
+                <button class="trivia-option" onclick="playVideo('video2')">Reproducir Video</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Trivia -->
+    <div id="triviaModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeTriviaModal()">×</button>
+            <h2>❓ Trivia del Mundial 2026</h2>
+            <div id="triviaQuestion"></div>
+            <div id="triviaOptions"></div>
+            <div id="triviaResult" style="margin-top: 15px; font-weight: bold;"></div>
+            <button class="trivia-option" onclick="nextTriviaQuestion()" style="margin-top: 15px;">Siguiente Pregunta</button>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // DATOS DE LA TRIVIA - 18 países, 5 preguntas aleatorias
+        // =============================================
+        const triviaData = [
+            // Argentina
+            { country: "Argentina", questions: [
+                { question: "¿En qué año ganó Argentina su primera Copa del Mundo?", options: ["1978", "1986", "1990", "2014"], correct: 0 },
+                { question: "¿Quién es el máximo goleador histórico de Argentina?", options: ["Lionel Messi", "Gabriel Batistuta", "Diego Maradona", "Sergio Agüero"], correct: 1 },
+                { question: "¿Contra qué país marcó Maradona la 'Mano de Dios'?", options: ["Brasil", "Inglaterra", "Alemania", "Italia"], correct: 1 },
+                { question: "¿Cuántas Copas América tiene Argentina?", options: ["13", "15", "17", "19"], correct: 1 },
+                { question: "¿En qué ciudad nació Lionel Messi?", options: ["Buenos Aires", "Rosario", "Córdoba", "Mendoza"], correct: 1 }
+            ]},
+            // Brasil
+            { country: "Brasil", questions: [
+                { question: "¿Cuántas Copas del Mundo tiene Brasil?", options: ["3", "4", "5", "6"], correct: 2 },
+                { question: "¿Quién es el 'Rey del Fútbol' brasileño?", options: ["Pelé", "Ronaldo", "Ronaldinho", "Neymar"], correct: 0 },
+                { question: "¿En qué año Brasil ganó su primer Mundial?", options: ["1958", "1962", "1970", "1994"], correct: 0 },
+                { question: "¿Cuál es el estadio más famoso de Brasil?", options: ["Morumbi", "Maracaná", "Mineirão", "Arena Corinthians"], correct: 1 },
+                { question: "¿Qué jugador brasileño tiene más goles en Mundiales?", options: ["Pelé", "Ronaldo", "Zico", "Romário"], correct: 1 }
+            ]},
+            // Francia
+            { country: "Francia", questions: [
+                { question: "¿En qué año ganó Francia su primer Mundial?", options: ["1998", "2002", "2006", "2018"], correct: 0 },
+                { question: "¿Quién fue el capitán de Francia en 1998?", options: ["Zinedine Zidane", "Didier Deschamps", "Laurent Blanc", "Patrick Vieira"], correct: 1 },
+                { question: "¿Cuántos goles marcó Mbappé en el Mundial 2018?", options: ["3", "4", "5", "6"], correct: 1 },
+                { question: "¿En qué estadio ganó Francia el Mundial 1998?", options: ["Stade de France", "Parc des Princes", "Stade Vélodrome", "Groupama Stadium"], correct: 0 },
+                { question: "¿Qué jugador francés tiene más partidos con la selección?", options: ["Hugo Lloris", "Lilian Thuram", "Zinedine Zidane", "Thierry Henry"], correct: 0 }
+            ]},
+            // Alemania
+            { country: "Alemania", questions: [
+                { question: "¿Cuántos Mundiales ha ganado Alemania?", options: ["3", "4", "5", "6"], correct: 1 },
+                { question: "¿Quién es el máximo goleador histórico de Alemania?", options: ["Miroslav Klose", "Gerd Müller", "Thomas Müller", "Lukas Podolski"], correct: 0 },
+                { question: "¿En qué año Alemania ganó su último Mundial?", options: ["2006", "2010", "2014", "2018"], correct: 2 },
+                { question: "¿Qué jugador alemán tiene más partidos en Mundiales?", options: ["Lothar Matthäus", "Miroslav Klose", "Philipp Lahm", "Bastian Schweinsteiger"], correct: 0 },
+                { question: "¿Contra qué país marcó Götze el gol del título en 2014?", options: ["Brasil", "Holanda", "Argentina", "Francia"], correct: 2 }
+            ]},
+            // España
+            { country: "España", questions: [
+                { question: "¿En qué año ganó España su único Mundial?", options: ["2008", "2010", "2012", "2014"], correct: 1 },
+                { question: "¿Quién marcó el gol de la final del Mundial 2010?", options: ["David Villa", "Fernando Torres", "Andrés Iniesta", "Xavi Hernández"], correct: 2 },
+                { question: "¿Qué entrenador dirigió a España en el Mundial 2010?", options: ["Luis Aragonés", "Vicente del Bosque", "Julen Lopetegui", "Roberto Martínez"], correct: 1 },
+                { question: "¿Cuál fue el resultado de la final del Mundial 2010?", options: ["1-0", "2-1", "3-2", "0-0"], correct: 0 },
+                { question: "¿Qué jugador español tiene más partidos con la selección?", options: ["Sergio Ramos", "Iker Casillas", "Xavi Hernández", "Andrés Iniesta"], correct: 0 }
+            ]},
+            // ... puedes agregar más países aquí
+        ];
+
+        // Variables para la trivia
+        let currentTriviaQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // =============================================
+        // FUNCIONES DE LA TRIVIA
+        // =============================================
+        function openTriviaModal() {
+            // Seleccionar 5 preguntas aleatorias de entre todos los países
+            const allQuestions = triviaData.flatMap(country => country.questions);
+            currentTriviaQuestions = getRandomQuestions(allQuestions, 5);
+            currentQuestionIndex = 0;
+            score = 0;
+            
+            document.getElementById('triviaModal').classList.add('active');
+            showTriviaQuestion();
+        }
+
+        function closeTriviaModal() {
+            document.getElementById('triviaModal').classList.remove('active');
+        }
+
+        function getRandomQuestions(questions, count) {
+            const shuffled = [...questions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function showTriviaQuestion() {
+            if (currentQuestionIndex >= currentTriviaQuestions.length) {
+                showTriviaResults();
+                return;
+            }
+
+            const question = currentTriviaQuestions[currentQuestionIndex];
+            const questionElement = document.getElementById('triviaQuestion');
+            const optionsElement = document.getElementById('triviaOptions');
+            const resultElement = document.getElementById('triviaResult');
+
+            questionElement.innerHTML = `<h3>${question.question}</h3>`;
+            resultElement.textContent = '';
+            
+            optionsElement.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'trivia-option';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(index);
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedIndex) {
+            const question = currentTriviaQuestions[currentQuestionIndex];
+            const resultElement = document.getElementById('triviaResult');
+            
+            if (selectedIndex === question.correct) {
+                resultElement.textContent = '✅ ¡Correcto!';
+                resultElement.style.color = '#00FF00';
+                score++;
+            } else {
+                resultElement.textContent = `❌ Incorrecto. La respuesta era: ${question.options[question.correct]}`;
+                resultElement.style.color = '#FF0000';
+            }
+        }
+
+        function nextTriviaQuestion() {
+            currentQuestionIndex++;
+            showTriviaQuestion();
+        }
+
+        function showTriviaResults() {
+            const questionElement = document.getElementById('triviaQuestion');
+            const optionsElement = document.getElementById('triviaOptions');
+            const resultElement = document.getElementById('triviaResult');
+            
+            questionElement.innerHTML = `<h3>🎉 Resultado Final</h3>`;
+            optionsElement.innerHTML = '';
+            resultElement.textContent = `Obtuviste ${score} de ${currentTriviaQuestions.length} puntos`;
+            resultElement.style.color = '#FFD700';
+        }
+
+        // =============================================
+        // FUNCIONES DE VIDEO
+        // =============================================
+        function openVideoModal() {
+            document.getElementById('videoModal').classList.add('active');
+        }
+
+        function closeVideoModal() {
+            document.getElementById('videoModal').classList.remove('active');
+            // Pausar todos los videos al cerrar
+            document.querySelectorAll('video').forEach(video => {
+                video.pause();
+            });
+        }
+
+        function playVideo(videoId) {
+            // Pausar otros videos
+            document.querySelectorAll('video').forEach(video => {
+                if (video.id !== videoId) video.pause();
+            });
+            
+            const video = document.getElementById(videoId);
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
+
+        // =============================================
+        // FUNCIONES AR - BOTONES EN REALIDAD AUMENTADA
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar eventos para botones AR
+            document.querySelectorAll('.ar-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    const target = this.getAttribute('data-target');
+                    handleARButton(action, target);
+                });
+            });
+        });
+
+        function handleARButton(action, target) {
+            switch(action) {
+                case 'animateModel':
+                    animateModel(target);
+                    break;
+                case 'showText':
+                    showText(target);
+                    break;
+            }
+        }
+
+        function animateModel(country) {
+            const model = document.getElementById(`${country}-model`);
+            const text = document.getElementById(`${country}-text`);
+            
+            // Mostrar modelo
+            model.setAttribute('visible', 'true');
+            
+            // Iniciar animación
+            model.emit('startAnimation');
+            
+            // Ocultar texto si estaba visible
+            if (text) {
+                text.setAttribute('visible', 'false');
+            }
+        }
+
+        function showText(country) {
+            const model = document.getElementById(`${country}-model`);
+            const text = document.getElementById(`${country}-text`);
+            
+            // Mostrar texto
+            if (text) {
+                text.setAttribute('visible', 'true');
+            }
+            
+            // Ocultar modelo si estaba visible
+            if (model) {
+                model.setAttribute('visible', 'false');
+            }
+        }
+
+        function resetAR() {
+            // Ocultar todos los modelos y textos
+            document.querySelectorAll('[id$="-model"], [id$="-text"]').forEach(element => {
+                element.setAttribute('visible', 'false');
+            });
+        }
+
+        // =============================================
+        // OTRAS FUNCIONES
+        // =============================================
+        function showStats() {
+            alert('📊 Estadísticas del Mundial 2026\n\n• 48 equipos participantes\n• 3 países anfitriones\n• 16 ciudades sede\n• 80 partidos en total');
+        }
+
+        function showInfo() {
+            alert('ℹ️ Mundial 2026 AR\n\nAplicación de Realidad Aumentada para el Mundial de Fútbol 2026. Escanea banderas para ver contenido interactivo.');
+        }
+
+        // Detectar targets
+        const scene = document.querySelector('a-scene');
+        scene.addEventListener('targetFound', event => {
+            document.getElementById('scanningStatus').textContent = '✅ Bandera detectada! Usa los botones AR';
+        });
+
+        scene.addEventListener('targetLost', event => {
+            document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
+        });
+    </script>
+</body>
+</html>
