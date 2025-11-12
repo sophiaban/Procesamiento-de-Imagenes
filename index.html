@@ -7,7 +7,6 @@
 
   <!-- Librerías principales -->
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-  <!-- Componente de animaciones para A-Frame -->
   <script src="https://aframe.io/releases/1.4.0/aframe-animation-component.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
@@ -20,6 +19,9 @@
       color: white;
       height: 100vh;
       overflow: hidden;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
     .header {
       background: rgba(0, 0, 0, 0.8);
@@ -55,6 +57,7 @@
       font-size: 20px;
       cursor: pointer;
       transition: all 0.3s;
+      -webkit-tap-highlight-color: transparent;
     }
     .control-btn:hover {
       background: #E20020;
@@ -132,6 +135,19 @@
     .filter-btn.active {
       background: #E20020;
     }
+    .mobile-tap-hint {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 20px;
+      border-radius: 20px;
+      z-index: 1000;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
   </style>
 </head>
 
@@ -144,6 +160,10 @@
     🔍 Enfoca la cámara a una bandera
   </div>
 
+  <div class="mobile-tap-hint" id="mobileTapHint">
+    👆 Toca los círculos para interactuar
+  </div>
+
   <!-- Escena AR -->
   <div class="ar-container">
     <a-scene
@@ -152,109 +172,131 @@
       color-space="sRGB"
       renderer="colorManagement: true, physicallyCorrectLights"
       vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: true"
+      device-orientation-permission-ui="enabled: false"
+      cursor="rayOrigin: mouse"
+      raycaster="objects: .clickable"
     >
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false">
+        <a-cursor 
+          id="cursor"
+          rayOrigin="mouse"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+          animation__fusing="property: scale; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+          event-set__1="_event: mouseenter; color: springgreen"
+          event-set__2="_event: mouseleave; color: black"
+          fuse="true"
+          fuse-timeout="50">
+        </a-cursor>
+      </a-camera>
 
       <!-- TARGET 0 - Argentina -->
-<a-entity mindar-image-target="targetIndex: 0" class="country-target">
-  <a-entity id="argentina-model" visible="false">
-    <!-- Modelo 3D con respaldo en caso de error -->
-    <a-entity
-      gltf-model="models/world-cup-trophy.glb"
-      scale="0.2 0.2 0.2"
-      position="0 0.5 0"
-      animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation"
-      fallback="true">
-      
-      <!-- Modelo de respaldo si el GLTF falla -->
-      <a-entity class="fallback-model" visible="false">
-        <a-cylinder 
-          color="#74ACDF" 
-          height="0.8" 
-          radius="0.2"
-          position="0 0.4 0"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
-        </a-cylinder>
-        <a-text value="🏆 ARG" 
-                position="0 1.0 0" 
-                align="center" 
-                color="#FFD700">
-        </a-text>
+      <a-entity mindar-image-target="targetIndex: 0" class="country-target">
+        <a-entity id="argentina-model" visible="false">
+          <!-- Modelo primitivo para mejor compatibilidad móvil -->
+          <a-cylinder 
+            class="clickable"
+            color="#74ACDF" 
+            height="0.8" 
+            radius="0.2"
+            position="0 0.4 0"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
+          </a-cylinder>
+          <a-text value="ARGENTINA" 
+                  position="0 1.0 0" 
+                  align="center" 
+                  color="#FFD700">
+          </a-text>
+        </a-entity>
+
+        <!-- Botones flotantes - Configurados para móvil -->
+        <a-entity 
+          position="-0.3 0.8 0" 
+          class="ar-button clickable" 
+          data-action="animateModel" 
+          data-target="argentina"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#0056A5" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+
+        <a-entity 
+          position="0 0.8 0" 
+          class="ar-button clickable" 
+          data-action="showText" 
+          data-target="argentina"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#E20020" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+
+        <a-entity 
+          position="0.3 0.8 0" 
+          class="ar-button clickable" 
+          data-action="show3DModel" 
+          data-target="argentina"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#74ACDF" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="🏆" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
       </a-entity>
-    </a-entity>
-    
-    <a-text id="argentina-text" value="Argentina\nCampeón 2022"
-      position="0 1.2 0" align="center" color="#FFD700" visible="false">
-    </a-text>
-  </a-entity>
 
-  <!-- Tus botones flotantes existentes -->
-  <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="argentina">
-    <a-ring color="#0056A5" radius-inner="0.03" radius-outer="0.05"></a-ring>
-    <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-  </a-entity>
+      <!-- TARGET 1 - Brasil -->
+      <a-entity mindar-image-target="targetIndex: 1" class="country-target">
+        <a-entity id="brasil-model" visible="false">
+          <!-- Modelo primitivo para mejor compatibilidad móvil -->
+          <a-sphere 
+            class="clickable"
+            color="#009C3B" 
+            radius="0.3"
+            position="0 0.5 0"
+            animation="property: rotation; to: 360 360 0; loop: true; dur: 3000; startEvents: startAnimation">
+          </a-sphere>
+          <a-text value="BRASIL" 
+                  position="0 1.0 0" 
+                  align="center" 
+                  color="#FFDF00">
+          </a-text>
+        </a-entity>
 
-  <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="argentina">
-    <a-ring color="#E20020" radius-inner="0.03" radius-outer="0.05"></a-ring>
-    <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-  </a-entity>
+        <!-- Botones flotantes - Configurados para móvil -->
+        <a-entity 
+          position="-0.3 0.8 0" 
+          class="ar-button clickable" 
+          data-action="animateModel" 
+          data-target="brasil"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
 
-  <a-entity position="0.3 0.8 0" class="ar-button" data-action="show3DModel" data-target="argentina">
-    <a-ring color="#74ACDF" radius-inner="0.03" radius-outer="0.05"></a-ring>
-    <a-text value="🏆" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-  </a-entity>
-</a-entity>
+        <a-entity 
+          position="0 0.8 0" 
+          class="ar-button clickable" 
+          data-action="showText" 
+          data-target="brasil"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#FFDF00" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
 
-<!-- TARGET 1 - Brasil -->
-<a-entity mindar-image-target="targetIndex: 1" class="country-target">
-  <a-entity id="brasil-model" visible="false">
-    <!-- Modelo 3D con respaldo -->
-    <a-entity
-      gltf-model="models/soccer-ball.glb"
-      scale="0.3 0.3 0.3"
-      position="0 0.5 0"
-      animation="property: rotation; to: 360 360 0; loop: true; dur: 3000; startEvents: startAnimation"
-      fallback="true">
-      
-      <!-- Modelo de respaldo -->
-      <a-entity class="fallback-model" visible="false">
-        <a-sphere 
-          color="#009C3B" 
-          radius="0.3"
-          position="0 0.5 0"
-          animation="property: rotation; to: 360 360 0; loop: true; dur: 3000; startEvents: startAnimation">
-        </a-sphere>
-        <a-text value="⚽ BRA" 
-                position="0 1.0 0" 
-                align="center" 
-                color="#FFDF00">
-        </a-text>
+        <a-entity 
+          position="0.3 0.8 0" 
+          class="ar-button clickable" 
+          data-action="show3DModel" 
+          data-target="brasil"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="⚽" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
       </a-entity>
-    </a-entity>
-    
-    <a-text id="brasil-text" value="Brasil\n5 Copas del Mundo"
-      position="0 1.2 0" align="center" color="#FFD700" visible="false">
-    </a-text>
-  </a-entity>
-
-  <!-- Botones flotantes -->
-  <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="brasil">
-    <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
-    <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-  </a-entity>
-
-  <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="brasil">
-    <a-ring color="#FFDF00" radius-inner="0.03" radius-outer="0.05"></a-ring>
-    <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-  </a-entity>
-
-  <a-entity position="0.3 0.8 0" class="ar-button" data-action="show3DModel" data-target="brasil">
-    <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
-    <a-text value="⚽" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-  </a-entity>
-</a-entity>
-
+    </a-scene>
+  </div>
 
   <!-- Panel de control -->
   <div class="control-panel">
@@ -266,7 +308,7 @@
     <button class="control-btn" onclick="showInfo()">ℹ️</button>
   </div>
 
-  <!-- Modal de Videos -->
+<!-- Modal de Videos -->
   <div id="videoModal" class="modal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeVideoModal()">×</button>
@@ -325,8 +367,142 @@
       <button class="poll-option" onclick="nextPollQuestion()" style="margin-top: 15px;">Siguiente Encuesta</button>
     </div>
   </div>
-
   <script>
+    // === CONFIGURACIÓN MÓVIL ===
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detectar si es móvil
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        console.log("Dispositivo móvil detectado");
+        document.body.classList.add('mobile');
+      }
+
+      // Configurar eventos táctiles para A-Frame
+      setupARTouchEvents();
+    });
+
+    function setupARTouchEvents() {
+      const scene = document.querySelector('a-scene');
+      
+      // Esperar a que la escena cargue
+      scene.addEventListener('loaded', function() {
+        console.log("Escena AR cargada, configurando eventos móviles");
+        
+        // Mostrar hint para móviles
+        setTimeout(() => {
+          document.getElementById('mobileTapHint').style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('mobileTapHint').style.display = 'none';
+          }, 5000);
+        }, 2000);
+
+        // Configurar eventos de clic para elementos AR
+        document.querySelectorAll('.ar-button').forEach(btn => {
+          // Evento para desktop
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            handleARButtonClick(this);
+          });
+          
+          // Evento táctil para móvil
+          btn.addEventListener('touchstart', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            this.setAttribute('scale', '1.1 1.1 1.1');
+          });
+          
+          btn.addEventListener('touchend', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            this.setAttribute('scale', '1 1 1');
+            handleARButtonClick(this);
+          });
+        });
+      });
+    }
+
+    function handleARButtonClick(button) {
+      const action = button.getAttribute('data-action');
+      const target = button.getAttribute('data-target');
+      
+      console.log(`Botón presionado: ${action} para ${target}`);
+      
+      // Feedback visual
+      button.setAttribute('animation', {
+        property: 'scale',
+        to: '1.3 1.3 1.3',
+        dur: 200,
+        dir: 'alternate'
+      });
+      
+      setTimeout(() => {
+        handleARButton(action, target);
+      }, 100);
+    }
+
+    // === FUNCIONES AR ACTUALIZADAS ===
+    function handleARButton(action, target) {
+      console.log(`Ejecutando: ${action} en ${target}`);
+      
+      switch(action) {
+        case 'animateModel':
+          animateModel(target);
+          break;
+        case 'showText':
+          showText(target);
+          break;
+        case 'show3DModel':
+          show3DModel(target);
+          break;
+      }
+    }
+
+    function animateModel(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      
+      if (model) {
+        model.setAttribute('visible', 'true');
+        // Iniciar animación
+        const animatedElements = model.querySelectorAll('[animation]');
+        animatedElements.forEach(el => {
+          el.emit('startAnimation');
+        });
+      }
+      
+      if (text) text.setAttribute('visible', 'false');
+    }
+
+    function showText(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      
+      if (model) model.setAttribute('visible', 'false');
+      if (text) text.setAttribute('visible', 'true');
+    }
+
+    function show3DModel(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      
+      if (model) {
+        model.setAttribute('visible', 'true');
+        // Detener animaciones
+        const animatedElements = model.querySelectorAll('[animation]');
+        animatedElements.forEach(el => {
+          el.emit('stopAnimation');
+        });
+      }
+      
+      if (text) text.setAttribute('visible', 'false');
+    }
+
+    function resetAR() {
+      document.querySelectorAll('[id$="-model"], [id$="-text"]').forEach(el => {
+        el.setAttribute('visible', 'false');
+      });
+    }
     // Verificar si las variables ya existen para evitar redeclaración
     if (typeof window.triviaData === 'undefined') {
       // === TRIVIA ===
