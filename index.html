@@ -1,127 +1,182 @@
-<!doctype html>
-<html lang="es">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MindAR - Bandera Brasil -> Modelo 3D</title>
-  <style>
-    html, body { height: 100%; margin: 0; overflow: hidden; font-family: Arial, sans-serif }
-    #ar-container { position: fixed; inset: 0; background: #000 }
-    #startBtn { position: absolute; left: 50%; transform: translateX(-50%); bottom: 20px; z-index: 20; padding: 10px 18px; font-size: 16px; border-radius: 8px; border: none; }
-    #instructions { position: absolute; left: 12px; top: 12px; z-index: 20; color: white; background: rgba(0,0,0,0.35); padding: 8px 12px; border-radius: 6px }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Realidad Aumentada - Bandera de Brasil</title>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #009c3b, #ffdf00, #002776);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+        .instructions {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        #startButton {
+            background: #009c3b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 20px;
+            transition: background 0.3s;
+        }
+        #startButton:hover {
+            background: #007a2f;
+        }
+        .scan-area {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 3px solid #ffdf00;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .loading {
+            display: none;
+            font-size: 18px;
+            margin: 20px;
+        }
+    </style>
 </head>
 <body>
-  <div id="ar-container"></div>
-  <div id="instructions">
-    Escanea la bandera de Brasil con la cámara. Usa un archivo de imagen target (.mind) entrenado con la foto de la bandera.
-  </div>
-  <button id="startBtn">Iniciar AR</button>
+    <div class="container">
+        <h1>🇧🇷 Realidad Aumentada - Brasil 🇧🇷</h1>
+        
+        <div class="instructions">
+            <h2>Instrucciones:</h2>
+            <p>1. Imprime o muestra en pantalla la bandera de Brasil</p>
+            <p>2. Haz clic en "Iniciar Cámara"</p>
+            <p>3. Apunta la cámara hacia la bandera</p>
+            <p>4. ¡Verás un modelo 3D especial sobre la bandera!</p>
+            
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/320px-Flag_of_Brazil.svg.png" 
+                 alt="Bandera de Brasil" 
+                 style="width: 200px; margin: 20px; border: 2px solid white;">
+        </div>
 
-  <!-- Dependencias: three.js, GLTFLoader y MindAR (image-target + three integration) -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/loaders/GLTFLoader.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.8/dist/mindar-image-three.prod.js"></script>
+        <button id="startButton">Iniciar Cámara</button>
+        <div class="loading" id="loading">Cargando modelos 3D...</div>
 
-  <script>
-    // ---------------------------
-    //  INSTRUCCIONES RÁPIDAS (leer antes de usar):
-    // 1) Crea un "image target" (.mind) usando la herramienta de MindAR (image-target-generator).
-    //    - Entrena con una foto clara de la bandera de Brasil (bien recortada). Esto genera un archivo como "brazil.mind".
-    // 2) Coloca el .mind en una carpeta ./targets/brazil.mind (o cambia la ruta en imageTargetSrc abajo).
-    // 3) Coloca tu modelo glTF/GLB en ./models/model.glb (o cambia la ruta en gltfLoader.load).
-    // 4) Sirve el proyecto por HTTPS (los navegadores exigen cámara segura): por ejemplo con Live Server o desde un servidor con SSL.
-    // 5) Abre la página en móvil/PC con cámara; pulsa "Iniciar AR" y apunta a la bandera.
-    // ---------------------------
+        <div class="scan-area">
+            <div id="mindar-scene" style="display: none;">
+                <a-scene mindar-image embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
+                        vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+                    
+                    <a-assets>
+                        <!-- Modelo 3D de la Estatua del Cristo Redentor -->
+                        <a-asset-item id="cristoModel" src="models/cristo-redentor.glb"></a-asset-item>
+                        <!-- Modelo alternativo si no tienes el modelo específico -->
+                        <a-asset-item id="brasilModel" src="models/brasil-model.glb"></a-asset-item>
+                    </a-assets>
 
-    const startBtn = document.getElementById('startBtn');
+                    <a-camera active="false" position="0 0 0"></a-camera>
 
-    startBtn.addEventListener('click', async () => {
-      startBtn.disabled = true;
-      startBtn.innerText = 'Cargando AR...';
-      try {
-        await startAR();
-        startBtn.style.display = 'none';
-      } catch (err) {
-        console.error(err);
-        alert('Error iniciando AR: ' + err.message);
-        startBtn.disabled = false;
-        startBtn.innerText = 'Iniciar AR';
-      }
-    });
+                    <!-- Target: Bandera de Brasil -->
+                    <a-entity mindar-image-target="targetIndex: 0"></a-entity>
 
-    async function startAR() {
-      // Crea la instancia de MindAR + three
-      const mindarThree = new window.MINDAR.IMAGE.MindARThree({
-        container: document.querySelector('#ar-container'),
-        imageTargetSrc: './targets/brazil.mind', // <-- ruta al .mind entrenado
-        maxTrack: 1,
-        uiScanning: true,
-        uiLoading: true,
-      });
+                </a-scene>
+            </div>
+        </div>
+    </div>
 
-      const { renderer, scene, camera } = mindarThree;
-
-      // Luz ambiental y direccional para que el modelo 3D se vea bien
-      const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
-      scene.add(light);
-      const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-      dirLight.position.set(0, 1, 0);
-      scene.add(dirLight);
-
-      // Añadir un anchor para el primer target (index 0)
-      const anchor = mindarThree.addAnchor(0);
-
-      // Grupo donde pondremos el modelo (se ancla a la imagen objetivo)
-      const modelGroup = new THREE.Group();
-      // Opcional: rotar/posicionar para que quede "sobre" la bandera
-      modelGroup.position.set(0, 0, 0);
-      anchor.group.add(modelGroup);
-
-      // Cargar modelo GLB/GLTF
-      const gltfLoader = new THREE.GLTFLoader();
-      // Cambia la ruta al modelo por la tuya
-      const MODEL_URL = './models/model.glb';
-
-      gltfLoader.load(MODEL_URL, (gltf) => {
-        const model = gltf.scene;
-        // Ajusta escala/rotación según tu modelo y tamaño de la bandera
-        model.scale.set(0.2, 0.2, 0.2);
-        model.rotation.x = -Math.PI/2; // ejemplo: acostar si está vertical
-        model.position.set(0, 0.03, 0); // elevar ligeramente sobre la superficie
-        modelGroup.add(model);
-      }, (xhr) => {
-        // progreso
-        // console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-      }, (err) => {
-        console.error('Error cargando modelo', err);
-        alert('No se pudo cargar el modelo. Revisa la ruta en MODEL_URL');
-      });
-
-      // Si quieres mostrar una malla guía (por ejemplo un plano) para ver el anclaje:
-      const planeGeo = new THREE.PlaneGeometry(1, 0.6); // tamaño aproximado - ajusta según la bandera
-      const planeMat = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true, opacity: 0.3, transparent: true });
-      const guidePlane = new THREE.Mesh(planeGeo, planeMat);
-      guidePlane.rotation.x = -Math.PI/2;
-      guidePlane.position.set(0, 0, 0);
-      // comentar la siguiente línea si no quieres el plano guía
-      // modelGroup.add(guidePlane);
-
-      await mindarThree.start();
-
-      // Render loop
-      renderer.setAnimationLoop(() => {
-        renderer.render(scene, camera);
-      });
-
-      // Eventos del anchor (opcional): aparecen cuando se detecta/perdida la imagen
-      anchor.onTargetFound = () => {
-        console.log('Bandera detectada');
-      }
-      anchor.onTargetLost = () => {
-        console.log('Bandera perdida');
-      }
-    }
-  </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startButton = document.getElementById('startButton');
+            const loading = document.getElementById('loading');
+            const sceneContainer = document.getElementById('mindar-scene');
+            
+            startButton.addEventListener('click', function() {
+                // Mostrar loading
+                loading.style.display = 'block';
+                startButton.style.display = 'none';
+                
+                // Iniciar MindAR después de un breve delay
+                setTimeout(function() {
+                    sceneContainer.style.display = 'block';
+                    
+                    const scene = document.querySelector('a-scene');
+                    if (scene.hasLoaded) {
+                        startMindAR();
+                    } else {
+                        scene.addEventListener('loaded', startMindAR);
+                    }
+                }, 1000);
+            });
+            
+            function startMindAR() {
+                const sceneEl = document.querySelector('a-scene');
+                const mindarScene = sceneEl.systems["mindar-image-system"];
+                
+                mindarScene.start().then(() => {
+                    console.log("MindAR iniciado correctamente");
+                    loading.style.display = 'none';
+                }).catch((error) => {
+                    console.error("Error al iniciar MindAR:", error);
+                    loading.textContent = "Error al iniciar la cámara. Por favor, recarga la página.";
+                });
+            }
+            
+            // Crear entidad 3D cuando se detecte el target
+            const scene = document.querySelector('a-scene');
+            scene.addEventListener('targetFound', event => {
+                console.log("Target encontrado:", event.target);
+                
+                const targetEntity = event.target;
+                
+                // Verificar si ya existe un modelo
+                if (targetEntity.querySelector('#model3d')) {
+                    return;
+                }
+                
+                // Crear el modelo 3D
+                const model = document.createElement('a-entity');
+                model.setAttribute('id', 'model3d');
+                
+                // Intentar cargar el modelo del Cristo Redentor
+                model.setAttribute('gltf-model', '#cristoModel');
+                
+                // Configurar posición, rotación y escala
+                model.setAttribute('position', '0 0.5 0');
+                model.setAttribute('rotation', '0 0 0');
+                model.setAttribute('scale', '0.5 0.5 0.5');
+                model.setAttribute('animation', 'property: rotation; to: 0 360 0; loop: true; dur: 10000');
+                
+                // Añadir animación adicional
+                model.setAttribute('animation__2', 'property: position; to: 0 1 0; dir: alternate; loop: true; dur: 2000');
+                
+                targetEntity.appendChild(model);
+                
+                // Crear texto informativo
+                const text = document.createElement('a-text');
+                text.setAttribute('value', '¡Brasil!');
+                text.setAttribute('position', '0 -0.5 0');
+                text.setAttribute('align', 'center');
+                text.setAttribute('color', '#FFDF00');
+                text.setAttribute('scale', '2 2 2');
+                targetEntity.appendChild(text);
+            });
+            
+            scene.addEventListener('targetLost', event => {
+                console.log("Target perdido");
+            });
+        });
+    </script>
 </body>
 </html>
