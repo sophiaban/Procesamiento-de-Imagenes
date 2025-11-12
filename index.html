@@ -148,6 +148,25 @@
       text-align: center;
       display: none;
     }
+    /* Overlay de estado de la cámara */
+    .camera-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .camera-overlay.active { display: flex; }
+    .camera-box { background: rgba(0,0,0,0.85); padding: 20px; border-radius: 12px; max-width: 420px; }
+    .camera-box button { margin-top: 12px; padding: 10px 16px; border-radius: 8px; border: none; background: #0056A5; color: white; cursor: pointer; }
   </style>
 </head>
 
@@ -162,6 +181,18 @@
 
   <div class="mobile-tap-hint" id="mobileTapHint">
     👆 Toca los círculos para interactuar
+  </div>
+
+  <!-- Overlay para errores/estado de la cámara -->
+  <div id="cameraOverlay" class="camera-overlay" role="dialog" aria-live="polite">
+    <div class="camera-box">
+      <h2 id="cameraOverlayTitle">No se pudo iniciar la cámara</h2>
+      <p id="cameraOverlayMsg">Esperando permisos o el acceso a la cámara. Asegúrate de permitir cámara y cerrar otras apps que la utilicen.</p>
+      <div style="display:flex; gap:8px; justify-content:center; margin-top:12px;">
+        <button id="cameraRetryBtn">Reintentar</button>
+        <button id="cameraHelpBtn">Ayuda</button>
+      </div>
+    </div>
   </div>
 
   <!-- Escena AR -->
@@ -907,6 +938,67 @@
         }
       });
     }
+
+    // === WATCHDOG/CAMARA ===
+    (function setupCameraWatchdog() {
+      const overlay = document.getElementById('cameraOverlay');
+      const retryBtn = document.getElementById('cameraRetryBtn');
+      const helpBtn = document.getElementById('cameraHelpBtn');
+      const overlayTitle = document.getElementById('cameraOverlayTitle');
+      const overlayMsg = document.getElementById('cameraOverlayMsg');
+
+      let cameraStarted = false;
+      // MindAR normalmente emite events relacionados con video en el elemento <a-scene>
+      const sc = document.querySelector('a-scene');
+
+      function showOverlay(title, msg) {
+        overlayTitle.textContent = title;
+        overlayMsg.textContent = msg;
+        overlay.classList.add('active');
+      }
+
+      function hideOverlay() { overlay.classList.remove('active'); }
+
+      // Listener para error conocido
+      window.addEventListener('error', (ev) => {
+        const m = ev && ev.message ? ev.message : '';
+        if (m && /NotReadableError|Could not start video source/i.test(m)) {
+          showOverlay('No se puede acceder a la cámara', 'Parece que la cámara está en uso o no está disponible. Cierra otras aplicaciones que usen la cámara y pulsa Reintentar.');
+        }
+      });
+
+      // Intentar detectar cuando el video comienza: MindAR usa internal events, pero podemos vigilar cambios en video elements
+      const checkInterval = setInterval(() => {
+        // buscar elementos de video en la escena
+        const video = document.querySelector('video');
+        if (video) {
+          if (!video.paused || video.readyState >= 2) {
+            cameraStarted = true;
+            hideOverlay();
+            clearInterval(checkInterval);
+            console.log('Video/cámara aparentemente iniciada');
+          }
+        }
+      }, 800);
+
+      // Después de un tiempo, si no arrancó la cámara, mostrar overlay
+      setTimeout(() => {
+        if (!cameraStarted) {
+          showOverlay('La cámara no responde', 'No se detectó la cámara. Comprueba permisos y que ninguna otra aplicación esté usando la cámara, luego pulsa Reintentar.');
+        }
+      }, 5000);
+
+      retryBtn.addEventListener('click', () => {
+        hideOverlay();
+        // intentar reiniciar la página para re-iniciar getUserMedia y MindAR
+        console.log('Reintentando acceso a la cámara (recargando página)');
+        location.reload();
+      });
+
+      helpBtn.addEventListener('click', () => {
+        alert('Pasos recomendados:\n1) Asegúrate de que no hay otra app usando la cámara.\n2) En configuración del navegador, permite el acceso a la cámara.\n3) Recarga esta página y acepta el permiso cuando el navegador lo pida.');
+      });
+    })();
 
     // Añadir listeners específicos por target para asegurar que el modelo
     // correspondiente se muestre/oculte cuando se detecte/mande perder el target.
