@@ -128,7 +128,7 @@
   <!-- Escena AR -->
   <div class="ar-container">
     <a-scene
-      mindar-image="imageTargetSrc: ./bandera-brasil.mind; autoStart: true;"
+      mindar-image="imageTargetSrc: https://juansdl10.github.io/mundial-2026-ar/targets.mind; autoStart: true;"
       embedded
       color-space="sRGB"
       renderer="colorManagement: true, physicallyCorrectLights"
@@ -140,14 +140,8 @@
       <!-- TARGET 0 - Argentina -->
       <a-entity mindar-image-target="targetIndex: 0" class="country-target">
         <a-entity id="argentina-model" visible="false">
-          <!-- Usando el modelo 3D si está disponible, o primitivas como respaldo -->
-          <!-- <a-entity gltf-model="./modelos/bandera.glb" position="0 0.5 0" scale="0.5 0.5 0.5"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
-          </a-entity> -->
-          <!-- Elemento de respaldo en caso de que el modelo no cargue -->
           <a-box position="0 0.5 0" color="#74ACDF" depth="0.1" height="0.8" width="0.5"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation"
-            visible="true" id="argentina-backup">
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
           </a-box>
           <a-text id="argentina-text" value="Argentina\nCampeón 2022"
             position="0 1.2 0" align="center" color="#FFD700" visible="false">
@@ -169,14 +163,8 @@
       <!-- TARGET 1 - Brasil -->
       <a-entity mindar-image-target="targetIndex: 1" class="country-target">
         <a-entity id="brasil-model" visible="false">
-          <!-- Usando el modelo 3D si está disponible, o primitivas como respaldo -->
-          <!-- <a-entity gltf-model="./modelos/bandera.glb" position="0 0.5 0" scale="0.5 0.5 0.5"
-            animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation">
-          </a-entity> -->
-          <!-- Elemento de respaldo en caso de que el modelo no cargue -->
           <a-cone position="0 0.5 0" color="#009C3B" radius-bottom="0.3" radius-top="0.1"
-            animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation"
-            visible="true" id="brasil-backup">
+            animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation">
           </a-cone>
           <a-text id="brasil-text" value="Brasil\n5 Copas del Mundo"
             position="0 1.2 0" align="center" color="#FFD700" visible="false">
@@ -215,7 +203,7 @@
         <h3>Argentina vs Brasil</h3>
         <div class="video-container">
           <video id="video1" controls>
-            <source src="./assets/videos/argentina-brasil.mp4" type="video/mp4">
+            <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
             Tu navegador no soporta video.
           </video>
         </div>
@@ -226,7 +214,7 @@
         <h3>Francia vs Alemania</h3>
         <div class="video-container">
           <video id="video2" controls>
-            <source src="./assets/videos/francia-alemania.mp4" type="video/mp4">
+            <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
             Tu navegador no soporta video.
           </video>
         </div>
@@ -325,51 +313,7 @@
           handleARButton(action, target);
         });
       });
-      
-      // Verificar carga de modelos 3D
-      setTimeout(checkModelLoading, 2000);
     });
-
-    function checkModelLoading() {
-      // Verificar si los modelos GLB se cargaron correctamente usando eventos de A-Frame
-      const argentinaModel = document.querySelector('#argentina-model [gltf-model]');
-      const brasilModel = document.querySelector('#brasil-model [gltf-model]');
-
-      function attachModelHandlers(entity, backupId, country) {
-        if (!entity) {
-          console.warn(`No se encontró entidad gltf-model para ${country}`);
-          const backup = document.getElementById(backupId);
-          if (backup) backup.setAttribute('visible', 'true');
-          return;
-        }
-
-        let loaded = false;
-
-        entity.addEventListener('model-loaded', () => {
-          loaded = true;
-          console.log(`Modelo GLB cargado para ${country}:`, entity.getAttribute('gltf-model'));
-          // Mostrar el contenedor padre (ej. #brasil-model) y ocultar el respaldo
-          const parent = entity.closest('[id$="-model"]');
-          if (parent) parent.setAttribute('visible', 'true');
-          const backup = document.getElementById(backupId);
-          if (backup) backup.setAttribute('visible', 'false');
-        });
-
-        // Fallback: si no carga en 6s, mostrar el respaldo y loguear
-        setTimeout(() => {
-          if (!loaded) {
-            console.warn(`Timeout cargando GLB de ${country}, mostrando respaldo.`);
-            const backup = document.getElementById(backupId);
-            if (backup) backup.setAttribute('visible', 'true');
-            // intentar ocultar la entidad gltf para evitar errores en escena
-            try { entity.setAttribute('visible', 'false'); } catch (e) { /* ignore */ }
-          }
-        }, 6000);
-      }
-
-      attachModelHandlers(argentinaModel, 'argentina-backup', 'Argentina');
-      attachModelHandlers(brasilModel, 'brasil-backup', 'Brasil');
-    }
 
     function handleARButton(action, target) {
       if (action === 'animateModel') animateModel(target);
@@ -402,31 +346,12 @@
 
     // === ESTADO DEL ESCANEO ===
     const scene = document.querySelector('a-scene');
-    if (scene) {
-      console.log('📱 A-Frame scene encontrada');
-      
-      scene.addEventListener('loaded', () => {
-        console.log('✅ Escena AR cargada');
-        console.log('🔍 MindAR inicializando con archivo: ./bandera-brasil.mind');
-      });
-      
-      scene.addEventListener('targetFound', (event) => {
-        console.log('✅ Target encontrado:', event.detail.targetIndex);
-        document.getElementById('scanningStatus').textContent = '✅ Bandera detectada (Target ' + event.detail.targetIndex + ')';
-      });
-      
-      scene.addEventListener('targetLost', () => {
-        console.log('❌ Target perdido');
-        document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
-      });
-      
-      scene.addEventListener('error', (event) => {
-        console.error('❌ Error en AR:', event);
-        document.getElementById('scanningStatus').textContent = '❌ Error en AR. Revisa la consola.';
-      });
-    } else {
-      console.error('❌ A-Frame scene NO encontrada');
-    }
+    scene.addEventListener('targetFound', () => {
+      document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
+    });
+    scene.addEventListener('targetLost', () => {
+      document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
+    });
   </script>
 </body>
 </html>
