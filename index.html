@@ -157,67 +157,104 @@
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <!-- TARGET 0 - Argentina -->
-      <a-entity mindar-image-target="targetIndex: 0" class="country-target">
-        <a-entity id="argentina-model" visible="false">
-          <a-entity
-            gltf-model="models/world-cup-trophy.glb"
-            scale="0.2 0.2 0.2"
-            position="0 0.5 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
-          </a-entity>
-          <a-text id="argentina-text" value="Argentina\nCampeón 2022"
-            position="0 1.2 0" align="center" color="#FFD700" visible="false">
-          </a-text>
-        </a-entity>
-
-        <!-- Botones flotantes -->
-        <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="argentina">
-          <a-ring color="#0056A5" radius-inner="0.03" radius-outer="0.05"></a-ring>
-          <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-        </a-entity>
-
-        <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="argentina">
-          <a-ring color="#E20020" radius-inner="0.03" radius-outer="0.05"></a-ring>
-          <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-        </a-entity>
-
-        <a-entity position="0.3 0.8 0" class="ar-button" data-action="show3DModel" data-target="argentina">
-          <a-ring color="#74ACDF" radius-inner="0.03" radius-outer="0.05"></a-ring>
-          <a-text value="🏆" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-        </a-entity>
+<a-entity mindar-image-target="targetIndex: 0" class="country-target">
+  <a-entity id="argentina-model" visible="false">
+    <!-- Modelo 3D con respaldo en caso de error -->
+    <a-entity
+      gltf-model="models/world-cup-trophy.glb"
+      scale="0.2 0.2 0.2"
+      position="0 0.5 0"
+      animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation"
+      fallback="true">
+      
+      <!-- Modelo de respaldo si el GLTF falla -->
+      <a-entity class="fallback-model" visible="false">
+        <a-cylinder 
+          color="#74ACDF" 
+          height="0.8" 
+          radius="0.2"
+          position="0 0.4 0"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
+        </a-cylinder>
+        <a-text value="🏆 ARG" 
+                position="0 1.0 0" 
+                align="center" 
+                color="#FFD700">
+        </a-text>
       </a-entity>
+    </a-entity>
+    
+    <a-text id="argentina-text" value="Argentina\nCampeón 2022"
+      position="0 1.2 0" align="center" color="#FFD700" visible="false">
+    </a-text>
+  </a-entity>
 
-      <!-- TARGET 1 - Brasil -->
-      <a-entity mindar-image-target="targetIndex: 1" class="country-target">
-        <a-entity id="brasil-model" visible="false">
-          <a-entity
-            gltf-model="models/soccer-ball.glb"
-            scale="0.3 0.3 0.3"
-            position="0 0.5 0"
-            animation="property: rotation; to: 360 360 0; loop: true; dur: 3000; startEvents: startAnimation">
-          </a-entity>
-          <a-text id="brasil-text" value="Brasil\n5 Copas del Mundo"
-            position="0 1.2 0" align="center" color="#FFD700" visible="false">
-          </a-text>
-        </a-entity>
+  <!-- Tus botones flotantes existentes -->
+  <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="argentina">
+    <a-ring color="#0056A5" radius-inner="0.03" radius-outer="0.05"></a-ring>
+    <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+  </a-entity>
 
-        <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="brasil">
-          <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
-          <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-        </a-entity>
+  <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="argentina">
+    <a-ring color="#E20020" radius-inner="0.03" radius-outer="0.05"></a-ring>
+    <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+  </a-entity>
 
-        <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="brasil">
-          <a-ring color="#FFDF00" radius-inner="0.03" radius-outer="0.05"></a-ring>
-          <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-        </a-entity>
+  <a-entity position="0.3 0.8 0" class="ar-button" data-action="show3DModel" data-target="argentina">
+    <a-ring color="#74ACDF" radius-inner="0.03" radius-outer="0.05"></a-ring>
+    <a-text value="🏆" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+  </a-entity>
+</a-entity>
 
-        <a-entity position="0.3 0.8 0" class="ar-button" data-action="show3DModel" data-target="brasil">
-          <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
-          <a-text value="⚽" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-        </a-entity>
+<!-- TARGET 1 - Brasil -->
+<a-entity mindar-image-target="targetIndex: 1" class="country-target">
+  <a-entity id="brasil-model" visible="false">
+    <!-- Modelo 3D con respaldo -->
+    <a-entity
+      gltf-model="models/soccer-ball.glb"
+      scale="0.3 0.3 0.3"
+      position="0 0.5 0"
+      animation="property: rotation; to: 360 360 0; loop: true; dur: 3000; startEvents: startAnimation"
+      fallback="true">
+      
+      <!-- Modelo de respaldo -->
+      <a-entity class="fallback-model" visible="false">
+        <a-sphere 
+          color="#009C3B" 
+          radius="0.3"
+          position="0 0.5 0"
+          animation="property: rotation; to: 360 360 0; loop: true; dur: 3000; startEvents: startAnimation">
+        </a-sphere>
+        <a-text value="⚽ BRA" 
+                position="0 1.0 0" 
+                align="center" 
+                color="#FFDF00">
+        </a-text>
       </a-entity>
-    </a-scene>
-  </div>
+    </a-entity>
+    
+    <a-text id="brasil-text" value="Brasil\n5 Copas del Mundo"
+      position="0 1.2 0" align="center" color="#FFD700" visible="false">
+    </a-text>
+  </a-entity>
+
+  <!-- Botones flotantes -->
+  <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="brasil">
+    <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
+    <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+  </a-entity>
+
+  <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="brasil">
+    <a-ring color="#FFDF00" radius-inner="0.03" radius-outer="0.05"></a-ring>
+    <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+  </a-entity>
+
+  <a-entity position="0.3 0.8 0" class="ar-button" data-action="show3DModel" data-target="brasil">
+    <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
+    <a-text value="⚽" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+  </a-entity>
+</a-entity>
+
 
   <!-- Panel de control -->
   <div class="control-panel">
@@ -646,6 +683,60 @@
         document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
       });
     }
+    // === DEBUG Y MANEJO DE MODELOS ===
+function checkModels() {
+  console.log("Verificando modelos 3D...");
+  
+  // Verificar si los modelos se cargaron
+  const argentinaModel = document.querySelector('[gltf-model*="world-cup-trophy"]');
+  const brasilModel = document.querySelector('[gltf-model*="soccer-ball"]');
+  
+  console.log("Modelo Argentina:", argentinaModel);
+  console.log("Modelo Brasil:", brasilModel);
+  
+  // Si los modelos GLTF fallan, mostrar modelos de respaldo
+  setTimeout(() => {
+    document.querySelectorAll('[gltf-model]').forEach(model => {
+      const fallback = model.querySelector('.fallback-model');
+      if (fallback && !model.hasLoaded) {
+        console.log("Modelo GLTF falló, mostrando respaldo");
+        fallback.setAttribute('visible', 'true');
+      }
+    });
+  }, 2000);
+}
+
+// Modificar la función show3DModel para mejor debug
+function show3DModel(country) {
+  console.log(`Mostrando modelo 3D para: ${country}`);
+  
+  const model = document.getElementById(`${country}-model`);
+  const text = document.getElementById(`${country}-text`);
+  
+  if (!model) {
+    console.error(`Modelo no encontrado: ${country}-model`);
+    return;
+  }
+  
+  model.setAttribute('visible', 'true');
+  
+  // Forzar la animación
+  const animatedElement = model.querySelector('[animation]');
+  if (animatedElement) {
+    animatedElement.emit('startAnimation');
+    console.log("Animación iniciada");
+  }
+  
+  if (text) text.setAttribute('visible', 'false');
+  
+  // Verificar el estado después de un momento
+  setTimeout(() => {
+    console.log(`Modelo ${country} visible:`, model.getAttribute('visible'));
+  }, 500);
+}
+
+// Verificar modelos cuando la escena cargue
+document.querySelector('a-scene').addEventListener('loaded', checkModels);
   </script>
 </body>
 </html>
