@@ -7,6 +7,8 @@
 
   <!-- Librerías principales -->
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <!-- Componente de animaciones para A-Frame -->
+  <script src="https://aframe.io/releases/1.4.0/aframe-animation-component.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
 
@@ -93,7 +95,7 @@
       font-size: 20px;
       cursor: pointer;
     }
-    .trivia-option {
+    .trivia-option, .poll-option {
       background: #0056A5;
       border: none;
       color: white;
@@ -103,7 +105,7 @@
       cursor: pointer;
       width: 100%;
     }
-    .trivia-option:hover { background: #E20020; }
+    .trivia-option:hover, .poll-option:hover { background: #E20020; }
     .video-container {
       width: 100%;
       max-width: 400px;
@@ -112,6 +114,23 @@
     video {
       width: 100%;
       border-radius: 10px;
+    }
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .filter-btn {
+      background: #0056A5;
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    .filter-btn.active {
+      background: #E20020;
     }
   </style>
 </head>
@@ -127,8 +146,13 @@
 
   <!-- Escena AR -->
   <div class="ar-container">
+    <!-- 
+      RUTA DEL ARCHIVO TARGETS.MIND:
+      Este archivo contiene las imágenes de las banderas que el AR puede reconocer
+      Debe estar en la raíz de tu repositorio o en la misma carpeta que index.html
+    -->
     <a-scene
-      mindar-image="imageTargetSrc: https://juansdl10.github.io/mundial-2026-ar/targets.mind; autoStart: true;"
+      mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
       embedded
       color-space="sRGB"
       renderer="colorManagement: true, physicallyCorrectLights"
@@ -137,12 +161,22 @@
     >
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- TARGET 0 - Argentina -->
+      <!-- 
+        TARGET 0 - Argentina 
+        targetIndex: 0 corresponde a la primera imagen en tu archivo targets.mind
+      -->
       <a-entity mindar-image-target="targetIndex: 0" class="country-target">
         <a-entity id="argentina-model" visible="false">
-          <a-box position="0 0.5 0" color="#74ACDF" depth="0.1" height="0.8" width="0.5"
+          <!-- 
+            RUTA DEL MODELO 3D PARA ARGENTINA:
+            Debe estar en la carpeta models/ de tu repositorio
+          -->
+          <a-entity
+            gltf-model="models/world-cup-trophy.glb"
+            scale="0.2 0.2 0.2"
+            position="0 0.5 0"
             animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
-          </a-box>
+          </a-entity>
           <a-text id="argentina-text" value="Argentina\nCampeón 2022"
             position="0 1.2 0" align="center" color="#FFD700" visible="false">
           </a-text>
@@ -158,14 +192,29 @@
           <a-ring color="#E20020" radius-inner="0.03" radius-outer="0.05"></a-ring>
           <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
         </a-entity>
+
+        <a-entity position="0.3 0.8 0" class="ar-button" data-action="show3DModel" data-target="argentina">
+          <a-ring color="#74ACDF" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="🏆" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
       </a-entity>
 
-      <!-- TARGET 1 - Brasil -->
+      <!-- 
+        TARGET 1 - Brasil 
+        targetIndex: 1 corresponde a la segunda imagen en tu archivo targets.mind
+      -->
       <a-entity mindar-image-target="targetIndex: 1" class="country-target">
         <a-entity id="brasil-model" visible="false">
-          <a-cone position="0 0.5 0" color="#009C3B" radius-bottom="0.3" radius-top="0.1"
-            animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation">
-          </a-cone>
+          <!-- 
+            RUTA DEL MODELO 3D PARA BRASIL:
+            Debe estar en la carpeta models/ de tu repositorio
+          -->
+          <a-entity
+            gltf-model="models/soccer-ball.glb"
+            scale="0.3 0.3 0.3"
+            position="0 0.5 0"
+            animation="property: rotation; to: 360 360 0; loop: true; dur: 3000; startEvents: startAnimation">
+          </a-entity>
           <a-text id="brasil-text" value="Brasil\n5 Copas del Mundo"
             position="0 1.2 0" align="center" color="#FFD700" visible="false">
           </a-text>
@@ -180,6 +229,11 @@
           <a-ring color="#FFDF00" radius-inner="0.03" radius-outer="0.05"></a-ring>
           <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
         </a-entity>
+
+        <a-entity position="0.3 0.8 0" class="ar-button" data-action="show3DModel" data-target="brasil">
+          <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="⚽" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
       </a-entity>
     </a-scene>
   </div>
@@ -188,7 +242,8 @@
   <div class="control-panel">
     <button class="control-btn" onclick="openVideoModal()">🎥</button>
     <button class="control-btn" onclick="openTriviaModal()">❓</button>
-    <button class="control-btn" onclick="showStats()">📊</button>
+    <button class="control-btn" onclick="openPollModal()">📊</button>
+    <button class="control-btn" onclick="show3DModels()">🔺</button>
     <button class="control-btn" onclick="resetAR()">🔄</button>
     <button class="control-btn" onclick="showInfo()">ℹ️</button>
   </div>
@@ -198,10 +253,20 @@
     <div class="modal-content">
       <button class="close-btn" onclick="closeVideoModal()">×</button>
       <h2>🎥 Videos del Mundial</h2>
+      
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="applyVideoFilter('none')">Normal</button>
+        <button class="filter-btn" onclick="applyVideoFilter('grayscale')">Grises</button>
+        <button class="filter-btn" onclick="applyVideoFilter('sepia')">Sepia</button>
+      </div>
 
       <div class="video-option">
         <h3>Argentina vs Brasil</h3>
         <div class="video-container">
+          <!-- 
+            RUTA DEL VIDEO 1:
+            Puedes reemplazar esta URL por tu propio video
+          -->
           <video id="video1" controls>
             <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
             Tu navegador no soporta video.
@@ -213,6 +278,10 @@
       <div class="video-option" style="margin-top: 20px;">
         <h3>Francia vs Alemania</h3>
         <div class="video-container">
+          <!-- 
+            RUTA DEL VIDEO 2:
+            Puedes reemplazar esta URL por tu propio video
+          -->
           <video id="video2" controls>
             <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
             Tu navegador no soporta video.
@@ -232,6 +301,18 @@
       <div id="triviaOptions"></div>
       <div id="triviaResult" style="margin-top: 15px; font-weight: bold;"></div>
       <button class="trivia-option" onclick="nextTriviaQuestion()" style="margin-top: 15px;">Siguiente Pregunta</button>
+    </div>
+  </div>
+
+  <!-- Modal de Encuestas -->
+  <div id="pollModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closePollModal()">×</button>
+      <h2>📊 Encuestas del Mundial</h2>
+      <div id="pollQuestion"></div>
+      <div id="pollOptions"></div>
+      <div id="pollResult" style="margin-top: 15px; font-weight: bold;"></div>
+      <button class="poll-option" onclick="nextPollQuestion()" style="margin-top: 15px;">Siguiente Encuesta</button>
     </div>
   </div>
 
@@ -292,8 +373,68 @@
       rE.style.color = '#FFD700';
     }
 
+    // === ENCUESTAS ===
+    const pollData = [
+      { country: "Argentina", polls: [
+        { question: "¿Quién será el goleador de Argentina en el 2026?", options: ["Lionel Messi", "Julián Álvarez", "Lautaro Martínez", "Ninguno"] },
+        { question: "¿Argentina llegará a la final?", options: ["Sí", "No", "No sé", "Ojalá"] },
+        { question: "¿Cuál es el mejor jugador argentino de la historia?", options: ["Lionel Messi", "Diego Maradona", "Alfredo Di Stéfano", "Gabriel Batistuta"] },
+        { question: "¿En qué fase quedará eliminado Argentina?", options: ["Fase de grupos", "Octavos", "Cuartos", "No será eliminado"] },
+        { question: "¿Quién debería ser el capitán?", options: ["Lionel Messi", "Emiliano Martínez", "Cuti Romero", "De Paul"] }
+      ]},
+      { country: "Brasil", polls: [
+        { question: "¿Brasil ganará el mundial 2026?", options: ["Sí", "No", "No sé", "Ojalá"] },
+        { question: "¿Quién será el mejor jugador brasileño?", options: ["Vinicius Jr", "Neymar", "Rodrygo", "Alisson"] },
+        { question: "¿Cuál es la mayor debilidad de Brasil?", options: ["Defensa", "Mediocampo", "Ataque", "No tiene debilidades"] },
+        { question: "¿Brasil llegará a semifinales?", options: ["Sí", "No", "No sé", "Ojalá"] },
+        { question: "¿Quién es el mejor entrenador para Brasil?", options: ["Tite", "Ancelotti", "Guardiola", "Klopp"] }
+      ]}
+    ];
+
+    let currentPollQuestions = [], currentPollIndex = 0;
+
+    function openPollModal() {
+      const allPolls = pollData.flatMap(c => c.polls);
+      currentPollQuestions = getRandomQuestions(allPolls, 1); // Una encuesta al azar
+      currentPollIndex = 0;
+      document.getElementById('pollModal').classList.add('active');
+      showPollQuestion();
+    }
+    function closePollModal() { document.getElementById('pollModal').classList.remove('active'); }
+    function showPollQuestion() {
+      if (currentPollIndex >= currentPollQuestions.length) return;
+      const q = currentPollQuestions[currentPollIndex];
+      const qE = document.getElementById('pollQuestion');
+      const oE = document.getElementById('pollOptions');
+      const rE = document.getElementById('pollResult');
+      qE.innerHTML = `<h3>${q.question}</h3>`;
+      rE.textContent = '';
+      oE.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const b = document.createElement('button');
+        b.className = 'poll-option'; b.textContent = opt;
+        b.onclick = () => submitPollAnswer(i);
+        oE.appendChild(b);
+      });
+    }
+    function submitPollAnswer(i) {
+      const rE = document.getElementById('pollResult');
+      rE.textContent = '✅ ¡Gracias por tu respuesta!';
+      rE.style.color = '#00FF00';
+    }
+    function nextPollQuestion() {
+      const allPolls = pollData.flatMap(c => c.polls);
+      currentPollQuestions = getRandomQuestions(allPolls, 1);
+      currentPollIndex = 0;
+      showPollQuestion();
+    }
+
     // === VIDEOS ===
-    function openVideoModal() { document.getElementById('videoModal').classList.add('active'); }
+    function openVideoModal() { 
+      document.getElementById('videoModal').classList.add('active'); 
+      // Aplicar filtro por defecto
+      applyVideoFilter('none');
+    }
     function closeVideoModal() {
       document.getElementById('videoModal').classList.remove('active');
       document.querySelectorAll('video').forEach(v => v.pause());
@@ -302,6 +443,29 @@
       document.querySelectorAll('video').forEach(v => { if (v.id !== id) v.pause(); });
       const v = document.getElementById(id);
       v.paused ? v.play() : v.pause();
+    }
+    
+    // Filtros de video
+    function applyVideoFilter(filter) {
+      // Actualizar botones activos
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      // Aplicar filtro a todos los videos
+      document.querySelectorAll('video').forEach(video => {
+        switch(filter) {
+          case 'grayscale':
+            video.style.filter = 'grayscale(100%)';
+            break;
+          case 'sepia':
+            video.style.filter = 'sepia(100%)';
+            break;
+          default:
+            video.style.filter = 'none';
+        }
+      });
     }
 
     // === AR BOTONES ===
@@ -318,12 +482,13 @@
     function handleARButton(action, target) {
       if (action === 'animateModel') animateModel(target);
       else if (action === 'showText') showText(target);
+      else if (action === 'show3DModel') show3DModel(target);
     }
     function animateModel(country) {
       const model = document.getElementById(`${country}-model`);
       const text = document.getElementById(`${country}-text`);
       model.setAttribute('visible', 'true');
-      model.emit('startAnimation');
+      model.emit('startAnimation');  // Esto activa la animación
       if (text) text.setAttribute('visible', 'false');
     }
     function showText(country) {
@@ -332,8 +497,19 @@
       if (text) text.setAttribute('visible', 'true');
       if (model) model.setAttribute('visible', 'false');
     }
+    function show3DModel(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      model.setAttribute('visible', 'true');
+      if (text) text.setAttribute('visible', 'false');
+    }
     function resetAR() {
       document.querySelectorAll('[id$="-model"], [id$="-text"]').forEach(el => el.setAttribute('visible', 'false'));
+    }
+    
+    // Función para mostrar modelos 3D desde el panel de control
+    function show3DModels() {
+      alert('Para ver modelos 3D, escanea una bandera y pulsa el botón 🏆 o ⚽ que aparece sobre ella.');
     }
 
     // === INFO ===
@@ -341,7 +517,7 @@
       alert('📊 Estadísticas del Mundial 2026\n\n• 48 equipos\n• 3 anfitriones\n• 16 sedes\n• 80 partidos');
     }
     function showInfo() {
-      alert('ℹ️ Mundial 2026 AR\nEscanea banderas para ver contenido interactivo.');
+      alert('ℹ️ Mundial 2026 AR\nEscanea banderas para ver contenido interactivo.\n\nFunciones:\n- Videos con filtros\n- Trivia del Mundial\n- Encuestas por país\n- Modelos 3D animados');
     }
 
     // === ESTADO DEL ESCANEO ===
