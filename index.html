@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Realidad Aumentada - Bandera de Brasil</title>
     
-    <!-- Scripts en el orden correcto y con type="module" -->
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
+    <!-- Scripts CORRECTOS - versión UMD (no modular) -->
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-umd.min.js"></script>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
     
@@ -68,6 +68,15 @@
             margin: 20px auto;
             max-width: 600px;
         }
+        .success {
+            display: none;
+            color: #00ff00;
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
     </style>
 </head>
 <body>
@@ -88,8 +97,9 @@
         </div>
 
         <button id="startButton">Iniciar Cámara</button>
-        <div class="loading" id="loading">Cargando realidad aumentada...</div>
+        <div class="loading" id="loading">Inicializando cámara y realidad aumentada...</div>
         <div class="error" id="error"></div>
+        <div class="success" id="success">¡Cámara activada! Apunta hacia la bandera de Brasil.</div>
 
         <div class="scan-area">
             <!-- Escena MindAR simplificada -->
@@ -98,95 +108,152 @@
                 embedded 
                 color-space="sRGB" 
                 renderer="colorManagement: true; physicallyCorrectLights: true"
-                vr-mode-ui="enabled: false">
-                
+                vr-mode-ui="enabled: false"
+                device-orientation-permission-ui="enabled: false">
+
+                <a-assets>
+                    <!-- No necesitamos assets externos -->
+                </a-assets>
+
                 <a-camera position="0 0 0" active="false"></a-camera>
 
                 <!-- Target para la bandera de Brasil -->
                 <a-entity mindar-image-target="targetIndex: 0">
-                    <!-- Modelo 3D que aparecerá cuando se detecte el target -->
+                    <!-- Modelo 3D brasileño - creado con geometrías nativas -->
                     <a-entity
                         id="model3d"
-                        position="0 0.5 0"
-                        scale="0.5 0.5 0.5"
+                        position="0 0 0"
+                        scale="0.8 0.8 0.8"
                         rotation="0 0 0"
                         visible="false">
                         
-                        <!-- Esfera verde -->
+                        <!-- Base verde (Brasil) -->
                         <a-sphere
                             color="#009c3b"
-                            radius="0.3"
-                            position="0 0.3 0">
+                            radius="0.4"
+                            position="0 0.2 0">
                         </a-sphere>
                         
-                        <!-- Aro amarillo -->
+                        <!-- Diamante amarillo (los minerales) -->
+                        <a-entity
+                            position="0 0.2 0"
+                            rotation="0 45 0">
+                            <a-octahedron
+                                color="#FFDF00"
+                                radius="0.3"
+                                detail="0">
+                            </a-octahedron>
+                        </a-entity>
+                        
+                        <!-- Círculo azul (el cielo) -->
                         <a-torus
-                            color="#FFDF00"
+                            color="#002776"
                             arc="360"
                             radius="0.5"
-                            radius-tubular="0.05"
+                            radius-tubular="0.03"
                             rotation="90 0 0">
                         </a-torus>
                         
-                        <!-- Rectángulo azul -->
-                        <a-box
-                            color="#002776"
-                            width="1"
-                            height="0.1"
-                            depth="0.8"
-                            position="0 -0.2 0">
-                        </a-box>
+                        <!-- Estrella (símbolo brasileño) -->
+                        <a-entity
+                            position="0 0.6 0.3"
+                            rotation="0 0 0">
+                            <a-star
+                                color="#FFFFFF"
+                                radius="0.1"
+                                radius-inner="0.05"
+                                segments="5">
+                            </a-star>
+                        </a-entity>
                         
-                        <!-- Texto -->
+                        <!-- Texto flotante -->
                         <a-text
                             value="BRASIL"
                             position="0 -0.8 0"
                             align="center"
-                            color="#FFFFFF"
+                            color="#FFDF00"
                             scale="2 2 2">
                         </a-text>
+                        
+                        <!-- Animación de rotación -->
+                        <a-animation
+                            attribute="rotation"
+                            from="0 0 0"
+                            to="0 360 0"
+                            dur="10000"
+                            repeat="indefinite">
+                        </a-animation>
                     </a-entity>
                 </a-entity>
+
+                <!-- Luz para el modelo 3D -->
+                <a-entity light="type: ambient; color: #FFF; intensity: 0.8"></a-entity>
+                <a-entity light="type: directional; color: #FFF; intensity: 0.5" position="2 5 5"></a-entity>
 
             </a-scene>
         </div>
     </div>
 
     <script>
+        // Componente personalizado para estrella (ya que A-Frame no tiene estrella nativa)
+        AFRAME.registerPrimitive('a-star', {
+            defaultComponents: {
+                geometry: {
+                    primitive: 'ring',
+                    segmentsTheta: 5,
+                    radiusInner: 0.05,
+                    radiusOuter: 0.1
+                },
+                material: {
+                    side: 'double'
+                }
+            },
+            mappings: {
+                radius: 'geometry.radiusOuter',
+                'radius-inner': 'geometry.radiusInner',
+                segments: 'geometry.segmentsTheta',
+                color: 'material.color'
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const startButton = document.getElementById('startButton');
             const loading = document.getElementById('loading');
             const errorDiv = document.getElementById('error');
+            const successDiv = document.getElementById('success');
             const scene = document.querySelector('a-scene');
             
-            // Verificar si hay errores de carga
-            scene.addEventListener('assetError', function(error) {
-                console.error('Error cargando asset:', error.detail);
-                showError('Error cargando recursos 3D: ' + error.detail.src);
+            let mindarSystem = null;
+
+            // Configurar eventos cuando la escena esté lista
+            scene.addEventListener('loaded', function() {
+                console.log('🎯 Escena A-Frame cargada');
+                mindarSystem = scene.systems['mindar-image-system'];
+                
+                if (!mindarSystem) {
+                    console.error('❌ Sistema MindAR no encontrado');
+                    showError('Error: No se pudo cargar el sistema de realidad aumentada');
+                    return;
+                }
+                
+                console.log('✅ Sistema MindAR inicializado');
             });
-            
+
             // Cuando se encuentra el target
             scene.addEventListener('targetFound', event => {
-                console.log('✅ Target encontrado!');
+                console.log('✅ ¡Bandera de Brasil detectada!');
                 const model = document.querySelector('#model3d');
                 if (model) {
                     model.setAttribute('visible', 'true');
-                    model.setAttribute('animation', {
-                        property: 'rotation',
-                        to: '0 360 0',
-                        loop: true,
-                        dur: 10000
-                    });
                 }
             });
             
             // Cuando se pierde el target
             scene.addEventListener('targetLost', event => {
-                console.log('❌ Target perdido');
+                console.log('❌ Bandera fuera de vista');
                 const model = document.querySelector('#model3d');
                 if (model) {
                     model.setAttribute('visible', 'false');
-                    model.removeAttribute('animation');
                 }
             });
             
@@ -195,45 +262,46 @@
             });
             
             function startAR() {
+                console.log('🚀 Iniciando realidad aumentada...');
                 loading.style.display = 'block';
                 startButton.style.display = 'none';
                 errorDiv.style.display = 'none';
+                successDiv.style.display = 'none';
                 
-                // Esperar a que A-Frame cargue completamente
-                if (scene.hasLoaded) {
-                    initializeAR();
-                } else {
-                    scene.addEventListener('loaded', initializeAR);
-                }
-            }
-            
-            function initializeAR() {
-                const mindarScene = scene.systems["mindar-image-system"];
-                
-                if (!mindarScene) {
-                    showError('Error: No se pudo inicializar MindAR');
-                    return;
-                }
-                
-                mindarScene.start().then(() => {
-                    console.log('🚀 MindAR iniciado correctamente');
-                    loading.style.display = 'none';
-                }).catch((error) => {
-                    console.error('❌ Error al iniciar MindAR:', error);
-                    
-                    if (error.name === 'NotFoundError') {
-                        showError('Error: No se encontró la cámara. Asegúrate de que tu dispositivo tenga cámara y que hayas permitido el acceso.');
-                    } else if (error.name === 'NotAllowedError') {
-                        showError('Error: Permiso de cámara denegado. Por favor, permite el acceso a la cámara y recarga la página.');
-                    } else if (error.name === 'NotSupportedError') {
-                        showError('Error: Tu navegador no soporta realidad aumentada. Prueba con Chrome o Safari.');
-                    } else {
-                        showError('Error al iniciar la cámara: ' + error.message);
+                // Pequeño delay para asegurar que todo esté cargado
+                setTimeout(function() {
+                    if (!mindarSystem) {
+                        showError('Error: El sistema AR no se cargó correctamente. Recarga la página.');
+                        return;
                     }
                     
-                    loading.style.display = 'none';
-                    startButton.style.display = 'block';
-                });
+                    mindarSystem.start().then(() => {
+                        console.log('✅ MindAR iniciado correctamente');
+                        loading.style.display = 'none';
+                        successDiv.style.display = 'block';
+                    }).catch((error) => {
+                        console.error('❌ Error al iniciar MindAR:', error);
+                        handleCameraError(error);
+                    });
+                }, 1000);
+            }
+            
+            function handleCameraError(error) {
+                let errorMessage = 'Error desconocido al acceder a la cámara';
+                
+                if (error.name === 'NotFoundError') {
+                    errorMessage = 'Error: No se encontró ninguna cámara en tu dispositivo.';
+                } else if (error.name === 'NotAllowedError') {
+                    errorMessage = 'Error: Permiso de cámara denegado. Por favor, permite el acceso a la cámara y recarga la página.';
+                } else if (error.name === 'NotSupportedError') {
+                    errorMessage = 'Error: Tu navegador no soporta realidad aumentada. Prueba con Chrome o Safari actualizado.';
+                } else if (error.name === 'NotReadableError') {
+                    errorMessage = 'Error: La cámara está siendo usada por otra aplicación. Cierra otras apps que usen la cámara.';
+                }
+                
+                showError(errorMessage);
+                loading.style.display = 'none';
+                startButton.style.display = 'block';
             }
             
             function showError(message) {
@@ -242,11 +310,19 @@
                 console.error('Error AR:', message);
             }
             
-            // Detectar si el navegador es compatible
+            // Verificar compatibilidad
             function checkCompatibility() {
+                const compatibilityInfo = document.createElement('div');
+                compatibilityInfo.style.margin = '10px';
+                compatibilityInfo.style.padding = '10px';
+                compatibilityInfo.style.borderRadius = '5px';
+                
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    showError('Tu navegador no soporta acceso a la cámara. Usa Chrome, Firefox o Safari.');
-                    startButton.disabled = true;
+                    compatibilityInfo.innerHTML = '⚠️ Tu navegador no soporta acceso a la cámara. Usa <strong>Chrome, Firefox o Safari</strong>.';
+                    compatibilityInfo.style.background = 'rgba(255, 165, 0, 0.3)';
+                    document.querySelector('.instructions').appendChild(compatibilityInfo);
+                } else {
+                    console.log('✅ Navegador compatible con getUserMedia');
                 }
             }
             
