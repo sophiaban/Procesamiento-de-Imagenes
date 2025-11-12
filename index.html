@@ -1,18 +1,415 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <title>AR Brasil</title>
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mundial 2026 AR - Banderas</title>
+
+  <!-- Librerías principales -->
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0056A5 0%, #E20020 100%);
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    .ar-container {
+      width: 100%;
+      height: 80vh;
+      margin-top: 60px;
+    }
+    .control-panel {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 15px;
+      display: flex;
+      justify-content: space-around;
+      z-index: 1000;
+    }
+    .control-btn {
+      background: #0056A5;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .control-btn:hover {
+      background: #E20020;
+      transform: scale(1.1);
+    }
+    .scanning-status {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 20px;
+      border-radius: 20px;
+      z-index: 1000;
+    }
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.95);
+      padding: 20px;
+      border-radius: 15px;
+      z-index: 2000;
+      min-width: 300px;
+      max-width: 90%;
+      display: none;
+    }
+    .modal.active { display: block; }
+    .modal-content { text-align: center; }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .trivia-option {
+      background: #0056A5;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .trivia-option:hover { background: #E20020; }
+    .video-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 10px 0;
+    }
+    video {
+      width: 100%;
+      border-radius: 10px;
+    }
+  </style>
 </head>
+
 <body>
-    <a-scene mindar-image="imageTargetSrc: ./target.mind; autoStart: true;" embedded>
-        <a-camera position="0 0 0"></a-camera>
-        <a-entity mindar-image-target="targetIndex: 0">
-            <a-box color="blue" position="0 0.5 0" scale="0.5 0.5 0.5"></a-box>
+  <div class="header">
+    <h1>🇦🇷 Mundial 2026 AR - Banderas 🇧🇷</h1>
+  </div>
+
+  <div class="scanning-status" id="scanningStatus">
+    🔍 Enfoca la cámara a una bandera
+  </div>
+
+  <!-- Escena AR -->
+  <div class="ar-container">
+    <a-scene
+      mindar-image="imageTargetSrc: ./assets/bandera-brasil.mind; autoStart: true;"
+      embedded
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"
+    >
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- TARGET 0 - Argentina -->
+      <a-entity mindar-image-target="targetIndex: 0" class="country-target">
+        <a-entity id="argentina-model" visible="false">
+          <!-- Usando el modelo 3D si está disponible, o primitivas como respaldo -->
+          <a-entity gltf-model="./modelos/bandera.glb" position="0 0.5 0" scale="0.5 0.5 0.5"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
+          </a-entity>
+          <!-- Elemento de respaldo en caso de que el modelo no cargue -->
+          <a-box position="0 0.5 0" color="#74ACDF" depth="0.1" height="0.8" width="0.5"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation"
+            visible="false" id="argentina-backup">
+          </a-box>
+          <a-text id="argentina-text" value="Argentina\nCampeón 2022"
+            position="0 1.2 0" align="center" color="#FFD700" visible="false">
+          </a-text>
         </a-entity>
+
+        <!-- Botones flotantes -->
+        <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="argentina">
+          <a-ring color="#0056A5" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+
+        <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="argentina">
+          <a-ring color="#E20020" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 1 - Brasil -->
+      <a-entity mindar-image-target="targetIndex: 1" class="country-target">
+        <a-entity id="brasil-model" visible="false">
+          <!-- Usando el modelo 3D si está disponible, o primitivas como respaldo -->
+          <a-entity gltf-model="./modelos/bandera.glb" position="0 0.5 0" scale="0.5 0.5 0.5"
+            animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation">
+          </a-entity>
+          <!-- Elemento de respaldo en caso de que el modelo no cargue -->
+          <a-cone position="0 0.5 0" color="#009C3B" radius-bottom="0.3" radius-top="0.1"
+            animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation"
+            visible="false" id="brasil-backup">
+          </a-cone>
+          <a-text id="brasil-text" value="Brasil\n5 Copas del Mundo"
+            position="0 1.2 0" align="center" color="#FFD700" visible="false">
+          </a-text>
+        </a-entity>
+
+        <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="brasil">
+          <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+
+        <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="brasil">
+          <a-ring color="#FFDF00" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+      </a-entity>
     </a-scene>
+  </div>
+
+  <!-- Panel de control -->
+  <div class="control-panel">
+    <button class="control-btn" onclick="openVideoModal()">🎥</button>
+    <button class="control-btn" onclick="openTriviaModal()">❓</button>
+    <button class="control-btn" onclick="showStats()">📊</button>
+    <button class="control-btn" onclick="resetAR()">🔄</button>
+    <button class="control-btn" onclick="showInfo()">ℹ️</button>
+  </div>
+
+  <!-- Modal de Videos -->
+  <div id="videoModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeVideoModal()">×</button>
+      <h2>🎥 Videos del Mundial</h2>
+
+      <div class="video-option">
+        <h3>Argentina vs Brasil</h3>
+        <div class="video-container">
+          <video id="video1" controls>
+            <source src="./assets/videos/argentina-brasil.mp4" type="video/mp4">
+            Tu navegador no soporta video.
+          </video>
+        </div>
+        <button class="trivia-option" onclick="playVideo('video1')">Reproducir Video</button>
+      </div>
+
+      <div class="video-option" style="margin-top: 20px;">
+        <h3>Francia vs Alemania</h3>
+        <div class="video-container">
+          <video id="video2" controls>
+            <source src="./assets/videos/francia-alemania.mp4" type="video/mp4">
+            Tu navegador no soporta video.
+          </video>
+        </div>
+        <button class="trivia-option" onclick="playVideo('video2')">Reproducir Video</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Trivia -->
+  <div id="triviaModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeTriviaModal()">×</button>
+      <h2>❓ Trivia del Mundial 2026</h2>
+      <div id="triviaQuestion"></div>
+      <div id="triviaOptions"></div>
+      <div id="triviaResult" style="margin-top: 15px; font-weight: bold;"></div>
+      <button class="trivia-option" onclick="nextTriviaQuestion()" style="margin-top: 15px;">Siguiente Pregunta</button>
+    </div>
+  </div>
+
+  <script>
+    // === TRIVIA ===
+    const triviaData = [
+      { country: "Argentina", questions: [
+        { question: "¿En qué año ganó Argentina su primera Copa del Mundo?", options: ["1978", "1986", "1990", "2014"], correct: 0 },
+        { question: "¿Quién es el máximo goleador histórico de Argentina?", options: ["Lionel Messi", "Gabriel Batistuta", "Diego Maradona", "Sergio Agüero"], correct: 1 },
+      ]},
+      { country: "Brasil", questions: [
+        { question: "¿Cuántas Copas del Mundo tiene Brasil?", options: ["3", "4", "5", "6"], correct: 2 },
+        { question: "¿Quién es el 'Rey del Fútbol' brasileño?", options: ["Pelé", "Ronaldo", "Ronaldinho", "Neymar"], correct: 0 },
+      ]}
+    ];
+
+    let currentTriviaQuestions = [], currentQuestionIndex = 0, score = 0;
+
+    function openTriviaModal() {
+      const allQuestions = triviaData.flatMap(c => c.questions);
+      currentTriviaQuestions = getRandomQuestions(allQuestions, 5);
+      currentQuestionIndex = 0; score = 0;
+      document.getElementById('triviaModal').classList.add('active');
+      showTriviaQuestion();
+    }
+    function closeTriviaModal() { document.getElementById('triviaModal').classList.remove('active'); }
+    function getRandomQuestions(questions, count) {
+      return [...questions].sort(() => 0.5 - Math.random()).slice(0, count);
+    }
+    function showTriviaQuestion() {
+      if (currentQuestionIndex >= currentTriviaQuestions.length) return showTriviaResults();
+      const q = currentTriviaQuestions[currentQuestionIndex];
+      const qE = document.getElementById('triviaQuestion');
+      const oE = document.getElementById('triviaOptions');
+      const rE = document.getElementById('triviaResult');
+      qE.innerHTML = `<h3>${q.question}</h3>`;
+      rE.textContent = '';
+      oE.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const b = document.createElement('button');
+        b.className = 'trivia-option'; b.textContent = opt;
+        b.onclick = () => checkAnswer(i);
+        oE.appendChild(b);
+      });
+    }
+    function checkAnswer(i) {
+      const q = currentTriviaQuestions[currentQuestionIndex];
+      const rE = document.getElementById('triviaResult');
+      if (i === q.correct) { rE.textContent = '✅ ¡Correcto!'; rE.style.color = '#00FF00'; score++; }
+      else { rE.textContent = `❌ Incorrecto. Era: ${q.options[q.correct]}`; rE.style.color = '#FF0000'; }
+    }
+    function nextTriviaQuestion() { currentQuestionIndex++; showTriviaQuestion(); }
+    function showTriviaResults() {
+      document.getElementById('triviaQuestion').innerHTML = `<h3>🎉 Resultado Final</h3>`;
+      document.getElementById('triviaOptions').innerHTML = '';
+      const rE = document.getElementById('triviaResult');
+      rE.textContent = `Obtuviste ${score} de ${currentTriviaQuestions.length}`;
+      rE.style.color = '#FFD700';
+    }
+
+    // === VIDEOS ===
+    function openVideoModal() { document.getElementById('videoModal').classList.add('active'); }
+    function closeVideoModal() {
+      document.getElementById('videoModal').classList.remove('active');
+      document.querySelectorAll('video').forEach(v => v.pause());
+    }
+    function playVideo(id) {
+      document.querySelectorAll('video').forEach(v => { if (v.id !== id) v.pause(); });
+      const v = document.getElementById(id);
+      v.paused ? v.play() : v.pause();
+    }
+
+    // === AR BOTONES ===
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.ar-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const action = btn.getAttribute('data-action');
+          const target = btn.getAttribute('data-target');
+          handleARButton(action, target);
+        });
+      });
+      
+      // Verificar carga de modelos 3D
+      setTimeout(checkModelLoading, 2000);
+    });
+
+    function checkModelLoading() {
+      // Verificar si los modelos GLB se cargaron correctamente usando eventos de A-Frame
+      const argentinaModel = document.querySelector('#argentina-model [gltf-model]');
+      const brasilModel = document.querySelector('#brasil-model [gltf-model]');
+
+      function attachModelHandlers(entity, backupId, country) {
+        if (!entity) {
+          console.warn(`No se encontró entidad gltf-model para ${country}`);
+          const backup = document.getElementById(backupId);
+          if (backup) backup.setAttribute('visible', 'true');
+          return;
+        }
+
+        let loaded = false;
+
+        entity.addEventListener('model-loaded', () => {
+          loaded = true;
+          console.log(`Modelo GLB cargado para ${country}:`, entity.getAttribute('gltf-model'));
+          // Mostrar el contenedor padre (ej. #brasil-model) y ocultar el respaldo
+          const parent = entity.closest('[id$="-model"]');
+          if (parent) parent.setAttribute('visible', 'true');
+          const backup = document.getElementById(backupId);
+          if (backup) backup.setAttribute('visible', 'false');
+        });
+
+        // Fallback: si no carga en 6s, mostrar el respaldo y loguear
+        setTimeout(() => {
+          if (!loaded) {
+            console.warn(`Timeout cargando GLB de ${country}, mostrando respaldo.`);
+            const backup = document.getElementById(backupId);
+            if (backup) backup.setAttribute('visible', 'true');
+            // intentar ocultar la entidad gltf para evitar errores en escena
+            try { entity.setAttribute('visible', 'false'); } catch (e) { /* ignore */ }
+          }
+        }, 6000);
+      }
+
+      attachModelHandlers(argentinaModel, 'argentina-backup', 'Argentina');
+      attachModelHandlers(brasilModel, 'brasil-backup', 'Brasil');
+    }
+
+    function handleARButton(action, target) {
+      if (action === 'animateModel') animateModel(target);
+      else if (action === 'showText') showText(target);
+    }
+    function animateModel(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      model.setAttribute('visible', 'true');
+      model.emit('startAnimation');
+      if (text) text.setAttribute('visible', 'false');
+    }
+    function showText(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      if (text) text.setAttribute('visible', 'true');
+      if (model) model.setAttribute('visible', 'false');
+    }
+    function resetAR() {
+      document.querySelectorAll('[id$="-model"], [id$="-text"]').forEach(el => el.setAttribute('visible', 'false'));
+    }
+
+    // === INFO ===
+    function showStats() {
+      alert('📊 Estadísticas del Mundial 2026\n\n• 48 equipos\n• 3 anfitriones\n• 16 sedes\n• 80 partidos');
+    }
+    function showInfo() {
+      alert('ℹ️ Mundial 2026 AR\nEscanea banderas para ver contenido interactivo.');
+    }
+
+    // === ESTADO DEL ESCANEO ===
+    const scene = document.querySelector('a-scene');
+    if (scene) {
+      scene.addEventListener('targetFound', () => {
+        document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
+      });
+      scene.addEventListener('targetLost', () => {
+        document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
+      });
+    }
+  </script>
 </body>
 </html>
