@@ -128,7 +128,7 @@
   <!-- Escena AR -->
   <div class="ar-container">
     <a-scene
-      mindar-image="imageTargetSrc: ./assets/bandera-brasil.mind; autoStart: true;"
+      mindar-image="imageTargetSrc: ./bandera-brasil.mind; autoStart: true;"
       embedded
       color-space="sRGB"
       renderer="colorManagement: true, physicallyCorrectLights"
@@ -141,13 +141,13 @@
       <a-entity mindar-image-target="targetIndex: 0" class="country-target">
         <a-entity id="argentina-model" visible="false">
           <!-- Usando el modelo 3D si está disponible, o primitivas como respaldo -->
-          <a-entity gltf-model="./modelos/bandera.glb" position="0 0.5 0" scale="0.5 0.5 0.5"
+          <!-- <a-entity gltf-model="./modelos/bandera.glb" position="0 0.5 0" scale="0.5 0.5 0.5"
             animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
-          </a-entity>
+          </a-entity> -->
           <!-- Elemento de respaldo en caso de que el modelo no cargue -->
           <a-box position="0 0.5 0" color="#74ACDF" depth="0.1" height="0.8" width="0.5"
             animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation"
-            visible="false" id="argentina-backup">
+            visible="true" id="argentina-backup">
           </a-box>
           <a-text id="argentina-text" value="Argentina\nCampeón 2022"
             position="0 1.2 0" align="center" color="#FFD700" visible="false">
@@ -170,13 +170,13 @@
       <a-entity mindar-image-target="targetIndex: 1" class="country-target">
         <a-entity id="brasil-model" visible="false">
           <!-- Usando el modelo 3D si está disponible, o primitivas como respaldo -->
-          <a-entity gltf-model="./modelos/bandera.glb" position="0 0.5 0" scale="0.5 0.5 0.5"
+          <!-- <a-entity gltf-model="./modelos/bandera.glb" position="0 0.5 0" scale="0.5 0.5 0.5"
             animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation">
-          </a-entity>
+          </a-entity> -->
           <!-- Elemento de respaldo en caso de que el modelo no cargue -->
           <a-cone position="0 0.5 0" color="#009C3B" radius-bottom="0.3" radius-top="0.1"
             animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation"
-            visible="false" id="brasil-backup">
+            visible="true" id="brasil-backup">
           </a-cone>
           <a-text id="brasil-text" value="Brasil\n5 Copas del Mundo"
             position="0 1.2 0" align="center" color="#FFD700" visible="false">
@@ -403,12 +403,29 @@
     // === ESTADO DEL ESCANEO ===
     const scene = document.querySelector('a-scene');
     if (scene) {
-      scene.addEventListener('targetFound', () => {
-        document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
+      console.log('📱 A-Frame scene encontrada');
+      
+      scene.addEventListener('loaded', () => {
+        console.log('✅ Escena AR cargada');
+        console.log('🔍 MindAR inicializando con archivo: ./bandera-brasil.mind');
       });
+      
+      scene.addEventListener('targetFound', (event) => {
+        console.log('✅ Target encontrado:', event.detail.targetIndex);
+        document.getElementById('scanningStatus').textContent = '✅ Bandera detectada (Target ' + event.detail.targetIndex + ')';
+      });
+      
       scene.addEventListener('targetLost', () => {
+        console.log('❌ Target perdido');
         document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
       });
+      
+      scene.addEventListener('error', (event) => {
+        console.error('❌ Error en AR:', event);
+        document.getElementById('scanningStatus').textContent = '❌ Error en AR. Revisa la consola.';
+      });
+    } else {
+      console.error('❌ A-Frame scene NO encontrada');
     }
   </script>
 </body>
