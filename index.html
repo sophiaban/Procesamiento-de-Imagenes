@@ -1,415 +1,426 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mundial 2026 AR - Banderas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bandera AR - 18 Países</title>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <!-- Librerías principales -->
-  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            overflow-x: hidden;
+        }
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0056A5 0%, #E20020 100%);
-      color: white;
-      height: 100vh;
-      overflow: hidden;
-    }
-    .header {
-      background: rgba(0, 0, 0, 0.8);
-      padding: 15px;
-      text-align: center;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-    }
-    .ar-container {
-      width: 100%;
-      height: 80vh;
-      margin-top: 60px;
-    }
-    .control-panel {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      padding: 15px;
-      display: flex;
-      justify-content: space-around;
-      z-index: 1000;
-    }
-    .control-btn {
-      background: #0056A5;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .control-btn:hover {
-      background: #E20020;
-      transform: scale(1.1);
-    }
-    .scanning-status {
-      position: fixed;
-      top: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.7);
-      padding: 10px 20px;
-      border-radius: 20px;
-      z-index: 1000;
-    }
-    .modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.95);
-      padding: 20px;
-      border-radius: 15px;
-      z-index: 2000;
-      min-width: 300px;
-      max-width: 90%;
-      display: none;
-    }
-    .modal.active { display: block; }
-    .modal-content { text-align: center; }
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .trivia-option {
-      background: #0056A5;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 10px;
-      cursor: pointer;
-      width: 100%;
-    }
-    .trivia-option:hover { background: #E20020; }
-    .video-container {
-      width: 100%;
-      max-width: 400px;
-      margin: 10px 0;
-    }
-    video {
-      width: 100%;
-      border-radius: 10px;
-    }
-  </style>
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .ar-container {
+            width: 100%;
+            height: 70vh;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            background: #000;
+            position: relative;
+        }
+
+        .country-display {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+        }
+
+        .country-display.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .country-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #4FC3F7;
+        }
+
+        .country-status {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .host-badge {
+            background: #FF9800;
+            color: black;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .country-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .country-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .country-card.host {
+            border: 2px solid #FF9800;
+        }
+
+        .flag-icon {
+            width: 60px;
+            height: 40px;
+            margin: 0 auto 10px;
+            border-radius: 5px;
+            border: 2px solid white;
+        }
+
+        .usa-flag { background: linear-gradient(90deg, #B31942 33%, white 33%, white 66%, #0A3161 66%); }
+        .canada-flag { background: linear-gradient(90deg, #FF0000 25%, white 25%, white 75%, #FF0000 75%); }
+        .mexico-flag { background: linear-gradient(90deg, #006847 33%, white 33%, white 66%, #CE1126 66%); }
+        .japan-flag { background: radial-gradient(circle, #BC002D 30%, white 30%); }
+        .newzealand-flag { background: linear-gradient(90deg, #00247D 33%, white 33%); }
+        .iran-flag { background: linear-gradient(90deg, #239F40 33%, white 33%, white 66%, #DA0000 66%); }
+        .argentina-flag { background: linear-gradient(180deg, #74ACDF 33%, white 33%, white 66%, #74ACDF 66%); }
+        .uzbekistan-flag { background: linear-gradient(180deg, #1EB53A 33%, white 33%, white 66%, #0099B5 66%); }
+        .southkorea-flag { background: linear-gradient(90deg, #CD2E3A 50%, #0047A0 50%); }
+        .jordan-flag { background: linear-gradient(180deg, #000000 33%, white 33%, white 66%, #007A3D 66%); }
+        .australia-flag { background: linear-gradient(90deg, #00008B 33%, white 33%); }
+        .brazil-flag { background: radial-gradient(circle, #009C3B 60%, #FFDF00 60%); }
+        .ecuador-flag { background: linear-gradient(180deg, #FFD100 33%, #004B87 33%, #004B87 66%, #ED1C24 66%); }
+        .uruguay-flag { background: linear-gradient(180deg, #0038A8 33%, white 33%, white 66%, #0038A8 66%); }
+        .colombia-flag { background: linear-gradient(180deg, #FCD116 50%, #003893 50%, #003893 75%, #CE1126 75%); }
+        .paraguay-flag { background: linear-gradient(180deg, #0038A8 33%, white 33%, white 66%, #D52B1E 66%); }
+        .morocco-flag { background: #CE1126; }
+        .tunisia-flag { background: #E70013; }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 100;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .ar-container { height: 50vh; }
+            .countries-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="header">
-    <h1>🇦🇷 Mundial 2026 AR - Banderas 🇧🇷</h1>
-  </div>
+    <div class="container">
+        <header>
+            <h1>🌍 Experiencia AR - 18 Países</h1>
+            <p class="subtitle">Escanea cualquier bandera para ver su modelo 3D animado</p>
+        </header>
 
-  <div class="scanning-status" id="scanningStatus">
-    🔍 Enfoca la cámara a una bandera
-  </div>
-
-  <!-- Escena AR -->
-  <div class="ar-container">
-    <a-scene
-      mindar-image="imageTargetSrc: https://juansdl10.github.io/mundial-2026-ar/targets.mind; autoStart: true;"
-      embedded
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: true"
-    >
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <!-- TARGET 0 - Argentina -->
-      <a-entity mindar-image-target="targetIndex: 0" class="country-target">
-        <a-entity id="argentina-model" visible="false">
-          <a-box position="0 0.5 0" color="#74ACDF" depth="0.1" height="0.8" width="0.5"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
-          </a-box>
-          <a-text id="argentina-text" value="Argentina\nCampeón 2022"
-            position="0 1.2 0" align="center" color="#FFD700" visible="false">
-          </a-text>
-        </a-entity>
-
-        <!-- Botones flotantes -->
-        <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="argentina">
-          <a-ring color="#0056A5" radius-inner="0.03" radius-outer="0.05"></a-ring>
-          <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-        </a-entity>
-
-        <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="argentina">
-          <a-ring color="#E20020" radius-inner="0.03" radius-outer="0.05"></a-ring>
-          <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-        </a-entity>
-      </a-entity>
-
-      <!-- TARGET 1 - Brasil -->
-      <a-entity mindar-image-target="targetIndex: 1" class="country-target">
-        <a-entity id="brasil-model" visible="false">
-          <a-cone position="0 0.5 0" color="#009C3B" radius-bottom="0.3" radius-top="0.1"
-            animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; startEvents: startAnimation">
-          </a-cone>
-          <a-text id="brasil-text" value="Brasil\n5 Copas del Mundo"
-            position="0 1.2 0" align="center" color="#FFD700" visible="false">
-          </a-text>
-        </a-entity>
-
-        <a-entity position="-0.3 0.8 0" class="ar-button" data-action="animateModel" data-target="brasil">
-          <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
-          <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-        </a-entity>
-
-        <a-entity position="0 0.8 0" class="ar-button" data-action="showText" data-target="brasil">
-          <a-ring color="#FFDF00" radius-inner="0.03" radius-outer="0.05"></a-ring>
-          <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
-        </a-entity>
-      </a-entity>
-    </a-scene>
-  </div>
-
-  <!-- Panel de control -->
-  <div class="control-panel">
-    <button class="control-btn" onclick="openVideoModal()">🎥</button>
-    <button class="control-btn" onclick="openTriviaModal()">❓</button>
-    <button class="control-btn" onclick="showStats()">📊</button>
-    <button class="control-btn" onclick="resetAR()">🔄</button>
-    <button class="control-btn" onclick="showInfo()">ℹ️</button>
-  </div>
-
-  <!-- Modal de Videos -->
-  <div id="videoModal" class="modal">
-    <div class="modal-content">
-      <button class="close-btn" onclick="closeVideoModal()">×</button>
-      <h2>🎥 Videos del Mundial</h2>
-
-      <div class="video-option">
-        <h3>Argentina vs Brasil</h3>
-        <div class="video-container">
-          <video id="video1" controls>
-            <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
-            Tu navegador no soporta video.
-          </video>
+        <div class="instructions">
+            <p>📱 Enfoca la cámara hacia cualquier bandera de los países listados</p>
+            <p>✨ El modelo 3D aparecerá automáticamente con animación de rotación</p>
         </div>
-        <button class="trivia-option" onclick="playVideo('video1')">Reproducir Video</button>
-      </div>
 
-      <div class="video-option" style="margin-top: 20px;">
-        <h3>Francia vs Alemania</h3>
-        <div class="video-container">
-          <video id="video2" controls>
-            <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
-            Tu navegador no soporta video.
-          </video>
+        <div class="ar-container">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Cargando experiencia AR...</p>
+            </div>
+
+            <div class="country-display" id="countryDisplay">
+                <div class="country-name" id="currentCountry">País Detectado</div>
+                <div class="country-status" id="countryStatus">Escaneando...</div>
+            </div>
+
+            <a-scene 
+                mindar-image="imageTargetSrc: ./assets/targets/targets.mind; autoStart: true; maxTrack: 3;"
+                color-space="sRGB" 
+                renderer="colorManagement: true; physicallyCorrectLights: true;"
+                vr-mode-ui="enabled: false"
+                device-orientation-permission-ui="enabled: false"
+                embedded>
+
+                <a-assets>
+                    <!-- Modelos de países -->
+                    <a-asset-item id="usa-model" src="./assets/models/usa/scene.gltf"></a-asset-item>
+                    <a-asset-item id="canada-model" src="./assets/models/canada/scene.gltf"></a-asset-item>
+                    <a-asset-item id="mexico-model" src="./assets/models/mexico/scene.gltf"></a-asset-item>
+                    <a-asset-item id="japan-model" src="./assets/models/japan/scene.gltf"></a-asset-item>
+                    <a-asset-item id="newzealand-model" src="./assets/models/newzealand/scene.gltf"></a-asset-item>
+                    <a-asset-item id="iran-model" src="./assets/models/iran/scene.gltf"></a-asset-item>
+                    <a-asset-item id="argentina-model" src="./assets/models/argentina/scene.gltf"></a-asset-item>
+                    <a-asset-item id="uzbekistan-model" src="./assets/models/uzbekistan/scene.gltf"></a-asset-item>
+                    <a-asset-item id="southkorea-model" src="./assets/models/southkorea/scene.gltf"></a-asset-item>
+                    <a-asset-item id="jordan-model" src="./assets/models/jordan/scene.gltf"></a-asset-item>
+                    <a-asset-item id="australia-model" src="./assets/models/australia/scene.gltf"></a-asset-item>
+                    <a-asset-item id="brazil-model" src="./assets/models/bandera.gltf"></a-asset-item>
+                    <a-asset-item id="ecuador-model" src="./assets/models/ecuador/scene.gltf"></a-asset-item>
+                    <a-asset-item id="uruguay-model" src="./assets/models/uruguay/scene.gltf"></a-asset-item>
+                    <a-asset-item id="colombia-model" src="./assets/models/colombia/scene.gltf"></a-asset-item>
+                    <a-asset-item id="paraguay-model" src="./assets/models/paraguay/scene.gltf"></a-asset-item>
+                    <a-asset-item id="morocco-model" src="./assets/models/morocco/scene.gltf"></a-asset-item>
+                    <a-asset-item id="tunisia-model" src="./assets/models/tunisia/scene.gltf"></a-asset-item>
+                </a-assets>
+
+                <a-camera position="0 0 0" look-controls="enabled: false" active="true"></a-camera>
+
+                <!-- Estados Unidos -->
+                <a-entity mindar-image-target="targetIndex: 0">
+                    <a-entity class="model-container" position="1.5 0.5 0" scale="0.8 0.8 0.8"
+                             animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        <a-gltf-model src="#usa-model" rotation="0 0 0"></a-gltf-model>
+                    </a-entity>
+                </a-entity>
+
+                <!-- Canadá -->
+                <a-entity mindar-image-target="targetIndex: 1">
+                    <a-entity class="model-container" position="1.5 0.5 0" scale="0.7 0.7 0.7"
+                             animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        <a-gltf-model src="#canada-model" rotation="0 0 0"></a-gltf-model>
+                    </a-entity>
+                </a-entity>
+
+                <!-- México -->
+                <a-entity mindar-image-target="targetIndex: 2">
+                    <a-entity class="model-container" position="1.5 0.5 0" scale="0.8 0.8 0.8"
+                             animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        <a-gltf-model src="#mexico-model" rotation="0 0 0"></a-gltf-model>
+                    </a-entity>
+                </a-entity>
+                <!-- brazil -->
+                <a-entity mindar-image-target="targetIndex: 2">
+                    <a-entity class="model-container" position="1.5 0.5 0" scale="0.8 0.8 0.8"
+                             animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+                        <a-gltf-model src="#brazil-model" rotation="0 0 0"></a-gltf-model>
+                    </a-entity>
+                </a-entity>
+
+
+                <!-- Continuar con los demás países... -->
+                <!-- Japón targetIndex: 3 -->
+                <!-- Nueva Zelanda targetIndex: 4 -->
+                <!-- Irán targetIndex: 5 -->
+                <!-- ... hasta Túnez targetIndex: 17 -->
+
+            </a-scene>
         </div>
-        <button class="trivia-option" onclick="playVideo('video2')">Reproducir Video</button>
-      </div>
+
+        <div class="countries-grid">
+            <!-- Tarjetas de países para referencia -->
+            <div class="country-card host" data-country="usa">
+                <div class="flag-icon usa-flag"></div>
+                <div>Estados Unidos <span class="host-badge">Anfitrión</span></div>
+            </div>
+            <div class="country-card host" data-country="canada">
+                <div class="flag-icon canada-flag"></div>
+                <div>Canadá <span class="host-badge">Anfitrión</span></div>
+            </div>
+            <div class="country-card host" data-country="mexico">
+                <div class="flag-icon mexico-flag"></div>
+                <div>México <span class="host-badge">Anfitrión</span></div>
+            </div>
+            <div class="country-card" data-country="japan">
+                <div class="flag-icon japan-flag"></div>
+                <div>Japón</div>
+            </div>
+            <div class="country-card" data-country="newzealand">
+                <div class="flag-icon newzealand-flag"></div>
+                <div>Nueva Zelanda</div>
+            </div>
+            <div class="country-card" data-country="iran">
+                <div class="flag-icon iran-flag"></div>
+                <div>Irán</div>
+            </div>
+            <div class="country-card" data-country="argentina">
+                <div class="flag-icon argentina-flag"></div>
+                <div>Argentina</div>
+            </div>
+            <div class="country-card" data-country="uzbekistan">
+                <div class="flag-icon uzbekistan-flag"></div>
+                <div>Uzbekistán</div>
+            </div>
+            <div class="country-card" data-country="southkorea">
+                <div class="flag-icon southkorea-flag"></div>
+                <div>Corea del Sur</div>
+            </div>
+            <div class="country-card" data-country="jordan">
+                <div class="flag-icon jordan-flag"></div>
+                <div>Jordania</div>
+            </div>
+            <div class="country-card" data-country="australia">
+                <div class="flag-icon australia-flag"></div>
+                <div>Australia</div>
+            </div>
+            <div class="country-card" data-country="brazil">
+                <div class="flag-icon brazil-flag"></div>
+                <div>Brasil</div>
+            </div>
+            <div class="country-card" data-country="ecuador">
+                <div class="flag-icon ecuador-flag"></div>
+                <div>Ecuador</div>
+            </div>
+            <div class="country-card" data-country="uruguay">
+                <div class="flag-icon uruguay-flag"></div>
+                <div>Uruguay</div>
+            </div>
+            <div class="country-card" data-country="colombia">
+                <div class="flag-icon colombia-flag"></div>
+                <div>Colombia</div>
+            </div>
+            <div class="country-card" data-country="paraguay">
+                <div class="flag-icon paraguay-flag"></div>
+                <div>Paraguay</div>
+            </div>
+            <div class="country-card" data-country="morocco">
+                <div class="flag-icon morocco-flag"></div>
+                <div>Marruecos</div>
+            </div>
+            <div class="country-card" data-country="tunisia">
+                <div class="flag-icon tunisia-flag"></div>
+                <div>Túnez</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🌐 Experiencia de Realidad Aumentada - Escanea cualquier bandera para descubrir modelos 3D</p>
+        </footer>
     </div>
-  </div>
 
-  <!-- Modal de Trivia -->
-  <div id="triviaModal" class="modal">
-    <div class="modal-content">
-      <button class="close-btn" onclick="closeTriviaModal()">×</button>
-      <h2>❓ Trivia del Mundial 2026</h2>
-      <div id="triviaQuestion"></div>
-      <div id="triviaOptions"></div>
-      <div id="triviaResult" style="margin-top: 15px; font-weight: bold;"></div>
-      <button class="trivia-option" onclick="nextTriviaQuestion()" style="margin-top: 15px;">Siguiente Pregunta</button>
-    </div>
-  </div>
-
-  <script>
-    // === TRIVIA ===
-    const triviaData = [
-      { country: "Argentina", questions: [
-        { question: "¿En qué año ganó Argentina su primera Copa del Mundo?", options: ["1978", "1986", "1990", "2014"], correct: 0 },
-        { question: "¿Quién es el máximo goleador histórico de Argentina?", options: ["Lionel Messi", "Gabriel Batistuta", "Diego Maradona", "Sergio Agüero"], correct: 1 },
-      ]},
-      { country: "Brasil", questions: [
-        { question: "¿Cuántas Copas del Mundo tiene Brasil?", options: ["3", "4", "5", "6"], correct: 2 },
-        { question: "¿Quién es el 'Rey del Fútbol' brasileño?", options: ["Pelé", "Ronaldo", "Ronaldinho", "Neymar"], correct: 0 },
-      ]}
-    ];
-
-    let currentTriviaQuestions = [], currentQuestionIndex = 0, score = 0;
-
-    function openTriviaModal() {
-      const allQuestions = triviaData.flatMap(c => c.questions);
-      currentTriviaQuestions = getRandomQuestions(allQuestions, 5);
-      currentQuestionIndex = 0; score = 0;
-      document.getElementById('triviaModal').classList.add('active');
-      showTriviaQuestion();
-    }
-    function closeTriviaModal() { document.getElementById('triviaModal').classList.remove('active'); }
-    function getRandomQuestions(questions, count) {
-      return [...questions].sort(() => 0.5 - Math.random()).slice(0, count);
-    }
-    function showTriviaQuestion() {
-      if (currentQuestionIndex >= currentTriviaQuestions.length) return showTriviaResults();
-      const q = currentTriviaQuestions[currentQuestionIndex];
-      const qE = document.getElementById('triviaQuestion');
-      const oE = document.getElementById('triviaOptions');
-      const rE = document.getElementById('triviaResult');
-      qE.innerHTML = `<h3>${q.question}</h3>`;
-      rE.textContent = '';
-      oE.innerHTML = '';
-      q.options.forEach((opt, i) => {
-        const b = document.createElement('button');
-        b.className = 'trivia-option'; b.textContent = opt;
-        b.onclick = () => checkAnswer(i);
-        oE.appendChild(b);
-      });
-    }
-    function checkAnswer(i) {
-      const q = currentTriviaQuestions[currentQuestionIndex];
-      const rE = document.getElementById('triviaResult');
-      if (i === q.correct) { rE.textContent = '✅ ¡Correcto!'; rE.style.color = '#00FF00'; score++; }
-      else { rE.textContent = `❌ Incorrecto. Era: ${q.options[q.correct]}`; rE.style.color = '#FF0000'; }
-    }
-    function nextTriviaQuestion() { currentQuestionIndex++; showTriviaQuestion(); }
-    function showTriviaResults() {
-      document.getElementById('triviaQuestion').innerHTML = `<h3>🎉 Resultado Final</h3>`;
-      document.getElementById('triviaOptions').innerHTML = '';
-      const rE = document.getElementById('triviaResult');
-      rE.textContent = `Obtuviste ${score} de ${currentTriviaQuestions.length}`;
-      rE.style.color = '#FFD700';
-    }
-
-    // === VIDEOS ===
-    function openVideoModal() { document.getElementById('videoModal').classList.add('active'); }
-    function closeVideoModal() {
-      document.getElementById('videoModal').classList.remove('active');
-      document.querySelectorAll('video').forEach(v => v.pause());
-    }
-    function playVideo(id) {
-      document.querySelectorAll('video').forEach(v => { if (v.id !== id) v.pause(); });
-      const v = document.getElementById(id);
-      v.paused ? v.play() : v.pause();
-    }
-
-    // === AR BOTONES ===
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.ar-button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const action = btn.getAttribute('data-action');
-          const target = btn.getAttribute('data-target');
-          handleARButton(action, target);
+    <script>
+        // Ocultar loading cuando la escena esté lista
+        document.querySelector('a-scene').addEventListener('loaded', function() {
+            document.getElementById('loading').style.display = 'none';
         });
-      });
-    });
 
-    function handleARButton(action, target) {
-      if (action === 'animateModel') animateModel(target);
-      else if (action === 'showText') showText(target);
-    }
-    function animateModel(country) {
-      const model = document.getElementById(`${country}-model`);
-      const text = document.getElementById(`${country}-text`);
-      model.setAttribute('visible', 'true');
-      model.emit('startAnimation');
-      if (text) text.setAttribute('visible', 'false');
-    }
-    function showText(country) {
-      const model = document.getElementById(`${country}-model`);
-      const text = document.getElementById(`${country}-text`);
-      if (text) text.setAttribute('visible', 'true');
-      if (model) model.setAttribute('visible', 'false');
-    }
-    function resetAR() {
-      document.querySelectorAll('[id$="-model"], [id$="-text"]').forEach(el => el.setAttribute('visible', 'false'));
-    }
+        // Nombres de países por índice de target
+        const countryNames = {
+            0: "Estados Unidos 🇺🇸",
+            1: "Canadá 🇨🇦", 
+            2: "México 🇲🇽",
+            3: "Japón 🇯🇵",
+            4: "Nueva Zelanda 🇳🇿",
+            5: "Irán 🇮🇷",
+            6: "Argentina 🇦🇷",
+            7: "Uzbekistán 🇺🇿",
+            8: "Corea del Sur 🇰🇷",
+            9: "Jordania 🇯🇴",
+            10: "Australia 🇦🇺",
+            11: "Brasil 🇧🇷",
+            12: "Ecuador 🇪🇨",
+            13: "Uruguay 🇺🇾",
+            14: "Colombia 🇨🇴",
+            15: "Paraguay 🇵🇾",
+            16: "Marruecos 🇲🇦",
+            17: "Túnez 🇹🇳"
+        };
 
-    // === INFO ===
-    function showStats() {
-      alert('📊 Estadísticas del Mundial 2026\n\n• 48 equipos\n• 3 anfitriones\n• 16 sedes\n• 80 partidos');
-    }
-    function showInfo() {
-      alert('ℹ️ Mundial 2026 AR\nEscanea banderas para ver contenido interactivo.');
-    }
-
-    // === ESTADO DEL ESCANEO Y DEBUGGING ===
-    const scene = document.querySelector('a-scene');
-    const statusEl = document.getElementById('scanningStatus');
-    
-    console.log('🎬 INICIANDO DIAGNÓSTICO AR');
-    console.log('📍 Escena encontrada:', scene ? 'SÍ ✅' : 'NO ❌');
-    
-    if (!scene) {
-      statusEl.textContent = '❌ Error: Escena no encontrada';
-      console.error('❌ No se encontró la escena a-scene');
-    } else {
-      // Esperar a que A-Frame esté listo
-      scene.addEventListener('loaded', () => {
-        console.log('✅ A-Frame Scene cargada');
-        statusEl.textContent = '⏳ Cargando MindAR...';
-        
-        // Verificar atributos de mindar-image
-        const mindarAttr = scene.getAttribute('mindar-image');
-        console.log('🔍 Atributos MindAR:', mindarAttr);
-      });
-      
-      // Detectar cuando MindAR está listo
-      scene.addEventListener('arReady', () => {
-        console.log('✅✅✅ MindAR LISTO - Sistema AR inicializado');
-        statusEl.textContent = '🔍 Escanea una bandera para detectarla...';
-      });
-      
-      scene.addEventListener('targetFound', (event) => {
-        const targetIndex = event.detail?.targetIndex || 'desconocido';
-        console.log('🎯 TARGET ENCONTRADO! Index:', targetIndex);
-        statusEl.textContent = `✅ Bandera detectada (Target ${targetIndex})`;
-      });
-      
-      scene.addEventListener('targetLost', (event) => {
-        const targetIndex = event.detail?.targetIndex || 'desconocido';
-        console.log('❌ Target perdido:', targetIndex);
-        statusEl.textContent = '🔍 Enfoca la cámara a una bandera';
-      });
-      
-      // Detectar errores de carga
-      scene.addEventListener('error', (event) => {
-        console.error('🔴 ERROR EN AR:', event);
-        statusEl.textContent = '❌ Error en sistema AR. Ver consola (F12)';
-      });
-      
-      // Monitorear permisos de cámara
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-        .then(() => {
-          console.log('✅ Permisos de cámara otorgados');
-        })
-        .catch((err) => {
-          console.error('❌ Error de cámara:', err);
-          statusEl.textContent = '❌ Permiso de cámara denegado';
+        // Detectar cuando se encuentra un target
+        document.querySelector('a-scene').addEventListener('targetFound', event => {
+            const targetIndex = event.target.getAttribute('mindar-image-target').targetIndex;
+            const countryName = countryNames[targetIndex];
+            
+            document.getElementById('currentCountry').textContent = countryName;
+            document.getElementById('countryStatus').textContent = "✅ Bandera detectada";
+            document.getElementById('countryDisplay').classList.add('active');
         });
-      
-      // Monitorear eventos de imagen cargada
-      setTimeout(() => {
-        console.log('� Estado después de 3s:');
-        console.log('  - Sistema AR inicializado: ' + (scene.hasLoaded ? 'SÍ ✅' : 'NO ❌'));
-        const targets = document.querySelectorAll('[mindar-image-target]');
-        console.log('  - Targets detectados: ' + targets.length);
-        targets.forEach((t, i) => {
-          console.log(`    Target ${i}: targetIndex=${t.getAttribute('mindar-image-target')}`);
+
+        // Detectar cuando se pierde un target
+        document.querySelector('a-scene').addEventListener('targetLost', event => {
+            document.getElementById('countryDisplay').classList.remove('active');
         });
-      }, 3000);
-    }
-  </script>
+    </script>
 </body>
 </html>
