@@ -19,9 +19,13 @@
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .container {
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
@@ -34,6 +38,7 @@
             border-radius: 15px;
             margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
         }
         
         h1 {
@@ -54,15 +59,28 @@
             flex-wrap: wrap;
             gap: 30px;
             margin-bottom: 30px;
+            justify-content: center;
+            width: 100%;
         }
         
         .ar-container {
             flex: 1;
-            min-width: 300px;
+            min-width: 500px;
+            max-width: 600px;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 15px;
-            padding: 15px;
+            padding: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .ar-scene-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
         }
         
         #ar-scene {
@@ -74,7 +92,8 @@
         
         .instructions {
             flex: 1;
-            min-width: 300px;
+            min-width: 400px;
+            max-width: 500px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             padding: 25px;
@@ -85,6 +104,7 @@
             margin-bottom: 20px;
             font-size: 1.8rem;
             color: #ffcc00;
+            text-align: center;
         }
         
         .step {
@@ -113,12 +133,17 @@
             padding: 25px;
             margin-bottom: 30px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .controls h2 {
             margin-bottom: 20px;
             font-size: 1.8rem;
             color: #ffcc00;
+            text-align: center;
         }
         
         .control-group {
@@ -126,17 +151,20 @@
             flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 20px;
+            justify-content: center;
         }
         
         .control {
             flex: 1;
             min-width: 200px;
+            max-width: 250px;
         }
         
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
+            text-align: center;
         }
         
         input[type="color"] {
@@ -151,6 +179,16 @@
             width: 100%;
         }
         
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: white;
+            color: #333;
+            font-size: 1rem;
+        }
+        
         .value-display {
             text-align: center;
             margin-top: 5px;
@@ -161,11 +199,13 @@
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
+            justify-content: center;
         }
         
         .flag-option {
             flex: 1;
             min-width: 120px;
+            max-width: 150px;
             text-align: center;
             padding: 10px;
             background: rgba(255, 255, 255, 0.1);
@@ -190,6 +230,7 @@
             height: 60px;
             border-radius: 5px;
             margin-bottom: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
         
         footer {
@@ -199,6 +240,9 @@
             border-radius: 15px;
             font-size: 0.9rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
         }
         
         .status {
@@ -208,6 +252,7 @@
             border-radius: 10px;
             font-weight: bold;
             background: rgba(0, 0, 0, 0.3);
+            width: 100%;
         }
         
         .pulse {
@@ -220,13 +265,65 @@
             100% { opacity: 0.7; }
         }
         
+        .camera-center-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 3px solid #ffcc00;
+            border-radius: 50%;
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .camera-center-indicator::before,
+        .camera-center-indicator::after {
+            content: '';
+            position: absolute;
+            background: #ffcc00;
+        }
+        
+        .camera-center-indicator::before {
+            width: 3px;
+            height: 20px;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .camera-center-indicator::after {
+            width: 20px;
+            height: 3px;
+            top: 50%;
+            left: -20px;
+            transform: translateY(-50%);
+        }
+        
         @media (max-width: 768px) {
             .content {
                 flex-direction: column;
+                align-items: center;
+            }
+            
+            .ar-container,
+            .instructions {
+                min-width: 100%;
+                max-width: 100%;
             }
             
             h1 {
                 font-size: 2.2rem;
+            }
+            
+            .control-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control {
+                min-width: 100%;
             }
         }
     </style>
@@ -234,104 +331,107 @@
 <body>
     <div class="container">
         <header>
-            <h1>Bandera Animada en Realidad Aumentada</h1>
+            <h1>🇦🇷 Bandera Animada en Realidad Aumentada 🇦🇷</h1>
             <p class="subtitle">Una bandera que ondea de forma realista cuando detecta tu marcador. ¡Personalízala a tu gusto!</p>
         </header>
         
         <div class="content">
             <div class="ar-container">
-                <a-scene id="ar-scene" 
-                    mindar-image="imageTargetSrc: ./targets.mind;" 
-                    color-space="sRGB" 
-                    renderer="colorManagement: true, physicallyCorrectLights" 
-                    vr-mode-ui="enabled: false" 
-                    device-orientation-permission-ui="enabled: false">
-                    
-                    <a-assets>
-                        <a-asset-item id="banderaModel" src="./models/bandera.glb"></a-asset-item>
-                        <img id="marcador" src="./marcador/br.png" />
-                    </a-assets>
+                <div class="ar-scene-wrapper">
+                    <div class="camera-center-indicator"></div>
+                    <a-scene id="ar-scene" 
+                        mindar-image="imageTargetSrc: ./targets.mind;" 
+                        color-space="sRGB" 
+                        renderer="colorManagement: true, physicallyCorrectLights" 
+                        vr-mode-ui="enabled: false" 
+                        device-orientation-permission-ui="enabled: false">
+                        
+                        <a-assets>
+                            <a-asset-item id="banderaModel" src="./models/bandera.glb"></a-asset-item>
+                            <img id="marcador" src="./marcador/br.png" />
+                        </a-assets>
 
-                    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-                    
-                    <a-entity mindar-image-target="targetIndex: 0">
-                        <!-- Marcador de referencia -->
-                        <a-plane src="#marcador" position="0 0 0" height="0.552" width="1" rotation="0 0 0" visible="true"></a-plane>
+                        <a-camera position="0 0 0" look-controls="enabled: false" fov="60"></a-camera>
                         
-                        <!-- Bandera animada - Versión con modelo 3D -->
-                        <a-entity id="flag-3d" position="0 0.3 0" rotation="0 0 0" visible="true">
-                            <a-gltf-model
-                                src="#banderaModel"
-                                position="0 0.5 0"
-                                scale="0.5 0.5 0.5"
-                                animation="property: rotation; to: 0 0 10; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate">
-                            </a-gltf-model>
-                        </a-entity>
-                        
-                        <!-- Bandera animada - Versión con planos (backup) -->
-                        <a-entity id="flag" position="0 0.3 0" rotation="0 0 0" visible="false">
-                            <!-- Asta de la bandera -->
-                            <a-cylinder 
-                                id="flag-pole"
-                                position="0 0.5 0" 
-                                radius="0.015" 
-                                height="1" 
-                                color="#8B4513">
-                            </a-cylinder>
+                        <a-entity mindar-image-target="targetIndex: 0">
+                            <!-- Marcador de referencia -->
+                            <a-plane src="#marcador" position="0 0 0" height="0.552" width="1" rotation="0 0 0" visible="true"></a-plane>
                             
-                            <!-- Tela de la bandera con animación de ondeo -->
-                            <a-entity id="flag-cloth" position="0.5 0.5 0">
-                                <a-plane 
-                                    class="flag-segment" 
-                                    position="0.1 0 0" 
-                                    width="0.2" 
-                                    height="0.6" 
-                                    color="#FF0000"
-                                    animation="property: rotation; to: 0 0 15; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate">
-                                </a-plane>
-                                <a-plane 
-                                    class="flag-segment" 
-                                    position="0.3 0 0" 
-                                    width="0.2" 
-                                    height="0.6" 
-                                    color="#FF0000"
-                                    animation="property: rotation; to: 0 0 10; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 200">
-                                </a-plane>
-                                <a-plane 
-                                    class="flag-segment" 
-                                    position="0.5 0 0" 
-                                    width="0.2" 
-                                    height="0.6" 
-                                    color="#FF0000"
-                                    animation="property: rotation; to: 0 0 5; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 400">
-                                </a-plane>
-                                <a-plane 
-                                    class="flag-segment" 
-                                    position="0.7 0 0" 
-                                    width="0.2" 
-                                    height="0.6" 
-                                    color="#FF0000"
-                                    animation="property: rotation; to: 0 0 -5; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 600">
-                                </a-plane>
-                                <a-plane 
-                                    class="flag-segment" 
-                                    position="0.9 0 0" 
-                                    width="0.2" 
-                                    height="0.6" 
-                                    color="#FF0000"
-                                    animation="property: rotation; to: 0 0 -10; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 800">
-                                </a-plane>
+                            <!-- Bandera animada - Versión con modelo 3D -->
+                            <a-entity id="flag-3d" position="0 0.3 0" rotation="0 0 0" visible="true">
+                                <a-gltf-model
+                                    src="#banderaModel"
+                                    position="0 0.5 0"
+                                    scale="0.5 0.5 0.5"
+                                    animation="property: rotation; to: 0 0 10; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate">
+                                </a-gltf-model>
+                            </a-entity>
+                            
+                            <!-- Bandera animada - Versión con planos (backup) -->
+                            <a-entity id="flag" position="0 0.3 0" rotation="0 0 0" visible="false">
+                                <!-- Asta de la bandera -->
+                                <a-cylinder 
+                                    id="flag-pole"
+                                    position="0 0.5 0" 
+                                    radius="0.015" 
+                                    height="1" 
+                                    color="#8B4513">
+                                </a-cylinder>
+                                
+                                <!-- Tela de la bandera con animación de ondeo -->
+                                <a-entity id="flag-cloth" position="0.5 0.5 0">
+                                    <a-plane 
+                                        class="flag-segment" 
+                                        position="0.1 0 0" 
+                                        width="0.2" 
+                                        height="0.6" 
+                                        color="#FF0000"
+                                        animation="property: rotation; to: 0 0 15; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate">
+                                    </a-plane>
+                                    <a-plane 
+                                        class="flag-segment" 
+                                        position="0.3 0 0" 
+                                        width="0.2" 
+                                        height="0.6" 
+                                        color="#FF0000"
+                                        animation="property: rotation; to: 0 0 10; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 200">
+                                    </a-plane>
+                                    <a-plane 
+                                        class="flag-segment" 
+                                        position="0.5 0 0" 
+                                        width="0.2" 
+                                        height="0.6" 
+                                        color="#FF0000"
+                                        animation="property: rotation; to: 0 0 5; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 400">
+                                    </a-plane>
+                                    <a-plane 
+                                        class="flag-segment" 
+                                        position="0.7 0 0" 
+                                        width="0.2" 
+                                        height="0.6" 
+                                        color="#FF0000"
+                                        animation="property: rotation; to: 0 0 -5; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 600">
+                                    </a-plane>
+                                    <a-plane 
+                                        class="flag-segment" 
+                                        position="0.9 0 0" 
+                                        width="0.2" 
+                                        height="0.6" 
+                                        color="#FF0000"
+                                        animation="property: rotation; to: 0 0 -10; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 800">
+                                    </a-plane>
+                                </a-entity>
                             </a-entity>
                         </a-entity>
-                    </a-entity>
-                </a-scene>
+                    </a-scene>
+                </div>
                 <div class="status pulse" id="status">
                     Esperando detección del marcador...
                 </div>
             </div>
             
             <div class="instructions">
-                <h2>Instrucciones de Uso</h2>
+                <h2>📋 Instrucciones de Uso</h2>
                 
                 <div class="step">
                     <div class="step-number">1</div>
@@ -352,8 +452,8 @@
                 <div class="step">
                     <div class="step-number">3</div>
                     <div class="step-text">
-                        <h3>Apunta al marcador</h3>
-                        <p>Enfoca la cámara hacia tu marcador para que aparezca la bandera animada.</p>
+                        <h3>Apunta al centro</h3>
+                        <p>Enfoca el marcador en el centro de la pantalla (indicador amarillo) para mejor detección.</p>
                     </div>
                 </div>
                 
@@ -368,7 +468,7 @@
         </div>
         
         <div class="controls">
-            <h2>Personaliza tu Bandera</h2>
+            <h2>🎨 Personaliza tu Bandera</h2>
             
             <div class="control-group">
                 <div class="control">
@@ -405,7 +505,7 @@
                 </div>
             </div>
             
-            <h3 style="margin-top: 20px;">Tipos de Bandera</h3>
+            <h3 style="margin-top: 20px; text-align: center;">🚩 Tipos de Bandera</h3>
             <div class="flag-types">
                 <div class="flag-option active" data-type="normal">
                     <div class="flag-preview" style="background: linear-gradient(to right, #FF0000, #FF0000);"></div>
@@ -427,7 +527,7 @@
         </div>
         
         <footer>
-            <p>Realidad Aumentada con A-Frame y MindAR | Bandera Animada</p>
+            <p>🎯 Realidad Aumentada con A-Frame y MindAR | Bandera Animada 🎯</p>
             <p>Mueve la cámara sobre tu marcador para ver la bandera en acción</p>
         </footer>
     </div>
