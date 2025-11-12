@@ -852,11 +852,59 @@
     // === ESTADO DEL ESCANEO ===
     const scene = document.querySelector('a-scene');
     if (scene) {
-      scene.addEventListener('targetFound', () => {
+      // Escuchar eventos globales que emite MindAR. Usar event.detail para obtener índice de target.
+      scene.addEventListener('targetFound', (e) => {
+        console.log('Evento scene targetFound detail=', e && e.detail);
         document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
+
+        // Determinar índice del target (compatibilidad con distintas versiones)
+        const idx = (e && e.detail && (e.detail.targetIndex ?? e.detail.index)) ?? null;
+        if (idx !== null && idx !== undefined) {
+          // Buscar el target correspondiente y mostrar su modelo
+          const selector = Array.from(document.querySelectorAll('[mindar-image-target]')).find(el => {
+            const attr = el.getAttribute('mindar-image-target') || '';
+            return attr.includes(`targetIndex: ${idx}`) || attr.includes(`targetIndex:${idx}`);
+          });
+          if (selector) {
+            console.log('Mostrando modelo para targetIndex=', idx, selector);
+            const model = selector.querySelector('[id$="-model"]');
+            if (model) {
+              model.setAttribute('visible', 'true');
+              model.querySelectorAll('[animation]').forEach(el => { try { el.emit('startAnimation'); } catch(e){} });
+            } else {
+              console.warn('No se encontró *-model dentro del targetIndex', idx);
+            }
+          } else {
+            console.warn('No se encontró el selector para targetIndex', idx);
+          }
+        } else {
+          // Fallback: intentar mostrar todos los modelos dentro de cualquier target (menos seguro)
+          console.log('targetFound sin índice; mostrando todos los modelos como fallback');
+          document.querySelectorAll('[id$="-model"]').forEach(m => m.setAttribute('visible', 'true'));
+        }
       });
-      scene.addEventListener('targetLost', () => {
+
+      scene.addEventListener('targetLost', (e) => {
+        console.log('Evento scene targetLost detail=', e && e.detail);
         document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
+
+        const idx = (e && e.detail && (e.detail.targetIndex ?? e.detail.index)) ?? null;
+        if (idx !== null && idx !== undefined) {
+          const selector = Array.from(document.querySelectorAll('[mindar-image-target]')).find(el => {
+            const attr = el.getAttribute('mindar-image-target') || '';
+            return attr.includes(`targetIndex: ${idx}`) || attr.includes(`targetIndex:${idx}`);
+          });
+          if (selector) {
+            const model = selector.querySelector('[id$="-model"]');
+            if (model) {
+              model.setAttribute('visible', 'false');
+              model.querySelectorAll('[animation]').forEach(el => { try { el.emit('stopAnimation'); } catch(e){} });
+            }
+          }
+        } else {
+          // Fallback: ocultar todos
+          document.querySelectorAll('[id$="-model"]').forEach(m => m.setAttribute('visible', 'false'));
+        }
       });
     }
 
