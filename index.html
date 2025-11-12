@@ -859,6 +859,47 @@
         document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
       });
     }
+
+    // Añadir listeners específicos por target para asegurar que el modelo
+    // correspondiente se muestre/oculte cuando se detecte/mande perder el target.
+    // Esto ayuda a diagnosticar por qué el modelo no aparece al escanear.
+    const aframeScene = document.querySelector('a-scene');
+    if (aframeScene) {
+      aframeScene.addEventListener('loaded', () => {
+        console.log('A-Frame escena cargada: registrando listeners por target');
+        const targets = document.querySelectorAll('.country-target');
+        targets.forEach((tgt, idx) => {
+          // Escuchar targetFound/targetLost en cada entidad objetivo
+          tgt.addEventListener('targetFound', () => {
+            console.log(`targetFound en country-target index=${idx}`);
+            // Buscar dentro del target un elemento con id que termine en -model
+            const model = tgt.querySelector('[id$="-model"]');
+            if (model) {
+              model.setAttribute('visible', 'true');
+              // Iniciar cualquier animación interna
+              model.querySelectorAll('[animation]').forEach(el => {
+                try { el.emit('startAnimation'); } catch (e) { /* safe */ }
+              });
+            } else {
+              console.warn('No se encontró elemento *-model dentro del target', tgt);
+            }
+            document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
+          });
+
+          tgt.addEventListener('targetLost', () => {
+            console.log(`targetLost en country-target index=${idx}`);
+            const model = tgt.querySelector('[id$="-model"]');
+            if (model) {
+              model.setAttribute('visible', 'false');
+              model.querySelectorAll('[animation]').forEach(el => {
+                try { el.emit('stopAnimation'); } catch (e) { /* safe */ }
+              });
+            }
+            document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
+          });
+        });
+      });
+    }
     // === DEBUG Y MANEJO DE MODELOS ===
 function checkModels() {
   console.log("Verificando modelos 3D...");
