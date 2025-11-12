@@ -43,24 +43,6 @@
       border-radius: 20px;
       z-index: 1000;
     }
-    .camera-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 3000;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    .camera-overlay.active { display: flex; }
-    .camera-box { background: rgba(0,0,0,0.85); padding: 20px; border-radius: 12px; max-width: 420px; }
-    .camera-box button { margin-top: 12px; padding: 10px 16px; border-radius: 8px; border: none; background: #009C3B; color: white; cursor: pointer; }
   </style>
 </head>
 
@@ -71,18 +53,6 @@
 
   <div class="scanning-status" id="scanningStatus">
     🔍 Enfoca la cámara a la bandera de Brasil
-  </div>
-
-  <!-- Overlay para errores/estado de la cámara -->
-  <div id="cameraOverlay" class="camera-overlay" role="dialog" aria-live="polite">
-    <div class="camera-box">
-      <h2 id="cameraOverlayTitle">No se pudo iniciar la cámara</h2>
-      <p id="cameraOverlayMsg">Esperando permisos o el acceso a la cámara. Asegúrate de permitir cámara y cerrar otras apps que la utilicen.</p>
-      <div style="display:flex; gap:8px; justify-content:center; margin-top:12px;">
-        <button id="cameraRetryBtn">Reintentar</button>
-        <button id="cameraHelpBtn">Ayuda</button>
-      </div>
-    </div>
   </div>
 
   <!-- Escena AR -->
@@ -97,27 +67,37 @@
     >
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- TARGET 1 - Brasil -->
-      <a-entity mindar-image-target="targetIndex: 1" class="country-target">
-        <a-entity id="brasil-model" visible="false">
-          <!-- Modelo principal de Brasil -->
+      <!-- TARGET 0 - Brasil -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <!-- Modelo de Brasil - VISIBLE DESDE EL INICIO -->
+        <a-entity id="brasil-model">
+          <!-- Esfera verde principal -->
           <a-sphere 
             color="#009C3B" 
-            radius="0.3"
-            position="0 0.5 0"
-            animation="property: rotation; to: 360 360 0; loop: true; dur: 3000; startEvents: startAnimation">
+            radius="0.5"
+            position="0 0 0"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 3000;"
+            visible="true">
           </a-sphere>
-          <a-text value="BRASIL" 
-                  position="0 1.0 0" 
-                  align="center" 
-                  color="#FFDF00"
-                  scale="2 2 2">
+          
+          <!-- Texto BRASIL -->
+          <a-text 
+            value="BRASIL" 
+            position="0 1.2 0" 
+            align="center" 
+            color="#FFDF00"
+            scale="2 2 2"
+            visible="true">
           </a-text>
-          <a-text value="5 veces Campeón del Mundo" 
-                  position="0 0.8 0" 
-                  align="center" 
-                  color="#FFFFFF"
-                  scale="1 1 1">
+          
+          <!-- Texto descriptivo -->
+          <a-text 
+            value="5 veces Campeón del Mundo" 
+            position="0 0.8 0" 
+            align="center" 
+            color="#FFFFFF"
+            scale="1.5 1.5 1.5"
+            visible="true">
           </a-text>
         </a-entity>
       </a-entity>
@@ -136,164 +116,143 @@
         
         // Configurar detección específica para Brasil
         setupBrasilDetection();
+        
+        // Verificar que el modelo existe
+        const brasilModel = document.getElementById('brasil-model');
+        console.log("Modelo Brasil encontrado:", brasilModel);
+        
+        if (brasilModel) {
+          console.log("Hijos del modelo Brasil:", brasilModel.children);
+        }
       });
     });
 
     function setupBrasilDetection() {
-      const scene = document.querySelector('a-scene');
-      const brasilTarget = document.querySelector('[mindar-image-target="targetIndex: 1"]');
-      const brasilModel = document.getElementById('brasil-model');
+      const brasilTarget = document.querySelector('[mindar-image-target="targetIndex: 0"]');
       const statusElement = document.getElementById('scanningStatus');
+
+      if (!brasilTarget) {
+        console.error("No se encontró el target de Brasil");
+        return;
+      }
+
+      console.log("Target Brasil encontrado:", brasilTarget);
 
       // Escuchar cuando se detecta la bandera de Brasil
       brasilTarget.addEventListener('targetFound', (event) => {
-        console.log('✅ Bandera de Brasil detectada');
-        statusElement.textContent = '✅ Bandera de Brasil detectada';
+        console.log('✅ Bandera de Brasil DETECTADA');
+        statusElement.textContent = '✅ Bandera de Brasil detectada - Modelo visible';
         
-        // Mostrar el modelo de Brasil
+        // Forzar que todos los elementos sean visibles
+        const brasilModel = document.getElementById('brasil-model');
         if (brasilModel) {
+          console.log("Haciendo visible el modelo Brasil");
+          
+          // Hacer visible el contenedor principal
           brasilModel.setAttribute('visible', 'true');
-          console.log('Modelo de Brasil visible');
+          
+          // Hacer visibles todos los hijos
+          const children = brasilModel.children;
+          for (let i = 0; i < children.length; i++) {
+            const child = children[i];
+            child.setAttribute('visible', 'true');
+            console.log("Hijo hecho visible:", child.tagName);
+          }
           
           // Iniciar animaciones
           const animatedElements = brasilModel.querySelectorAll('[animation]');
           animatedElements.forEach(el => {
-            el.emit('startAnimation');
+            el.setAttribute('animation', 'enabled', 'true');
+            console.log("Animación iniciada en:", el.tagName);
           });
         }
       });
 
       // Escuchar cuando se pierde la bandera de Brasil
       brasilTarget.addEventListener('targetLost', (event) => {
-        console.log('❌ Bandera de Brasil perdida');
+        console.log('❌ Bandera de Brasil PERDIDA');
         statusElement.textContent = '🔍 Enfoca la cámara a la bandera de Brasil';
         
-        // Ocultar el modelo de Brasil
+        // Ocultar el modelo
+        const brasilModel = document.getElementById('brasil-model');
         if (brasilModel) {
           brasilModel.setAttribute('visible', 'false');
-          console.log('Modelo de Brasil oculto');
           
-          // Detener animaciones
+          // Ocultar todos los hijos
+          const children = brasilModel.children;
+          for (let i = 0; i < children.length; i++) {
+            children[i].setAttribute('visible', 'false');
+          }
+          
+          // Pausar animaciones
           const animatedElements = brasilModel.querySelectorAll('[animation]');
           animatedElements.forEach(el => {
-            // Para detener la animación, removemos temporalmente el componente
-            const animComp = el.components.animation;
-            if (animComp) {
-              animComp.pause();
-            }
+            el.setAttribute('animation', 'enabled', 'false');
           });
         }
       });
 
-      // También escuchar eventos a nivel de escena como respaldo
+      // También escuchar eventos a nivel de escena
+      const scene = document.querySelector('a-scene');
       scene.addEventListener('targetFound', (event) => {
-        if (event.detail && event.detail.targetIndex === 1) {
-          console.log('Evento global: Bandera de Brasil detectada');
-        }
+        console.log('Evento global targetFound:', event.detail);
       });
 
       scene.addEventListener('targetLost', (event) => {
-        if (event.detail && event.detail.targetIndex === 1) {
-          console.log('Evento global: Bandera de Brasil perdida');
-        }
+        console.log('Evento global targetLost:', event.detail);
       });
     }
 
-    // === MANEJO DE CÁMARA ===
-    (function setupCameraWatchdog() {
-      const overlay = document.getElementById('cameraOverlay');
-      const retryBtn = document.getElementById('cameraRetryBtn');
-      const helpBtn = document.getElementById('cameraHelpBtn');
-      const overlayTitle = document.getElementById('cameraOverlayTitle');
-      const overlayMsg = document.getElementById('cameraOverlayMsg');
-
-      let cameraStarted = false;
-
-      function showOverlay(title, msg) {
-        overlayTitle.textContent = title;
-        overlayMsg.textContent = msg;
-        overlay.classList.add('active');
-      }
-
-      function hideOverlay() { 
-        overlay.classList.remove('active'); 
-      }
-
-      // Detectar errores de cámara
-      window.addEventListener('error', (ev) => {
-        const m = ev && ev.message ? ev.message : '';
-        if (m && /NotReadableError|Could not start video source/i.test(m)) {
-          showOverlay('No se puede acceder a la cámara', 'Parece que la cámara está en uso o no está disponible. Cierra otras aplicaciones que usen la cámara y pulsa Reintentar.');
-        }
-      });
-
-      // Verificar si la cámara se inició correctamente
-      const checkInterval = setInterval(() => {
-        const video = document.querySelector('video');
-        if (video) {
-          if (!video.paused || video.readyState >= 2) {
-            cameraStarted = true;
-            hideOverlay();
-            clearInterval(checkInterval);
-            console.log('Cámara iniciada correctamente');
-          }
-        }
-      }, 800);
-
-      // Si después de 5 segundos no hay cámara, mostrar error
-      setTimeout(() => {
-        if (!cameraStarted) {
-          showOverlay('La cámara no responde', 'No se detectó la cámara. Comprueba permisos y que ninguna otra aplicación esté usando la cámara, luego pulsa Reintentar.');
-        }
-      }, 5000);
-
-      retryBtn.addEventListener('click', () => {
-        hideOverlay();
-        console.log('Reintentando acceso a la cámara');
-        location.reload();
-      });
-
-      helpBtn.addEventListener('click', () => {
-        alert('Pasos para solucionar problemas de cámara:\n\n1) Asegúrate de que no hay otra app usando la cámara\n2) En configuración del navegador, permite el acceso a la cámara\n3) Recarga esta página y acepta el permiso cuando el navegador lo pida\n4) Usa un navegador moderno como Chrome o Safari');
-      });
-    })();
-
     // === MODO TEST (para desarrollo) ===
     (function setupTestMode() {
-      // Activar modo test tocando 5 veces el header
+      // Activar modo test tocando 3 veces el header
       let headerClicks = 0;
       const header = document.querySelector('.header');
       
       header.addEventListener('click', () => {
         headerClicks++;
-        if (headerClicks === 5) {
-          console.log('🧪 MODO TEST ACTIVADO - Usa en consola:');
-          console.log('simularDeteccionBrasil() - Para simular detección');
-          console.log('ocultarModeloBrasil() - Para ocultar modelo');
+        if (headerClicks === 3) {
+          console.log('🧪 MODO TEST ACTIVADO');
+          alert('Modo test activado. Usa la consola para:\n- testBrasilFound()\n- testBrasilLost()');
           headerClicks = 0;
         }
         setTimeout(() => { headerClicks = 0; }, 2000);
       });
 
-      // Funciones de prueba disponibles en consola
-      window.simularDeteccionBrasil = function() {
-        const brasilTarget = document.querySelector('[mindar-image-target="targetIndex: 1"]');
-        const event = new CustomEvent('targetFound');
-        brasilTarget.dispatchEvent(event);
-        console.log('✅ Simulación: Bandera de Brasil detectada');
+      // Función para simular detección
+      window.testBrasilFound = function() {
+        console.log('🧪 SIMULANDO DETECCIÓN BRASIL');
+        const brasilTarget = document.querySelector('[mindar-image-target="targetIndex: 0"]');
+        if (brasilTarget) {
+          const event = new CustomEvent('targetFound');
+          brasilTarget.dispatchEvent(event);
+        }
       };
 
-      window.ocultarModeloBrasil = function() {
-        const brasilTarget = document.querySelector('[mindar-image-target="targetIndex: 1"]');
-        const event = new CustomEvent('targetLost');
-        brasilTarget.dispatchEvent(event);
-        console.log('❌ Simulación: Bandera de Brasil perdida');
+      // Función para simular pérdida de detección
+      window.testBrasilLost = function() {
+        console.log('🧪 SIMULANDO PÉRDIDA BRASIL');
+        const brasilTarget = document.querySelector('[mindar-image-target="targetIndex: 0"]');
+        if (brasilTarget) {
+          const event = new CustomEvent('targetLost');
+          brasilTarget.dispatchEvent(event);
+        }
       };
 
       console.log('ℹ️ Para probar sin cámara:');
-      console.log('1. Toca el header 5 veces rápido');
-      console.log('2. En consola usa simularDeteccionBrasil()');
+      console.log('1. Toca el header 3 veces rápido');
+      console.log('2. En consola usa: testBrasilFound()');
+      console.log('3. Luego usa: testBrasilLost()');
     })();
+
+    // Verificar el estado cada 2 segundos
+    setInterval(() => {
+      const brasilModel = document.getElementById('brasil-model');
+      if (brasilModel) {
+        const isVisible = brasilModel.getAttribute('visible');
+        console.log('Estado modelo Brasil - Visible:', isVisible);
+      }
+    }, 2000);
   </script>
 </body>
 </html>
