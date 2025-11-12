@@ -337,6 +337,8 @@
     <button class="control-btn" onclick="show3DModels()">🔺</button>
     <button class="control-btn" onclick="resetAR()">🔄</button>
     <button class="control-btn" onclick="showInfo()">ℹ️</button>
+    <!-- Botón oculto para modo test sin cámara (toca 5 veces rápido) -->
+    <button id="testModeBtn" class="control-btn" style="display:none; background:#FF6600; font-size:12px;" onclick="toggleTestMode()" title="Modo Test">🧪</button>
   </div>
 
 <!-- Modal de Videos -->
@@ -1150,6 +1152,90 @@ document.querySelector('a-scene').addEventListener('loaded', checkModels);
     const b = document.getElementById('brasil-model');
     console.log('MONITOR: argentina-model visible=', a ? a.getAttribute('visible') : 'no-encontrado', ' brasil-model visible=', b ? b.getAttribute('visible') : 'no-encontrado');
   }, 3000);
+})();
+
+// === MODO TEST: Simular targetFound/targetLost sin cámara ===
+(function setupTestMode() {
+  let testModeEnabled = false;
+  let currentTarget = null;
+
+  // Activar botón test (toca 5 veces el logo en 2 segundos)
+  let headerClicks = 0;
+  const header = document.querySelector('.header');
+  if (header) {
+    header.addEventListener('click', () => {
+      headerClicks++;
+      if (headerClicks === 5) {
+        testModeEnabled = !testModeEnabled;
+        const btn = document.getElementById('testModeBtn');
+        if (btn) btn.style.display = testModeEnabled ? 'block' : 'none';
+        console.log('🧪 MODO TEST:', testModeEnabled ? 'ACTIVADO' : 'DESACTIVADO');
+        headerClicks = 0;
+      }
+      setTimeout(() => { headerClicks = 0; }, 2000);
+    });
+  }
+
+  // Funciones de simulación disponibles en la consola
+  window.simulateTargetFound = function(targetIndex) {
+    if (!testModeEnabled) {
+      console.warn('Modo test desactivado. Toca el header 5 veces rápido para activarlo.');
+      return;
+    }
+    currentTarget = targetIndex;
+    const scene = document.querySelector('a-scene');
+    if (scene) {
+      const evt = new CustomEvent('targetFound', { detail: { targetIndex: targetIndex } });
+      scene.dispatchEvent(evt);
+      console.log(`✅ targetFound simulado: targetIndex=${targetIndex}`);
+    }
+  };
+
+  window.simulateTargetLost = function() {
+    if (!testModeEnabled) {
+      console.warn('Modo test desactivado. Toca el header 5 veces rápido para activarlo.');
+      return;
+    }
+    const scene = document.querySelector('a-scene');
+    if (scene) {
+      const evt = new CustomEvent('targetLost', { detail: { targetIndex: currentTarget } });
+      scene.dispatchEvent(evt);
+      console.log(`❌ targetLost simulado: targetIndex=${currentTarget}`);
+    }
+    currentTarget = null;
+  };
+
+  window.showAllModels = function() {
+    document.querySelectorAll('[id$="-model"]').forEach(m => {
+      m.setAttribute('visible', 'true');
+      m.querySelectorAll('[animation]').forEach(el => { try { el.emit('startAnimation'); } catch(e){} });
+    });
+    console.log('📺 Todos los modelos visibles');
+  };
+
+  window.hideAllModels = function() {
+    document.querySelectorAll('[id$="-model"]').forEach(m => {
+      m.setAttribute('visible', 'false');
+      m.querySelectorAll('[animation]').forEach(el => { try { el.emit('stopAnimation'); } catch(e){} });
+    });
+    console.log('🚫 Todos los modelos ocultos');
+  };
+
+  // Botón para toggle test
+  window.toggleTestMode = function() {
+    testModeEnabled = !testModeEnabled;
+    const btn = document.getElementById('testModeBtn');
+    if (btn) btn.style.display = testModeEnabled ? 'block' : 'none';
+    console.log('🧪 Modo test toggled:', testModeEnabled);
+  };
+
+  console.log('%c🧪 MODO TEST DISPONIBLE', 'color: #FF6600; font-size: 14px; font-weight: bold;');
+  console.log('%cToca el header 5 veces rápido para activar, luego usa en consola:', 'color: #FFF;');
+  console.log('%csimulateTargetFound(0) // para Argentina', 'color: #74ACDF;');
+  console.log('%csimulateTargetFound(1) // para Brasil', 'color: #009C3B;');
+  console.log('%csimulateTargetLost() // perder target', 'color: #FF0000;');
+  console.log('%cshowAllModels() // mostrar todos', 'color: #00FF00;');
+  console.log('%chideAllModels() // ocultar todos', 'color: #FF0000;');
 })();
   </script>
 </body>
