@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bandera - Realidad </title>
+    <title>Bandera Animada - Realidad Aumentada</title>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
@@ -221,60 +221,12 @@
         }
         
         @media (max-width: 768px) {
-            body, html {
-                height: 100vh;
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-            }
-            .container {
-                padding: 0;
-                margin: 0;
-                max-width: 100vw;
-            }
-            .ar-container {
-                width: 100vw !important;
-                height: 100vh !important;
-                min-width: 100vw;
-                min-height: 100vh;
-                margin: 0 !important;
-                padding: 0 !important;
-                border-radius: 0 !important;
-                box-shadow: none !important;
-                position: fixed !important;
-                top: 0; left: 0;
-                z-index: 100;
-                background: #000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            #ar-scene {
-                width: 100vw !important;
-                height: 100vh !important;
-                min-width: 100vw;
-                min-height: 100vh;
-                border-radius: 0 !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                position: relative;
-                background: #000;
-            }
-            .status {
-                position: absolute;
-                bottom: 10px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 90vw;
-                font-size: 1.1rem;
-                z-index: 200;
-            }
             .content {
                 flex-direction: column;
-                gap: 0;
             }
-            header, .instructions, .controls, footer {
-                display: none;
+            
+            h1 {
+                font-size: 2.2rem;
             }
         }
     </style>
