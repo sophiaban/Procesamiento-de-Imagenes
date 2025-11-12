@@ -1094,6 +1094,43 @@ function show3DModel(country) {
 
 // Verificar modelos cuando la escena cargue
 document.querySelector('a-scene').addEventListener('loaded', checkModels);
+
+// === DEBUG ADICIONAL: escuchar eventos targetFound/targetLost en captura ===
+(function setupDebugEventCapture() {
+  function logEvent(e) {
+    try {
+      console.log('CAPTURE EVENT:', e.type, 'target=', e.target, 'currentTarget=', e.currentTarget, 'detail=', e.detail);
+      // si el evento tiene índice, intentar mapear al selector
+      const idx = (e && e.detail && (e.detail.targetIndex ?? e.detail.index)) ?? null;
+      if (idx !== null) console.log('CAPTURE: índice detectado=', idx);
+
+      // Mostrar estado de modelos dentro del elemento que recibió el evento
+      const el = e.target && e.target.nodeType === 1 ? e.target : document;
+      const argentina = el.querySelector ? el.querySelector('#argentina-model') : null;
+      const brasil = el.querySelector ? el.querySelector('#brasil-model') : null;
+      console.log('CAPTURE: argentina-model (from event target) =', argentina ? argentina.getAttribute('visible') : 'no-encontrado');
+      console.log('CAPTURE: brasil-model (from event target) =', brasil ? brasil.getAttribute('visible') : 'no-encontrado');
+    } catch (err) {
+      console.error('Error en logEvent debug:', err);
+    }
+  }
+
+  // Capturar en document y en la escena (capturing=true)
+  document.addEventListener('targetFound', logEvent, true);
+  document.addEventListener('targetLost', logEvent, true);
+  const sc = document.querySelector('a-scene');
+  if (sc) {
+    sc.addEventListener('targetFound', logEvent, true);
+    sc.addEventListener('targetLost', logEvent, true);
+  }
+
+  // Monitor periódico del estado de los modelos principales
+  setInterval(() => {
+    const a = document.getElementById('argentina-model');
+    const b = document.getElementById('brasil-model');
+    console.log('MONITOR: argentina-model visible=', a ? a.getAttribute('visible') : 'no-encontrado', ' brasil-model visible=', b ? b.getAttribute('visible') : 'no-encontrado');
+  }, 3000);
+})();
   </script>
 </body>
 </html>
