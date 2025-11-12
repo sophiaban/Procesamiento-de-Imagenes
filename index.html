@@ -200,6 +200,50 @@
             .ar-container { height: 50vh; }
             .countries-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
         }
+
+        /* Estilos para el overlay de error de cámara */
+        #cameraErrorOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #cameraErrorOverlay div {
+            max-width: 400px;
+            margin: auto;
+            padding: 30px;
+            background: rgba(30, 30, 30, 0.95);
+            border-radius: 16px;
+        }
+
+        #cameraErrorOverlay h2 {
+            margin-bottom: 18px;
+        }
+
+        #cameraErrorOverlay ul {
+            text-align: left;
+            margin-top: 18px;
+        }
+
+        #cameraErrorOverlay button {
+            margin-top: 18px;
+            padding: 10px 22px;
+            border-radius: 8px;
+            background: #4FC3F7;
+            color: black;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -379,6 +423,22 @@
         </footer>
     </div>
 
+    <!-- Overlay de diagnóstico de cámara -->
+    <div id="cameraErrorOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); color:white; z-index:9999; align-items:center; justify-content:center; text-align:center;">
+      <div style="max-width:400px; margin:auto; padding:30px; background:rgba(30,30,30,0.95); border-radius:16px;">
+        <h2>⚠️ Error de cámara</h2>
+        <div id="cameraErrorMsg">No se pudo acceder a la cámara.</div>
+        <ul style="text-align:left; margin-top:18px;">
+          <li>Permite el acceso a la cámara en tu navegador.</li>
+          <li>Cierra otras aplicaciones que usen la cámara (Zoom, Teams, etc).</li>
+          <li>Verifica que la cámara esté conectada y reconocida por Windows.</li>
+          <li>Usa Chrome, Edge o Firefox.</li>
+          <li>Recarga la página después de corregir el problema.</li>
+        </ul>
+        <button onclick="location.reload()" style="margin-top:18px; padding:10px 22px; border-radius:8px; background:#4FC3F7; color:black; border:none; font-size:1rem; cursor:pointer;">Reintentar</button>
+      </div>
+    </div>
+
     <script>
         // Ocultar loading cuando la escena esté lista
         document.querySelector('a-scene').addEventListener('loaded', function() {
@@ -421,6 +481,38 @@
         document.querySelector('a-scene').addEventListener('targetLost', event => {
             document.getElementById('countryDisplay').classList.remove('active');
         });
+
+        // Mostrar overlay de error de cámara si ocurre un error
+        (function() {
+          let errorShown = false;
+          function showCameraError(msg) {
+            if (errorShown) return;
+            errorShown = true;
+            var overlay = document.getElementById('cameraErrorOverlay');
+            var msgDiv = document.getElementById('cameraErrorMsg');
+            if (msgDiv) msgDiv.textContent = msg || 'No se pudo acceder a la cámara.';
+            if (overlay) overlay.style.display = 'flex';
+          }
+
+          // Detectar errores comunes de cámara
+          window.addEventListener('error', function(e) {
+            if (e.message && (e.message.includes('NotAllowedError') || e.message.includes('NotFoundError') || e.message.includes('NotReadableError'))) {
+              showCameraError('Error: ' + e.message);
+            }
+          });
+
+          // Detectar errores de getUserMedia
+          navigator.mediaDevices && navigator.mediaDevices.getUserMedia({video:true}).catch(function(err) {
+            if (err && err.name) {
+              let msg = '';
+              if (err.name === 'NotAllowedError') msg = 'Permiso de cámara denegado.';
+              else if (err.name === 'NotFoundError') msg = 'No se detectó ninguna cámara.';
+              else if (err.name === 'NotReadableError') msg = 'La cámara está en uso por otra aplicación.';
+              else msg = 'Error de cámara: ' + err.name;
+              showCameraError(msg);
+            }
+          });
+        })();
     </script>
 </body>
 </html>
