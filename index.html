@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bandera Animada - Realidad Aumentada</title>
+    <!-- Scripts locales para evitar problemas de CORS -->
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
@@ -81,6 +82,7 @@
             display: flex;
             justify-content: center;
             margin-bottom: 15px;
+            position: relative;
         }
         
         #ar-scene {
@@ -88,6 +90,31 @@
             height: 400px;
             border-radius: 10px;
             overflow: hidden;
+            background: #000;
+        }
+        
+        .camera-permission {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 100;
+        }
+        
+        .permission-btn {
+            background: #ffcc00;
+            color: #1a2a6c;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
         }
         
         .instructions {
@@ -301,6 +328,14 @@
             transform: translateY(-50%);
         }
         
+        .error-message {
+            background: rgba(255, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
         @media (max-width: 768px) {
             .content {
                 flex-direction: column;
@@ -339,16 +374,23 @@
             <div class="ar-container">
                 <div class="ar-scene-wrapper">
                     <div class="camera-center-indicator"></div>
+                    <div id="camera-permission" class="camera-permission">
+                        <h3>Permiso de Cámara Requerido</h3>
+                        <p>Para usar la realidad aumentada, necesitamos acceso a tu cámara.</p>
+                        <button class="permission-btn" onclick="requestCameraPermission()">Activar Cámara</button>
+                    </div>
                     <a-scene id="ar-scene" 
-                        mindar-image="imageTargetSrc: ./targets.mind;" 
+                        mindar-image="imageTargetSrc: ./targets.mind; autoStart: false;" 
                         color-space="sRGB" 
                         renderer="colorManagement: true, physicallyCorrectLights" 
                         vr-mode-ui="enabled: false" 
-                        device-orientation-permission-ui="enabled: false">
+                        device-orientation-permission-ui="enabled: false"
+                        embedded>
                         
                         <a-assets>
-                            <a-asset-item id="banderaModel" src="./models/bandera.glb"></a-asset-item>
-                            <img id="marcador" src="./marcador/br.png" />
+                            <!-- Usar recursos online como fallback -->
+                            <img id="marcador" src="./marcador/br.png" 
+                                 onerror="this.src='https://via.placeholder.com/300x200/333/fff?text=Marcador+No+Encontrado'">
                         </a-assets>
 
                         <a-camera position="0 0 0" look-controls="enabled: false" fov="60"></a-camera>
@@ -357,18 +399,8 @@
                             <!-- Marcador de referencia -->
                             <a-plane src="#marcador" position="0 0 0" height="0.552" width="1" rotation="0 0 0" visible="true"></a-plane>
                             
-                            <!-- Bandera animada - Versión con modelo 3D -->
-                            <a-entity id="flag-3d" position="0 0.3 0" rotation="0 0 0" visible="true">
-                                <a-gltf-model
-                                    src="#banderaModel"
-                                    position="0 0.5 0"
-                                    scale="0.5 0.5 0.5"
-                                    animation="property: rotation; to: 0 0 10; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate">
-                                </a-gltf-model>
-                            </a-entity>
-                            
-                            <!-- Bandera animada - Versión con planos (backup) -->
-                            <a-entity id="flag" position="0 0.3 0" rotation="0 0 0" visible="false">
+                            <!-- Bandera animada - Versión con planos (principal) -->
+                            <a-entity id="flag" position="0 0.3 0" rotation="0 0 0" visible="true">
                                 <!-- Asta de la bandera -->
                                 <a-cylinder 
                                     id="flag-pole"
@@ -426,8 +458,9 @@
                     </a-scene>
                 </div>
                 <div class="status pulse" id="status">
-                    Esperando detección del marcador...
+                    Esperando permiso de cámara...
                 </div>
+                <div id="error-messages"></div>
             </div>
             
             <div class="instructions">
@@ -436,16 +469,16 @@
                 <div class="step">
                     <div class="step-number">1</div>
                     <div class="step-text">
-                        <h3>Prepara tu marcador</h3>
-                        <p>Enfoca la cámara hacia la imagen del marcador (br.png) para activar la bandera.</p>
+                        <h3>Activa la cámara</h3>
+                        <p>Haz clic en "Activar Cámara" y permite el acceso cuando el navegador lo solicite.</p>
                     </div>
                 </div>
                 
                 <div class="step">
                     <div class="step-number">2</div>
                     <div class="step-text">
-                        <h3>Permite el acceso a la cámara</h3>
-                        <p>Cuando se te solicite, permite que el navegador acceda a tu cámara para la experiencia de RA.</p>
+                        <h3>Prepara tu marcador</h3>
+                        <p>Usa la imagen del marcador que creaste para el archivo .mind</p>
                     </div>
                 </div>
                 
@@ -453,7 +486,7 @@
                     <div class="step-number">3</div>
                     <div class="step-text">
                         <h3>Apunta al centro</h3>
-                        <p>Enfoca el marcador en el centro de la pantalla (indicador amarillo) para mejor detección.</p>
+                        <p>Enfoca el marcador en el centro de la pantalla (indicador amarillo).</p>
                     </div>
                 </div>
                 
@@ -464,6 +497,10 @@
                         <p>Usa los controles de abajo para cambiar el color, velocidad y tipo de bandera.</p>
                     </div>
                 </div>
+                
+                <div class="error-message">
+                    <strong>Nota:</strong> Si hay errores, verifica que todos los archivos estén en las carpetas correctas.
+                </div>
             </div>
         </div>
         
@@ -471,14 +508,6 @@
             <h2>🎨 Personaliza tu Bandera</h2>
             
             <div class="control-group">
-                <div class="control">
-                    <label for="flag-type">Tipo de Bandera</label>
-                    <select id="flag-type" class="flag-select">
-                        <option value="3d">Modelo 3D (bandera.glb)</option>
-                        <option value="planes">Bandera con Planos</option>
-                    </select>
-                </div>
-                
                 <div class="control">
                     <label for="flag-color">Color de la Bandera</label>
                     <input type="color" id="flag-color" value="#FF0000">
@@ -489,15 +518,15 @@
                     <input type="range" id="wave-speed" min="500" max="3000" value="1000">
                     <div class="value-display" id="speed-value">Normal</div>
                 </div>
-            </div>
-            
-            <div class="control-group">
+                
                 <div class="control">
                     <label for="flag-size">Tamaño de la Bandera</label>
                     <input type="range" id="flag-size" min="0.5" max="2" step="0.1" value="1">
                     <div class="value-display" id="size-value">Normal</div>
                 </div>
-                
+            </div>
+            
+            <div class="control-group">
                 <div class="control">
                     <label for="flag-height">Altura de la Bandera</label>
                     <input type="range" id="flag-height" min="0.1" max="1" step="0.1" value="0.3">
@@ -528,39 +557,85 @@
         
         <footer>
             <p>🎯 Realidad Aumentada con A-Frame y MindAR | Bandera Animada 🎯</p>
-            <p>Mueve la cámara sobre tu marcador para ver la bandera en acción</p>
+            <p>Estructura de archivos requerida: targets.mind, marcador/br.png en la misma carpeta</p>
         </footer>
     </div>
 
     <script>
+        // Variables globales
+        let sceneStarted = false;
+
+        function requestCameraPermission() {
+            const statusElement = document.getElementById('status');
+            const permissionElement = document.getElementById('camera-permission');
+            
+            statusElement.textContent = "Solicitando permiso de cámara...";
+            
+            // Solicitar permiso de cámara
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    // Permiso concedido
+                    permissionElement.style.display = 'none';
+                    statusElement.textContent = "Permiso concedido. Iniciando realidad aumentada...";
+                    
+                    // Iniciar la escena de MindAR
+                    startMindARScene();
+                })
+                .catch(function(error) {
+                    // Permiso denegado o error
+                    console.error('Error al acceder a la cámara:', error);
+                    statusElement.textContent = "Error: No se pudo acceder a la cámara. Verifica los permisos.";
+                    statusElement.style.background = "rgba(255, 0, 0, 0.3)";
+                    
+                    let errorMessage = "Posibles soluciones:\n";
+                    errorMessage += "1. Asegúrate de permitir el acceso a la cámara\n";
+                    errorMessage += "2. Verifica que tu dispositivo tenga cámara\n";
+                    errorMessage += "3. Intenta usar HTTPS o localhost";
+                    
+                    alert(errorMessage);
+                });
+        }
+
+        function startMindARScene() {
+            if (sceneStarted) return;
+            
+            const scene = document.querySelector('a-scene');
+            const statusElement = document.getElementById('status');
+            
+            try {
+                // Iniciar MindAR
+                const mindarScene = scene.sceneEl.systems["mindar-image-system"];
+                mindarScene.start().then(() => {
+                    sceneStarted = true;
+                    statusElement.textContent = "Listo! Apunta al marcador con la cámara";
+                    statusElement.style.background = "rgba(0, 200, 0, 0.3)";
+                    statusElement.classList.remove('pulse');
+                }).catch(error => {
+                    console.error('Error al iniciar MindAR:', error);
+                    statusElement.textContent = "Error al iniciar realidad aumentada";
+                    statusElement.style.background = "rgba(255, 0, 0, 0.3)";
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                statusElement.textContent = "Error en la configuración de RA";
+                statusElement.style.background = "rgba(255, 0, 0, 0.3)";
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Referencias a elementos de la bandera
             const flagSegments = document.querySelectorAll('.flag-segment');
             const flagEntity = document.getElementById('flag');
-            const flag3D = document.getElementById('flag-3d');
             const statusElement = document.getElementById('status');
             
             // Controles
-            const flagTypeSelect = document.getElementById('flag-type');
             const colorPicker = document.getElementById('flag-color');
             const speedSlider = document.getElementById('wave-speed');
             const sizeSlider = document.getElementById('flag-size');
             const heightSlider = document.getElementById('flag-height');
             const flagOptions = document.querySelectorAll('.flag-option');
             
-            // Cambiar entre modelo 3D y bandera de planos
-            flagTypeSelect.addEventListener('change', function() {
-                const type = this.value;
-                if (type === '3d') {
-                    flag3D.setAttribute('visible', 'true');
-                    flagEntity.setAttribute('visible', 'false');
-                } else {
-                    flag3D.setAttribute('visible', 'false');
-                    flagEntity.setAttribute('visible', 'true');
-                }
-            });
-            
-            // Actualizar el color de la bandera (solo para versión de planos)
+            // Actualizar el color de la bandera
             colorPicker.addEventListener('input', function() {
                 const color = this.value;
                 flagSegments.forEach(segment => {
@@ -573,17 +648,10 @@
                 const speed = parseInt(this.value);
                 const invertedSpeed = 3000 - speed + 500;
                 
-                // Para la bandera de planos
                 flagSegments.forEach((segment, index) => {
                     const delay = index * 200;
                     segment.setAttribute('animation', `property: rotation; to: 0 0 ${getSegmentAngle(index)}; dur: ${invertedSpeed}; easing: easeInOutSine; loop: true; dir: alternate; delay: ${delay}`);
                 });
-                
-                // Para el modelo 3D
-                const banderaModel = document.querySelector('a-gltf-model');
-                if (banderaModel) {
-                    banderaModel.setAttribute('animation', `property: rotation; to: 0 0 10; dur: ${invertedSpeed}; easing: easeInOutSine; loop: true; dir: alternate`);
-                }
                 
                 // Actualizar display de velocidad
                 const speedValue = document.getElementById('speed-value');
@@ -600,7 +668,6 @@
             sizeSlider.addEventListener('input', function() {
                 const size = parseFloat(this.value);
                 flagEntity.setAttribute('scale', `${size} ${size} ${size}`);
-                flag3D.setAttribute('scale', `${size * 0.5} ${size * 0.5} ${size * 0.5}`);
                 
                 // Actualizar display de tamaño
                 const sizeValue = document.getElementById('size-value');
@@ -617,13 +684,12 @@
             heightSlider.addEventListener('input', function() {
                 const height = parseFloat(this.value);
                 flagEntity.setAttribute('position', `0 ${height} 0`);
-                flag3D.setAttribute('position', `0 ${height} 0`);
                 
                 // Actualizar display de altura
                 document.getElementById('height-value').textContent = height.toFixed(1);
             });
             
-            // Cambiar tipo de bandera (solo para versión de planos)
+            // Cambiar tipo de bandera
             flagOptions.forEach(option => {
                 option.addEventListener('click', function() {
                     // Remover clase active de todas las opciones
@@ -640,26 +706,23 @@
             function applyFlagType(type) {
                 switch(type) {
                     case 'normal':
-                        // Bandera de un solo color (usar el color del selector)
                         const currentColor = colorPicker.value;
                         flagSegments.forEach(segment => {
                             segment.setAttribute('color', currentColor);
                         });
                         break;
                     case 'tricolor':
-                        // Bandera tricolor (azul, blanco, rojo)
                         flagSegments.forEach((segment, index) => {
                             if (index < 2) {
-                                segment.setAttribute('color', '#0000FF'); // Azul
+                                segment.setAttribute('color', '#0000FF');
                             } else if (index < 3) {
-                                segment.setAttribute('color', '#FFFFFF'); // Blanco
+                                segment.setAttribute('color', '#FFFFFF');
                             } else {
-                                segment.setAttribute('color', '#FF0000'); // Rojo
+                                segment.setAttribute('color', '#FF0000');
                             }
                         });
                         break;
                     case 'rainbow':
-                        // Bandera arcoíris
                         const rainbowColors = ['#FF0018', '#FFA52C', '#FFFF41', '#008018', '#0000F9', '#86007D'];
                         flagSegments.forEach((segment, index) => {
                             if (index < rainbowColors.length) {
@@ -668,12 +731,11 @@
                         });
                         break;
                     case 'stripes':
-                        // Bandera a rayas (rojo y blanco)
                         flagSegments.forEach((segment, index) => {
                             if (index % 2 === 0) {
-                                segment.setAttribute('color', '#FF0000'); // Rojo
+                                segment.setAttribute('color', '#FF0000');
                             } else {
-                                segment.setAttribute('color', '#FFFFFF'); // Blanco
+                                segment.setAttribute('color', '#FFFFFF');
                             }
                         });
                         break;
@@ -691,7 +753,6 @@
             scene.addEventListener('targetFound', event => {
                 statusElement.textContent = "¡Marcador detectado! Bandera visible.";
                 statusElement.style.background = "rgba(0, 200, 0, 0.3)";
-                statusElement.classList.remove('pulse');
             });
             
             scene.addEventListener('targetLost', event => {
@@ -699,6 +760,12 @@
                 statusElement.style.background = "rgba(0, 0, 0, 0.3)";
                 statusElement.classList.add('pulse');
             });
+            
+            // Verificar si estamos en un entorno seguro (HTTPS o localhost)
+            if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+                document.getElementById('error-messages').innerHTML = 
+                    '<div class="error-message">⚠️ Para mejor funcionamiento, sirve esta página desde localhost o HTTPS</div>';
+            }
         });
     </script>
 </body>
