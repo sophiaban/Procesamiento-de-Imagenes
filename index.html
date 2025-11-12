@@ -900,7 +900,27 @@
             console.log('Mostrando modelo para targetIndex=', idx, selector);
             const model = selector.querySelector('[id$="-model"]');
             if (model) {
-              model.setAttribute('visible', 'true');
+              console.log('Modelo encontrado dentro del target:', model);
+              // Forzar visibilidad en el contenedor y en todos sus hijos (primitivas a-sphere/a-cylinder etc.)
+              try {
+                model.setAttribute('visible', 'true');
+              } catch(e){}
+              // Forzar también en object3D cuando exista
+              try { if (model.object3D) model.object3D.visible = true; } catch(e){}
+
+              // Recorrer hijos y forzar visibilidad/escala (por si están a 0)
+              const childs = model.querySelectorAll('*');
+              childs.forEach(ch => {
+                try { ch.setAttribute('visible', 'true'); } catch(e){}
+                try { if (ch.object3D) ch.object3D.visible = true; } catch(e){}
+                // si la escala está en 0, forzar a 1
+                try {
+                  const scale = ch.getAttribute('scale');
+                  if (!scale || scale === '0 0 0' || scale === '0 0 0.0') ch.setAttribute('scale', '1 1 1');
+                } catch(e){}
+              });
+
+              // Iniciar cualquier animación interna
               model.querySelectorAll('[animation]').forEach(el => { try { el.emit('startAnimation'); } catch(e){} });
             } else {
               console.warn('No se encontró *-model dentro del targetIndex', idx);
