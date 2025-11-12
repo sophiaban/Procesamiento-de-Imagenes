@@ -146,11 +146,6 @@
 
   <!-- Escena AR -->
   <div class="ar-container">
-    <!-- 
-      RUTA DEL ARCHIVO TARGETS.MIND:
-      Este archivo contiene las imágenes de las banderas que el AR puede reconocer
-      Debe estar en la raíz de tu repositorio o en la misma carpeta que index.html
-    -->
     <a-scene
       mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
       embedded
@@ -161,16 +156,9 @@
     >
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- 
-        TARGET 0 - Argentina 
-        targetIndex: 0 corresponde a la primera imagen en tu archivo targets.mind
-      -->
+      <!-- TARGET 0 - Argentina -->
       <a-entity mindar-image-target="targetIndex: 0" class="country-target">
         <a-entity id="argentina-model" visible="false">
-          <!-- 
-            RUTA DEL MODELO 3D PARA ARGENTINA:
-            Debe estar en la carpeta models/ de tu repositorio
-          -->
           <a-entity
             gltf-model="models/world-cup-trophy.glb"
             scale="0.2 0.2 0.2"
@@ -199,16 +187,9 @@
         </a-entity>
       </a-entity>
 
-      <!-- 
-        TARGET 1 - Brasil 
-        targetIndex: 1 corresponde a la segunda imagen en tu archivo targets.mind
-      -->
+      <!-- TARGET 1 - Brasil -->
       <a-entity mindar-image-target="targetIndex: 1" class="country-target">
         <a-entity id="brasil-model" visible="false">
-          <!-- 
-            RUTA DEL MODELO 3D PARA BRASIL:
-            Debe estar en la carpeta models/ de tu repositorio
-          -->
           <a-entity
             gltf-model="models/soccer-ball.glb"
             scale="0.3 0.3 0.3"
@@ -263,10 +244,6 @@
       <div class="video-option">
         <h3>Argentina vs Brasil</h3>
         <div class="video-container">
-          <!-- 
-            RUTA DEL VIDEO 1:
-            Puedes reemplazar esta URL por tu propio video
-          -->
           <video id="video1" controls>
             <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
             Tu navegador no soporta video.
@@ -278,10 +255,6 @@
       <div class="video-option" style="margin-top: 20px;">
         <h3>Francia vs Alemania</h3>
         <div class="video-container">
-          <!-- 
-            RUTA DEL VIDEO 2:
-            Puedes reemplazar esta URL por tu propio video
-          -->
           <video id="video2" controls>
             <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
             Tu navegador no soporta video.
@@ -317,143 +290,282 @@
   </div>
 
   <script>
-    // === TRIVIA ===
-    const triviaData = [
-      { country: "Argentina", questions: [
-        { question: "¿En qué año ganó Argentina su primera Copa del Mundo?", options: ["1978", "1986", "1990", "2014"], correct: 0 },
-        { question: "¿Quién es el máximo goleador histórico de Argentina?", options: ["Lionel Messi", "Gabriel Batistuta", "Diego Maradona", "Sergio Agüero"], correct: 1 },
-      ]},
-      { country: "Brasil", questions: [
-        { question: "¿Cuántas Copas del Mundo tiene Brasil?", options: ["3", "4", "5", "6"], correct: 2 },
-        { question: "¿Quién es el 'Rey del Fútbol' brasileño?", options: ["Pelé", "Ronaldo", "Ronaldinho", "Neymar"], correct: 0 },
-      ]}
-    ];
+    // Verificar si las variables ya existen para evitar redeclaración
+    if (typeof window.triviaData === 'undefined') {
+      // === TRIVIA ===
+      window.triviaData = [
+        { 
+          country: "Argentina", 
+          questions: [
+            { 
+              question: "¿En qué año ganó Argentina su primera Copa del Mundo?", 
+              options: ["1978", "1986", "1990", "2014"], 
+              correct: 0 
+            },
+            { 
+              question: "¿Quién es el máximo goleador histórico de Argentina?", 
+              options: ["Lionel Messi", "Gabriel Batistuta", "Diego Maradona", "Sergio Agüero"], 
+              correct: 1 
+            }
+          ]
+        },
+        { 
+          country: "Brasil", 
+          questions: [
+            { 
+              question: "¿Cuántas Copas del Mundo tiene Brasil?", 
+              options: ["3", "4", "5", "6"], 
+              correct: 2 
+            },
+            { 
+              question: "¿Quién es el 'Rey del Fútbol' brasileño?", 
+              options: ["Pelé", "Ronaldo", "Ronaldinho", "Neymar"], 
+              correct: 0 
+            }
+          ]
+        }
+      ];
 
-    let currentTriviaQuestions = [], currentQuestionIndex = 0, score = 0;
+      // Variables globales para la trivia
+      window.currentTriviaQuestions = [];
+      window.currentQuestionIndex = 0;
+      window.score = 0;
+    }
 
+    if (typeof window.pollData === 'undefined') {
+      // === ENCUESTAS ===
+      window.pollData = [
+        { 
+          country: "Argentina", 
+          polls: [
+            { 
+              question: "¿Quién será el goleador de Argentina en el 2026?", 
+              options: ["Lionel Messi", "Julián Álvarez", "Lautaro Martínez", "Ninguno"] 
+            },
+            { 
+              question: "¿Argentina llegará a la final?", 
+              options: ["Sí", "No", "No sé", "Ojalá"] 
+            },
+            { 
+              question: "¿Cuál es el mejor jugador argentino de la historia?", 
+              options: ["Lionel Messi", "Diego Maradona", "Alfredo Di Stéfano", "Gabriel Batistuta"] 
+            },
+            { 
+              question: "¿En qué fase quedará eliminado Argentina?", 
+              options: ["Fase de grupos", "Octavos", "Cuartos", "No será eliminado"] 
+            },
+            { 
+              question: "¿Quién debería ser el capitán?", 
+              options: ["Lionel Messi", "Emiliano Martínez", "Cuti Romero", "De Paul"] 
+            }
+          ]
+        },
+        { 
+          country: "Brasil", 
+          polls: [
+            { 
+              question: "¿Brasil ganará el mundial 2026?", 
+              options: ["Sí", "No", "No sé", "Ojalá"] 
+            },
+            { 
+              question: "¿Quién será el mejor jugador brasileño?", 
+              options: ["Vinicius Jr", "Neymar", "Rodrygo", "Alisson"] 
+            },
+            { 
+              question: "¿Cuál es la mayor debilidad de Brasil?", 
+              options: ["Defensa", "Mediocampo", "Ataque", "No tiene debilidades"] 
+            },
+            { 
+              question: "¿Brasil llegará a semifinales?", 
+              options: ["Sí", "No", "No sé", "Ojalá"] 
+            },
+            { 
+              question: "¿Quién es el mejor entrenador para Brasil?", 
+              options: ["Tite", "Ancelotti", "Guardiola", "Klopp"] 
+            }
+          ]
+        }
+      ];
+
+      // Variables globales para encuestas
+      window.currentPollQuestions = [];
+      window.currentPollIndex = 0;
+    }
+
+    // === FUNCIONES TRIVIA ===
     function openTriviaModal() {
-      const allQuestions = triviaData.flatMap(c => c.questions);
-      currentTriviaQuestions = getRandomQuestions(allQuestions, 5);
-      currentQuestionIndex = 0; score = 0;
+      // Método compatible para obtener todas las preguntas
+      const allQuestions = [];
+      for (let i = 0; i < window.triviaData.length; i++) {
+        const country = window.triviaData[i];
+        for (let j = 0; j < country.questions.length; j++) {
+          allQuestions.push(country.questions[j]);
+        }
+      }
+      
+      window.currentTriviaQuestions = getRandomQuestions(allQuestions, 5);
+      window.currentQuestionIndex = 0; 
+      window.score = 0;
       document.getElementById('triviaModal').classList.add('active');
       showTriviaQuestion();
     }
-    function closeTriviaModal() { document.getElementById('triviaModal').classList.remove('active'); }
-    function getRandomQuestions(questions, count) {
-      return [...questions].sort(() => 0.5 - Math.random()).slice(0, count);
+
+    function closeTriviaModal() { 
+      document.getElementById('triviaModal').classList.remove('active'); 
     }
+
+    function getRandomQuestions(questions, count) {
+      const shuffled = questions.slice();
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = temp;
+      }
+      return shuffled.slice(0, count);
+    }
+
     function showTriviaQuestion() {
-      if (currentQuestionIndex >= currentTriviaQuestions.length) return showTriviaResults();
-      const q = currentTriviaQuestions[currentQuestionIndex];
+      if (window.currentQuestionIndex >= window.currentTriviaQuestions.length) {
+        return showTriviaResults();
+      }
+      
+      const q = window.currentTriviaQuestions[window.currentQuestionIndex];
       const qE = document.getElementById('triviaQuestion');
       const oE = document.getElementById('triviaOptions');
       const rE = document.getElementById('triviaResult');
+      
       qE.innerHTML = `<h3>${q.question}</h3>`;
       rE.textContent = '';
+      rE.style.color = '';
       oE.innerHTML = '';
-      q.options.forEach((opt, i) => {
+      
+      for (let i = 0; i < q.options.length; i++) {
+        const opt = q.options[i];
         const b = document.createElement('button');
-        b.className = 'trivia-option'; b.textContent = opt;
-        b.onclick = () => checkAnswer(i);
+        b.className = 'trivia-option'; 
+        b.textContent = opt;
+        b.onclick = function() { checkAnswer(i); };
         oE.appendChild(b);
-      });
+      }
     }
-    function checkAnswer(i) {
-      const q = currentTriviaQuestions[currentQuestionIndex];
+
+    function checkAnswer(selectedIndex) {
+      const q = window.currentTriviaQuestions[window.currentQuestionIndex];
       const rE = document.getElementById('triviaResult');
-      if (i === q.correct) { rE.textContent = '✅ ¡Correcto!'; rE.style.color = '#00FF00'; score++; }
-      else { rE.textContent = `❌ Incorrecto. Era: ${q.options[q.correct]}`; rE.style.color = '#FF0000'; }
+      
+      if (selectedIndex === q.correct) { 
+        rE.textContent = '✅ ¡Correcto!'; 
+        rE.style.color = '#00FF00'; 
+        window.score++; 
+      } else { 
+        rE.textContent = `❌ Incorrecto. La respuesta correcta era: ${q.options[q.correct]}`; 
+        rE.style.color = '#FF0000'; 
+      }
     }
-    function nextTriviaQuestion() { currentQuestionIndex++; showTriviaQuestion(); }
+
+    function nextTriviaQuestion() { 
+      window.currentQuestionIndex++; 
+      showTriviaQuestion(); 
+    }
+
     function showTriviaResults() {
-      document.getElementById('triviaQuestion').innerHTML = `<h3>🎉 Resultado Final</h3>`;
-      document.getElementById('triviaOptions').innerHTML = '';
+      const qE = document.getElementById('triviaQuestion');
+      const oE = document.getElementById('triviaOptions');
       const rE = document.getElementById('triviaResult');
-      rE.textContent = `Obtuviste ${score} de ${currentTriviaQuestions.length}`;
+      
+      qE.innerHTML = `<h3>🎉 Resultado Final</h3>`;
+      oE.innerHTML = '';
+      rE.textContent = `Obtuviste ${window.score} de ${window.currentTriviaQuestions.length} preguntas correctas`;
       rE.style.color = '#FFD700';
     }
 
-    // === ENCUESTAS ===
-    const pollData = [
-      { country: "Argentina", polls: [
-        { question: "¿Quién será el goleador de Argentina en el 2026?", options: ["Lionel Messi", "Julián Álvarez", "Lautaro Martínez", "Ninguno"] },
-        { question: "¿Argentina llegará a la final?", options: ["Sí", "No", "No sé", "Ojalá"] },
-        { question: "¿Cuál es el mejor jugador argentino de la historia?", options: ["Lionel Messi", "Diego Maradona", "Alfredo Di Stéfano", "Gabriel Batistuta"] },
-        { question: "¿En qué fase quedará eliminado Argentina?", options: ["Fase de grupos", "Octavos", "Cuartos", "No será eliminado"] },
-        { question: "¿Quién debería ser el capitán?", options: ["Lionel Messi", "Emiliano Martínez", "Cuti Romero", "De Paul"] }
-      ]},
-      { country: "Brasil", polls: [
-        { question: "¿Brasil ganará el mundial 2026?", options: ["Sí", "No", "No sé", "Ojalá"] },
-        { question: "¿Quién será el mejor jugador brasileño?", options: ["Vinicius Jr", "Neymar", "Rodrygo", "Alisson"] },
-        { question: "¿Cuál es la mayor debilidad de Brasil?", options: ["Defensa", "Mediocampo", "Ataque", "No tiene debilidades"] },
-        { question: "¿Brasil llegará a semifinales?", options: ["Sí", "No", "No sé", "Ojalá"] },
-        { question: "¿Quién es el mejor entrenador para Brasil?", options: ["Tite", "Ancelotti", "Guardiola", "Klopp"] }
-      ]}
-    ];
-
-    let currentPollQuestions = [], currentPollIndex = 0;
-
+    // === FUNCIONES ENCUESTAS ===
     function openPollModal() {
-      const allPolls = pollData.flatMap(c => c.polls);
-      currentPollQuestions = getRandomQuestions(allPolls, 1); // Una encuesta al azar
-      currentPollIndex = 0;
+      const allPolls = [];
+      for (let i = 0; i < window.pollData.length; i++) {
+        const country = window.pollData[i];
+        for (let j = 0; j < country.polls.length; j++) {
+          allPolls.push(country.polls[j]);
+        }
+      }
+      
+      window.currentPollQuestions = getRandomQuestions(allPolls, 1);
+      window.currentPollIndex = 0;
       document.getElementById('pollModal').classList.add('active');
       showPollQuestion();
     }
-    function closePollModal() { document.getElementById('pollModal').classList.remove('active'); }
+
+    function closePollModal() { 
+      document.getElementById('pollModal').classList.remove('active'); 
+    }
+
     function showPollQuestion() {
-      if (currentPollIndex >= currentPollQuestions.length) return;
-      const q = currentPollQuestions[currentPollIndex];
+      if (window.currentPollIndex >= window.currentPollQuestions.length) return;
+      
+      const q = window.currentPollQuestions[window.currentPollIndex];
       const qE = document.getElementById('pollQuestion');
       const oE = document.getElementById('pollOptions');
       const rE = document.getElementById('pollResult');
+      
       qE.innerHTML = `<h3>${q.question}</h3>`;
       rE.textContent = '';
+      rE.style.color = '';
       oE.innerHTML = '';
-      q.options.forEach((opt, i) => {
+      
+      for (let i = 0; i < q.options.length; i++) {
+        const opt = q.options[i];
         const b = document.createElement('button');
-        b.className = 'poll-option'; b.textContent = opt;
-        b.onclick = () => submitPollAnswer(i);
+        b.className = 'poll-option'; 
+        b.textContent = opt;
+        b.onclick = function() { submitPollAnswer(i); };
         oE.appendChild(b);
-      });
+      }
     }
+
     function submitPollAnswer(i) {
       const rE = document.getElementById('pollResult');
       rE.textContent = '✅ ¡Gracias por tu respuesta!';
       rE.style.color = '#00FF00';
     }
+
     function nextPollQuestion() {
-      const allPolls = pollData.flatMap(c => c.polls);
-      currentPollQuestions = getRandomQuestions(allPolls, 1);
-      currentPollIndex = 0;
+      const allPolls = [];
+      for (let i = 0; i < window.pollData.length; i++) {
+        const country = window.pollData[i];
+        for (let j = 0; j < country.polls.length; j++) {
+          allPolls.push(country.polls[j]);
+        }
+      }
+      
+      window.currentPollQuestions = getRandomQuestions(allPolls, 1);
+      window.currentPollIndex = 0;
       showPollQuestion();
     }
 
     // === VIDEOS ===
     function openVideoModal() { 
       document.getElementById('videoModal').classList.add('active'); 
-      // Aplicar filtro por defecto
       applyVideoFilter('none');
     }
+
     function closeVideoModal() {
       document.getElementById('videoModal').classList.remove('active');
       document.querySelectorAll('video').forEach(v => v.pause());
     }
+
     function playVideo(id) {
       document.querySelectorAll('video').forEach(v => { if (v.id !== id) v.pause(); });
       const v = document.getElementById(id);
       v.paused ? v.play() : v.pause();
     }
     
-    // Filtros de video
     function applyVideoFilter(filter) {
-      // Actualizar botones activos
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active');
       });
       event.target.classList.add('active');
       
-      // Aplicar filtro a todos los videos
       document.querySelectorAll('video').forEach(video => {
         switch(filter) {
           case 'grayscale':
@@ -484,30 +596,33 @@
       else if (action === 'showText') showText(target);
       else if (action === 'show3DModel') show3DModel(target);
     }
+
     function animateModel(country) {
       const model = document.getElementById(`${country}-model`);
       const text = document.getElementById(`${country}-text`);
       model.setAttribute('visible', 'true');
-      model.emit('startAnimation');  // Esto activa la animación
+      model.emit('startAnimation');
       if (text) text.setAttribute('visible', 'false');
     }
+
     function showText(country) {
       const model = document.getElementById(`${country}-model`);
       const text = document.getElementById(`${country}-text`);
       if (text) text.setAttribute('visible', 'true');
       if (model) model.setAttribute('visible', 'false');
     }
+
     function show3DModel(country) {
       const model = document.getElementById(`${country}-model`);
       const text = document.getElementById(`${country}-text`);
       model.setAttribute('visible', 'true');
       if (text) text.setAttribute('visible', 'false');
     }
+
     function resetAR() {
       document.querySelectorAll('[id$="-model"], [id$="-text"]').forEach(el => el.setAttribute('visible', 'false'));
     }
     
-    // Función para mostrar modelos 3D desde el panel de control
     function show3DModels() {
       alert('Para ver modelos 3D, escanea una bandera y pulsa el botón 🏆 o ⚽ que aparece sobre ella.');
     }
@@ -516,18 +631,21 @@
     function showStats() {
       alert('📊 Estadísticas del Mundial 2026\n\n• 48 equipos\n• 3 anfitriones\n• 16 sedes\n• 80 partidos');
     }
+
     function showInfo() {
       alert('ℹ️ Mundial 2026 AR\nEscanea banderas para ver contenido interactivo.\n\nFunciones:\n- Videos con filtros\n- Trivia del Mundial\n- Encuestas por país\n- Modelos 3D animados');
     }
 
     // === ESTADO DEL ESCANEO ===
     const scene = document.querySelector('a-scene');
-    scene.addEventListener('targetFound', () => {
-      document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
-    });
-    scene.addEventListener('targetLost', () => {
-      document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
-    });
+    if (scene) {
+      scene.addEventListener('targetFound', () => {
+        document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
+      });
+      scene.addEventListener('targetLost', () => {
+        document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
+      });
+    }
   </script>
 </body>
 </html>
