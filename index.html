@@ -3,21 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bandera Brasil AR</title>
+  <title>Mundial 2026 AR - Banderas</title>
 
   <!-- Librerías principales -->
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   <script src="https://aframe.io/releases/1.4.0/aframe-animation-component.min.js"></script>
+  <!-- MindAR (usar el build para A-Frame como módulo). El paquete aframe integra "mindar-image" internamente -->
   <script type="module" src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #009C3B 0%, #FFDF00 100%);
+      background: linear-gradient(135deg, #0056A5 0%, #E20020 100%);
       color: white;
       height: 100vh;
       overflow: hidden;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
     .header {
       background: rgba(0, 0, 0, 0.8);
@@ -30,8 +34,34 @@
     }
     .ar-container {
       width: 100%;
-      height: 100vh;
-      margin-top: 0;
+      height: 80vh;
+      margin-top: 60px;
+    }
+    .control-panel {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 15px;
+      display: flex;
+      justify-content: space-around;
+      z-index: 1000;
+    }
+    .control-btn {
+      background: #0056A5;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .control-btn:hover {
+      background: #E20020;
+      transform: scale(1.1);
     }
     .scanning-status {
       position: fixed;
@@ -43,16 +73,126 @@
       border-radius: 20px;
       z-index: 1000;
     }
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.95);
+      padding: 20px;
+      border-radius: 15px;
+      z-index: 2000;
+      min-width: 300px;
+      max-width: 90%;
+      display: none;
+    }
+    .modal.active { display: block; }
+    .modal-content { text-align: center; }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .trivia-option, .poll-option {
+      background: #0056A5;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .trivia-option:hover, .poll-option:hover { background: #E20020; }
+    .video-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 10px 0;
+    }
+    video {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .filter-btn {
+      background: #0056A5;
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    .filter-btn.active {
+      background: #E20020;
+    }
+    .mobile-tap-hint {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 20px;
+      border-radius: 20px;
+      z-index: 1000;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+    /* Overlay de estado de la cámara */
+    .camera-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .camera-overlay.active { display: flex; }
+    .camera-box { background: rgba(0,0,0,0.85); padding: 20px; border-radius: 12px; max-width: 420px; }
+    .camera-box button { margin-top: 12px; padding: 10px 16px; border-radius: 8px; border: none; background: #0056A5; color: white; cursor: pointer; }
   </style>
 </head>
 
 <body>
   <div class="header">
-    <h1>🇧🇷 Bandera Brasil AR</h1>
+    <h1>🇦🇷 Mundial 2026 AR - Banderas 🇧🇷</h1>
   </div>
 
   <div class="scanning-status" id="scanningStatus">
-    🔍 Enfoca la cámara a la bandera de Brasil
+    🔍 Enfoca la cámara a una bandera
+  </div>
+
+  <div class="mobile-tap-hint" id="mobileTapHint">
+    👆 Toca los círculos para interactuar
+  </div>
+
+  <!-- Overlay para errores/estado de la cámara -->
+  <div id="cameraOverlay" class="camera-overlay" role="dialog" aria-live="polite">
+    <div class="camera-box">
+      <h2 id="cameraOverlayTitle">No se pudo iniciar la cámara</h2>
+      <p id="cameraOverlayMsg">Esperando permisos o el acceso a la cámara. Asegúrate de permitir cámara y cerrar otras apps que la utilicen.</p>
+      <div style="display:flex; gap:8px; justify-content:center; margin-top:12px;">
+        <button id="cameraRetryBtn">Reintentar</button>
+        <button id="cameraHelpBtn">Ayuda</button>
+      </div>
+    </div>
   </div>
 
   <!-- Escena AR -->
@@ -64,195 +204,1039 @@
       renderer="colorManagement: true, physicallyCorrectLights"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
+      cursor="rayOrigin: mouse"
+      raycaster="objects: .clickable"
     >
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false">
+        <a-cursor 
+          id="cursor"
+          rayOrigin="mouse"
+          animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+          animation__fusing="property: scale; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+          event-set__1="_event: mouseenter; color: springgreen"
+          event-set__2="_event: mouseleave; color: black"
+          fuse="true"
+          fuse-timeout="50">
+        </a-cursor>
+      </a-camera>
 
-      <!-- TARGET 0 - Brasil -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <!-- Modelo de Brasil - VISIBLE DESDE EL INICIO -->
-        <a-entity id="brasil-model">
-          <!-- Esfera verde principal -->
+      <!-- TARGET 0 - Argentina -->
+      <a-entity mindar-image-target="targetIndex: 0" class="country-target">
+        <a-entity id="argentina-model" visible="false">
+          <!-- Modelo primitivo para mejor compatibilidad móvil -->
+          <a-cylinder 
+            class="clickable"
+            color="#74ACDF" 
+            height="0.8" 
+            radius="0.2"
+            position="0 0.4 0"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; startEvents: startAnimation">
+          </a-cylinder>
+          <a-text value="ARGENTINA" 
+                  position="0 1.0 0" 
+                  align="center" 
+                  color="#FFD700">
+          </a-text>
+        </a-entity>
+
+        <!-- Botones flotantes - Configurados para móvil -->
+        <a-entity 
+          position="-0.3 0.8 0" 
+          class="ar-button clickable" 
+          data-action="animateModel" 
+          data-target="argentina"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#0056A5" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+
+        <a-entity 
+          position="0 0.8 0" 
+          class="ar-button clickable" 
+          data-action="showText" 
+          data-target="argentina"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#E20020" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+
+        <a-entity 
+          position="0.3 0.8 0" 
+          class="ar-button clickable" 
+          data-action="show3DModel" 
+          data-target="argentina"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#74ACDF" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="🏆" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 1 - Brasil -->
+      <a-entity mindar-image-target="targetIndex: 1" class="country-target">
+        <a-entity id="brasil-model" visible="false">
+          <!-- Modelo primitivo para mejor compatibilidad móvil -->
           <a-sphere 
+            class="clickable"
             color="#009C3B" 
-            radius="0.5"
-            position="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 3000;"
-            visible="true">
+            radius="0.3"
+            position="0 0.5 0"
+            animation="property: rotation; to: 360 360 0; loop: true; dur: 3000; startEvents: startAnimation">
           </a-sphere>
-          
-          <!-- Texto BRASIL -->
-          <a-text 
-            value="BRASIL" 
-            position="0 1.2 0" 
-            align="center" 
-            color="#FFDF00"
-            scale="2 2 2"
-            visible="true">
+          <a-text value="BRASIL" 
+                  position="0 1.0 0" 
+                  align="center" 
+                  color="#FFDF00">
           </a-text>
-          
-          <!-- Texto descriptivo -->
-          <a-text 
-            value="5 veces Campeón del Mundo" 
-            position="0 0.8 0" 
-            align="center" 
-            color="#FFFFFF"
-            scale="1.5 1.5 1.5"
-            visible="true">
-          </a-text>
+        </a-entity>
+
+        <!-- Botones flotantes - Configurados para móvil -->
+        <a-entity 
+          position="-0.3 0.8 0" 
+          class="ar-button clickable" 
+          data-action="animateModel" 
+          data-target="brasil"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="🎬" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+
+        <a-entity 
+          position="0 0.8 0" 
+          class="ar-button clickable" 
+          data-action="showText" 
+          data-target="brasil"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#FFDF00" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="📝" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
+        </a-entity>
+
+        <a-entity 
+          position="0.3 0.8 0" 
+          class="ar-button clickable" 
+          data-action="show3DModel" 
+          data-target="brasil"
+          event-set__mouseenter="scale: 1.2 1.2 1.2"
+          event-set__mouseleave="scale: 1 1 1">
+          <a-ring color="#009C3B" radius-inner="0.03" radius-outer="0.05"></a-ring>
+          <a-text value="⚽" position="0 0 0.001" align="center" scale="2 2 2"></a-text>
         </a-entity>
       </a-entity>
     </a-scene>
   </div>
 
+  <!-- Panel de control -->
+  <div class="control-panel">
+    <button class="control-btn" onclick="openVideoModal()">🎥</button>
+    <button class="control-btn" onclick="openTriviaModal()">❓</button>
+    <button class="control-btn" onclick="openPollModal()">📊</button>
+    <button class="control-btn" onclick="show3DModels()">🔺</button>
+    <button class="control-btn" onclick="resetAR()">🔄</button>
+    <button class="control-btn" onclick="showInfo()">ℹ️</button>
+    <!-- Botón oculto para modo test sin cámara (toca 5 veces rápido) -->
+    <button id="testModeBtn" class="control-btn" style="display:none; background:#FF6600; font-size:12px;" onclick="toggleTestMode()" title="Modo Test">🧪</button>
+  </div>
+
+<!-- Modal de Videos -->
+  <div id="videoModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeVideoModal()">×</button>
+      <h2>🎥 Videos del Mundial</h2>
+      
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="applyVideoFilter('none')">Normal</button>
+        <button class="filter-btn" onclick="applyVideoFilter('grayscale')">Grises</button>
+        <button class="filter-btn" onclick="applyVideoFilter('sepia')">Sepia</button>
+      </div>
+
+      <div class="video-option">
+        <h3>Argentina vs Brasil</h3>
+        <div class="video-container">
+          <video id="video1" controls>
+            <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
+            Tu navegador no soporta video.
+          </video>
+        </div>
+        <button class="trivia-option" onclick="playVideo('video1')">Reproducir Video</button>
+      </div>
+
+      <div class="video-option" style="margin-top: 20px;">
+        <h3>Francia vs Alemania</h3>
+        <div class="video-container">
+          <video id="video2" controls>
+            <source src="https://assets.codepen.io/3364143/2020-vw-id3-01.mp4" type="video/mp4">
+            Tu navegador no soporta video.
+          </video>
+        </div>
+        <button class="trivia-option" onclick="playVideo('video2')">Reproducir Video</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Trivia -->
+  <div id="triviaModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeTriviaModal()">×</button>
+      <h2>❓ Trivia del Mundial 2026</h2>
+      <div id="triviaQuestion"></div>
+      <div id="triviaOptions"></div>
+      <div id="triviaResult" style="margin-top: 15px; font-weight: bold;"></div>
+      <button class="trivia-option" onclick="nextTriviaQuestion()" style="margin-top: 15px;">Siguiente Pregunta</button>
+    </div>
+  </div>
+
+  <!-- Modal de Encuestas -->
+  <div id="pollModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closePollModal()">×</button>
+      <h2>📊 Encuestas del Mundial</h2>
+      <div id="pollQuestion"></div>
+      <div id="pollOptions"></div>
+      <div id="pollResult" style="margin-top: 15px; font-weight: bold;"></div>
+      <button class="poll-option" onclick="nextPollQuestion()" style="margin-top: 15px;">Siguiente Encuesta</button>
+    </div>
+  </div>
   <script>
-    // === DETECCIÓN DE BANDERA BRASIL ===
+    // === CONFIGURACIÓN MÓVIL ===
     document.addEventListener('DOMContentLoaded', function() {
-      console.log("Iniciando detección AR para bandera de Brasil");
+      // Detectar si es móvil
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
-      const scene = document.querySelector('a-scene');
-      
-      scene.addEventListener('loaded', function() {
-        console.log("Escena AR cargada correctamente");
-        
-        // Configurar detección específica para Brasil
-        setupBrasilDetection();
-        
-        // Verificar que el modelo existe
-        const brasilModel = document.getElementById('brasil-model');
-        console.log("Modelo Brasil encontrado:", brasilModel);
-        
-        if (brasilModel) {
-          console.log("Hijos del modelo Brasil:", brasilModel.children);
-        }
-      });
-    });
-
-    function setupBrasilDetection() {
-      const brasilTarget = document.querySelector('[mindar-image-target="targetIndex: 0"]');
-      const statusElement = document.getElementById('scanningStatus');
-
-      if (!brasilTarget) {
-        console.error("No se encontró el target de Brasil");
-        return;
+      if (isMobile) {
+        console.log("Dispositivo móvil detectado");
+        document.body.classList.add('mobile');
       }
 
-      console.log("Target Brasil encontrado:", brasilTarget);
+      // Configurar eventos táctiles para A-Frame
+      setupARTouchEvents();
+    });
 
-      // Escuchar cuando se detecta la bandera de Brasil
-      brasilTarget.addEventListener('targetFound', (event) => {
-        console.log('✅ Bandera de Brasil DETECTADA');
-        statusElement.textContent = '✅ Bandera de Brasil detectada - Modelo visible';
-        
-        // Forzar que todos los elementos sean visibles
-        const brasilModel = document.getElementById('brasil-model');
-        if (brasilModel) {
-          console.log("Haciendo visible el modelo Brasil");
-          
-          // Hacer visible el contenedor principal
-          brasilModel.setAttribute('visible', 'true');
-          
-          // Hacer visibles todos los hijos
-          const children = brasilModel.children;
-          for (let i = 0; i < children.length; i++) {
-            const child = children[i];
-            child.setAttribute('visible', 'true');
-            console.log("Hijo hecho visible:", child.tagName);
-          }
-          
-          // Iniciar animaciones
-          const animatedElements = brasilModel.querySelectorAll('[animation]');
-          animatedElements.forEach(el => {
-            el.setAttribute('animation', 'enabled', 'true');
-            console.log("Animación iniciada en:", el.tagName);
-          });
-        }
-      });
-
-      // Escuchar cuando se pierde la bandera de Brasil
-      brasilTarget.addEventListener('targetLost', (event) => {
-        console.log('❌ Bandera de Brasil PERDIDA');
-        statusElement.textContent = '🔍 Enfoca la cámara a la bandera de Brasil';
-        
-        // Ocultar el modelo
-        const brasilModel = document.getElementById('brasil-model');
-        if (brasilModel) {
-          brasilModel.setAttribute('visible', 'false');
-          
-          // Ocultar todos los hijos
-          const children = brasilModel.children;
-          for (let i = 0; i < children.length; i++) {
-            children[i].setAttribute('visible', 'false');
-          }
-          
-          // Pausar animaciones
-          const animatedElements = brasilModel.querySelectorAll('[animation]');
-          animatedElements.forEach(el => {
-            el.setAttribute('animation', 'enabled', 'false');
-          });
-        }
-      });
-
-      // También escuchar eventos a nivel de escena
+    function setupARTouchEvents() {
       const scene = document.querySelector('a-scene');
-      scene.addEventListener('targetFound', (event) => {
-        console.log('Evento global targetFound:', event.detail);
-      });
+      
+      // Esperar a que la escena cargue
+      scene.addEventListener('loaded', function() {
+        console.log("Escena AR cargada, configurando eventos móviles");
+        
+        // Mostrar hint para móviles
+        setTimeout(() => {
+          document.getElementById('mobileTapHint').style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('mobileTapHint').style.display = 'none';
+          }, 5000);
+        }, 2000);
 
-      scene.addEventListener('targetLost', (event) => {
-        console.log('Evento global targetLost:', event.detail);
+        // Configurar eventos de clic para elementos AR
+        document.querySelectorAll('.ar-button').forEach(btn => {
+          // Evento para desktop
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            handleARButtonClick(this);
+          });
+          
+          // Evento táctil para móvil
+          btn.addEventListener('touchstart', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            this.setAttribute('scale', '1.1 1.1 1.1');
+          });
+          
+          btn.addEventListener('touchend', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            this.setAttribute('scale', '1 1 1');
+            handleARButtonClick(this);
+          });
+        });
       });
     }
 
-    // === MODO TEST (para desarrollo) ===
-    (function setupTestMode() {
-      // Activar modo test tocando 3 veces el header
-      let headerClicks = 0;
-      const header = document.querySelector('.header');
+    function handleARButtonClick(button) {
+      const action = button.getAttribute('data-action');
+      const target = button.getAttribute('data-target');
       
-      header.addEventListener('click', () => {
-        headerClicks++;
-        if (headerClicks === 3) {
-          console.log('🧪 MODO TEST ACTIVADO');
-          alert('Modo test activado. Usa la consola para:\n- testBrasilFound()\n- testBrasilLost()');
-          headerClicks = 0;
+      console.log(`Botón presionado: ${action} para ${target}`);
+      
+      // Feedback visual
+      button.setAttribute('animation', {
+        property: 'scale',
+        to: '1.3 1.3 1.3',
+        dur: 200,
+        dir: 'alternate'
+      });
+      
+      setTimeout(() => {
+        handleARButton(action, target);
+      }, 100);
+    }
+
+    // === FUNCIONES AR ACTUALIZADAS ===
+    function handleARButton(action, target) {
+      console.log(`Ejecutando: ${action} en ${target}`);
+      
+      switch(action) {
+        case 'animateModel':
+          animateModel(target);
+          break;
+        case 'showText':
+          showText(target);
+          break;
+        case 'show3DModel':
+          show3DModel(target);
+          break;
+      }
+    }
+
+    function animateModel(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      
+      if (model) {
+        model.setAttribute('visible', 'true');
+        // Iniciar animación
+        const animatedElements = model.querySelectorAll('[animation]');
+        animatedElements.forEach(el => {
+          el.emit('startAnimation');
+        });
+      }
+      
+      if (text) text.setAttribute('visible', 'false');
+    }
+
+    function showText(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      
+      if (model) model.setAttribute('visible', 'false');
+      if (text) text.setAttribute('visible', 'true');
+    }
+
+    function show3DModel(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      
+      if (model) {
+        model.setAttribute('visible', 'true');
+        // Detener animaciones
+        const animatedElements = model.querySelectorAll('[animation]');
+        animatedElements.forEach(el => {
+          el.emit('stopAnimation');
+        });
+      }
+      
+      if (text) text.setAttribute('visible', 'false');
+    }
+
+    function resetAR() {
+      document.querySelectorAll('[id$="-model"], [id$="-text"]').forEach(el => {
+        el.setAttribute('visible', 'false');
+      });
+    }
+    // Verificar si las variables ya existen para evitar redeclaración
+    if (typeof window.triviaData === 'undefined') {
+      // === TRIVIA ===
+      window.triviaData = [
+        { 
+          country: "Argentina", 
+          questions: [
+            { 
+              question: "¿En qué año ganó Argentina su primera Copa del Mundo?", 
+              options: ["1978", "1986", "1990", "2014"], 
+              correct: 0 
+            },
+            { 
+              question: "¿Quién es el máximo goleador histórico de Argentina?", 
+              options: ["Lionel Messi", "Gabriel Batistuta", "Diego Maradona", "Sergio Agüero"], 
+              correct: 1 
+            }
+          ]
+        },
+        { 
+          country: "Brasil", 
+          questions: [
+            { 
+              question: "¿Cuántas Copas del Mundo tiene Brasil?", 
+              options: ["3", "4", "5", "6"], 
+              correct: 2 
+            },
+            { 
+              question: "¿Quién es el 'Rey del Fútbol' brasileño?", 
+              options: ["Pelé", "Ronaldo", "Ronaldinho", "Neymar"], 
+              correct: 0 
+            }
+          ]
         }
-        setTimeout(() => { headerClicks = 0; }, 2000);
+      ];
+
+      // Variables globales para la trivia
+      window.currentTriviaQuestions = [];
+      window.currentQuestionIndex = 0;
+      window.score = 0;
+    }
+
+    if (typeof window.pollData === 'undefined') {
+      // === ENCUESTAS ===
+      window.pollData = [
+        { 
+          country: "Argentina", 
+          polls: [
+            { 
+              question: "¿Quién será el goleador de Argentina en el 2026?", 
+              options: ["Lionel Messi", "Julián Álvarez", "Lautaro Martínez", "Ninguno"] 
+            },
+            { 
+              question: "¿Argentina llegará a la final?", 
+              options: ["Sí", "No", "No sé", "Ojalá"] 
+            },
+            { 
+              question: "¿Cuál es el mejor jugador argentino de la historia?", 
+              options: ["Lionel Messi", "Diego Maradona", "Alfredo Di Stéfano", "Gabriel Batistuta"] 
+            },
+            { 
+              question: "¿En qué fase quedará eliminado Argentina?", 
+              options: ["Fase de grupos", "Octavos", "Cuartos", "No será eliminado"] 
+            },
+            { 
+              question: "¿Quién debería ser el capitán?", 
+              options: ["Lionel Messi", "Emiliano Martínez", "Cuti Romero", "De Paul"] 
+            }
+          ]
+        },
+        { 
+          country: "Brasil", 
+          polls: [
+            { 
+              question: "¿Brasil ganará el mundial 2026?", 
+              options: ["Sí", "No", "No sé", "Ojalá"] 
+            },
+            { 
+              question: "¿Quién será el mejor jugador brasileño?", 
+              options: ["Vinicius Jr", "Neymar", "Rodrygo", "Alisson"] 
+            },
+            { 
+              question: "¿Cuál es la mayor debilidad de Brasil?", 
+              options: ["Defensa", "Mediocampo", "Ataque", "No tiene debilidades"] 
+            },
+            { 
+              question: "¿Brasil llegará a semifinales?", 
+              options: ["Sí", "No", "No sé", "Ojalá"] 
+            },
+            { 
+              question: "¿Quién es el mejor entrenador para Brasil?", 
+              options: ["Tite", "Ancelotti", "Guardiola", "Klopp"] 
+            }
+          ]
+        }
+      ];
+
+      // Variables globales para encuestas
+      window.currentPollQuestions = [];
+      window.currentPollIndex = 0;
+    }
+
+    // === FUNCIONES TRIVIA ===
+    function openTriviaModal() {
+      // Método compatible para obtener todas las preguntas
+      const allQuestions = [];
+      for (let i = 0; i < window.triviaData.length; i++) {
+        const country = window.triviaData[i];
+        for (let j = 0; j < country.questions.length; j++) {
+          allQuestions.push(country.questions[j]);
+        }
+      }
+      
+      window.currentTriviaQuestions = getRandomQuestions(allQuestions, 5);
+      window.currentQuestionIndex = 0; 
+      window.score = 0;
+      document.getElementById('triviaModal').classList.add('active');
+      showTriviaQuestion();
+    }
+
+    function closeTriviaModal() { 
+      document.getElementById('triviaModal').classList.remove('active'); 
+    }
+
+    function getRandomQuestions(questions, count) {
+      const shuffled = questions.slice();
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = temp;
+      }
+      return shuffled.slice(0, count);
+    }
+
+    function showTriviaQuestion() {
+      if (window.currentQuestionIndex >= window.currentTriviaQuestions.length) {
+        return showTriviaResults();
+      }
+      
+      const q = window.currentTriviaQuestions[window.currentQuestionIndex];
+      const qE = document.getElementById('triviaQuestion');
+      const oE = document.getElementById('triviaOptions');
+      const rE = document.getElementById('triviaResult');
+      
+      qE.innerHTML = `<h3>${q.question}</h3>`;
+      rE.textContent = '';
+      rE.style.color = '';
+      oE.innerHTML = '';
+      
+      for (let i = 0; i < q.options.length; i++) {
+        const opt = q.options[i];
+        const b = document.createElement('button');
+        b.className = 'trivia-option'; 
+        b.textContent = opt;
+        b.onclick = function() { checkAnswer(i); };
+        oE.appendChild(b);
+      }
+    }
+
+    function checkAnswer(selectedIndex) {
+      const q = window.currentTriviaQuestions[window.currentQuestionIndex];
+      const rE = document.getElementById('triviaResult');
+      
+      if (selectedIndex === q.correct) { 
+        rE.textContent = '✅ ¡Correcto!'; 
+        rE.style.color = '#00FF00'; 
+        window.score++; 
+      } else { 
+        rE.textContent = `❌ Incorrecto. La respuesta correcta era: ${q.options[q.correct]}`; 
+        rE.style.color = '#FF0000'; 
+      }
+    }
+
+    function nextTriviaQuestion() { 
+      window.currentQuestionIndex++; 
+      showTriviaQuestion(); 
+    }
+
+    function showTriviaResults() {
+      const qE = document.getElementById('triviaQuestion');
+      const oE = document.getElementById('triviaOptions');
+      const rE = document.getElementById('triviaResult');
+      
+      qE.innerHTML = `<h3>🎉 Resultado Final</h3>`;
+      oE.innerHTML = '';
+      rE.textContent = `Obtuviste ${window.score} de ${window.currentTriviaQuestions.length} preguntas correctas`;
+      rE.style.color = '#FFD700';
+    }
+
+    // === FUNCIONES ENCUESTAS ===
+    function openPollModal() {
+      const allPolls = [];
+      for (let i = 0; i < window.pollData.length; i++) {
+        const country = window.pollData[i];
+        for (let j = 0; j < country.polls.length; j++) {
+          allPolls.push(country.polls[j]);
+        }
+      }
+      
+      window.currentPollQuestions = getRandomQuestions(allPolls, 1);
+      window.currentPollIndex = 0;
+      document.getElementById('pollModal').classList.add('active');
+      showPollQuestion();
+    }
+
+    function closePollModal() { 
+      document.getElementById('pollModal').classList.remove('active'); 
+    }
+
+    function showPollQuestion() {
+      if (window.currentPollIndex >= window.currentPollQuestions.length) return;
+      
+      const q = window.currentPollQuestions[window.currentPollIndex];
+      const qE = document.getElementById('pollQuestion');
+      const oE = document.getElementById('pollOptions');
+      const rE = document.getElementById('pollResult');
+      
+      qE.innerHTML = `<h3>${q.question}</h3>`;
+      rE.textContent = '';
+      rE.style.color = '';
+      oE.innerHTML = '';
+      
+      for (let i = 0; i < q.options.length; i++) {
+        const opt = q.options[i];
+        const b = document.createElement('button');
+        b.className = 'poll-option'; 
+        b.textContent = opt;
+        b.onclick = function() { submitPollAnswer(i); };
+        oE.appendChild(b);
+      }
+    }
+
+    function submitPollAnswer(i) {
+      const rE = document.getElementById('pollResult');
+      rE.textContent = '✅ ¡Gracias por tu respuesta!';
+      rE.style.color = '#00FF00';
+    }
+
+    function nextPollQuestion() {
+      const allPolls = [];
+      for (let i = 0; i < window.pollData.length; i++) {
+        const country = window.pollData[i];
+        for (let j = 0; j < country.polls.length; j++) {
+          allPolls.push(country.polls[j]);
+        }
+      }
+      
+      window.currentPollQuestions = getRandomQuestions(allPolls, 1);
+      window.currentPollIndex = 0;
+      showPollQuestion();
+    }
+
+    // === VIDEOS ===
+    function openVideoModal() { 
+      document.getElementById('videoModal').classList.add('active'); 
+      applyVideoFilter('none');
+    }
+
+    function closeVideoModal() {
+      document.getElementById('videoModal').classList.remove('active');
+      document.querySelectorAll('video').forEach(v => v.pause());
+    }
+
+    function playVideo(id) {
+      document.querySelectorAll('video').forEach(v => { if (v.id !== id) v.pause(); });
+      const v = document.getElementById(id);
+      v.paused ? v.play() : v.pause();
+    }
+    
+    function applyVideoFilter(filter) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      document.querySelectorAll('video').forEach(video => {
+        switch(filter) {
+          case 'grayscale':
+            video.style.filter = 'grayscale(100%)';
+            break;
+          case 'sepia':
+            video.style.filter = 'sepia(100%)';
+            break;
+          default:
+            video.style.filter = 'none';
+        }
+      });
+    }
+
+    // === AR BOTONES ===
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.ar-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const action = btn.getAttribute('data-action');
+          const target = btn.getAttribute('data-target');
+          handleARButton(action, target);
+        });
+      });
+    });
+
+    function handleARButton(action, target) {
+      if (action === 'animateModel') animateModel(target);
+      else if (action === 'showText') showText(target);
+      else if (action === 'show3DModel') show3DModel(target);
+    }
+
+    function animateModel(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      model.setAttribute('visible', 'true');
+      model.emit('startAnimation');
+      if (text) text.setAttribute('visible', 'false');
+    }
+
+    function showText(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      if (text) text.setAttribute('visible', 'true');
+      if (model) model.setAttribute('visible', 'false');
+    }
+
+    function show3DModel(country) {
+      const model = document.getElementById(`${country}-model`);
+      const text = document.getElementById(`${country}-text`);
+      model.setAttribute('visible', 'true');
+      if (text) text.setAttribute('visible', 'false');
+    }
+
+    function resetAR() {
+      document.querySelectorAll('[id$="-model"], [id$="-text"]').forEach(el => el.setAttribute('visible', 'false'));
+    }
+    
+    function show3DModels() {
+      alert('Para ver modelos 3D, escanea una bandera y pulsa el botón 🏆 o ⚽ que aparece sobre ella.');
+    }
+
+    // === INFO ===
+    function showStats() {
+      alert('📊 Estadísticas del Mundial 2026\n\n• 48 equipos\n• 3 anfitriones\n• 16 sedes\n• 80 partidos');
+    }
+
+    function showInfo() {
+      alert('ℹ️ Mundial 2026 AR\nEscanea banderas para ver contenido interactivo.\n\nFunciones:\n- Videos con filtros\n- Trivia del Mundial\n- Encuestas por país\n- Modelos 3D animados');
+    }
+
+    // === ESTADO DEL ESCANEO ===
+    const scene = document.querySelector('a-scene');
+    if (scene) {
+      // Escuchar eventos globales que emite MindAR. Usar event.detail para obtener índice de target.
+      scene.addEventListener('targetFound', (e) => {
+        console.log('Evento scene targetFound detail=', e && e.detail);
+        document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
+
+        // Determinar índice del target (compatibilidad con distintas versiones)
+        const idx = (e && e.detail && (e.detail.targetIndex ?? e.detail.index)) ?? null;
+        if (idx !== null && idx !== undefined) {
+          // Buscar el target correspondiente y mostrar su modelo
+          const selector = Array.from(document.querySelectorAll('[mindar-image-target]')).find(el => {
+            const attr = el.getAttribute('mindar-image-target') || '';
+            return attr.includes(`targetIndex: ${idx}`) || attr.includes(`targetIndex:${idx}`);
+          });
+          if (selector) {
+            console.log('Mostrando modelo para targetIndex=', idx, selector);
+            const model = selector.querySelector('[id$="-model"]');
+            if (model) {
+              console.log('Modelo encontrado dentro del target:', model);
+              // Forzar visibilidad en el contenedor y en todos sus hijos (primitivas a-sphere/a-cylinder etc.)
+              try {
+                model.setAttribute('visible', 'true');
+              } catch(e){}
+              // Forzar también en object3D cuando exista
+              try { if (model.object3D) model.object3D.visible = true; } catch(e){}
+
+              // Recorrer hijos y forzar visibilidad/escala (por si están a 0)
+              const childs = model.querySelectorAll('*');
+              childs.forEach(ch => {
+                try { ch.setAttribute('visible', 'true'); } catch(e){}
+                try { if (ch.object3D) ch.object3D.visible = true; } catch(e){}
+                // si la escala está en 0, forzar a 1
+                try {
+                  const scale = ch.getAttribute('scale');
+                  if (!scale || scale === '0 0 0' || scale === '0 0 0.0') ch.setAttribute('scale', '1 1 1');
+                } catch(e){}
+              });
+
+              // Iniciar cualquier animación interna
+              model.querySelectorAll('[animation]').forEach(el => { try { el.emit('startAnimation'); } catch(e){} });
+            } else {
+              console.warn('No se encontró *-model dentro del targetIndex', idx);
+            }
+          } else {
+            console.warn('No se encontró el selector para targetIndex', idx);
+          }
+        } else {
+          // Fallback: intentar mostrar todos los modelos dentro de cualquier target (menos seguro)
+          console.log('targetFound sin índice; mostrando todos los modelos como fallback');
+          document.querySelectorAll('[id$="-model"]').forEach(m => m.setAttribute('visible', 'true'));
+        }
       });
 
-      // Función para simular detección
-      window.testBrasilFound = function() {
-        console.log('🧪 SIMULANDO DETECCIÓN BRASIL');
-        const brasilTarget = document.querySelector('[mindar-image-target="targetIndex: 0"]');
-        if (brasilTarget) {
-          const event = new CustomEvent('targetFound');
-          brasilTarget.dispatchEvent(event);
-        }
-      };
+      scene.addEventListener('targetLost', (e) => {
+        console.log('Evento scene targetLost detail=', e && e.detail);
+        document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
 
-      // Función para simular pérdida de detección
-      window.testBrasilLost = function() {
-        console.log('🧪 SIMULANDO PÉRDIDA BRASIL');
-        const brasilTarget = document.querySelector('[mindar-image-target="targetIndex: 0"]');
-        if (brasilTarget) {
-          const event = new CustomEvent('targetLost');
-          brasilTarget.dispatchEvent(event);
+        const idx = (e && e.detail && (e.detail.targetIndex ?? e.detail.index)) ?? null;
+        if (idx !== null && idx !== undefined) {
+          const selector = Array.from(document.querySelectorAll('[mindar-image-target]')).find(el => {
+            const attr = el.getAttribute('mindar-image-target') || '';
+            return attr.includes(`targetIndex: ${idx}`) || attr.includes(`targetIndex:${idx}`);
+          });
+          if (selector) {
+            const model = selector.querySelector('[id$="-model"]');
+            if (model) {
+              model.setAttribute('visible', 'false');
+              model.querySelectorAll('[animation]').forEach(el => { try { el.emit('stopAnimation'); } catch(e){} });
+            }
+          }
+        } else {
+          // Fallback: ocultar todos
+          document.querySelectorAll('[id$="-model"]').forEach(m => m.setAttribute('visible', 'false'));
         }
-      };
+      });
+    }
 
-      console.log('ℹ️ Para probar sin cámara:');
-      console.log('1. Toca el header 3 veces rápido');
-      console.log('2. En consola usa: testBrasilFound()');
-      console.log('3. Luego usa: testBrasilLost()');
+    // === WATCHDOG/CAMARA ===
+    (function setupCameraWatchdog() {
+      const overlay = document.getElementById('cameraOverlay');
+      const retryBtn = document.getElementById('cameraRetryBtn');
+      const helpBtn = document.getElementById('cameraHelpBtn');
+      const overlayTitle = document.getElementById('cameraOverlayTitle');
+      const overlayMsg = document.getElementById('cameraOverlayMsg');
+
+      let cameraStarted = false;
+      // MindAR normalmente emite events relacionados con video en el elemento <a-scene>
+      const sc = document.querySelector('a-scene');
+
+      function showOverlay(title, msg) {
+        overlayTitle.textContent = title;
+        overlayMsg.textContent = msg;
+        overlay.classList.add('active');
+      }
+
+      function hideOverlay() { overlay.classList.remove('active'); }
+
+      // Listener para error conocido
+      window.addEventListener('error', (ev) => {
+        const m = ev && ev.message ? ev.message : '';
+        if (m && /NotReadableError|Could not start video source/i.test(m)) {
+          showOverlay('No se puede acceder a la cámara', 'Parece que la cámara está en uso o no está disponible. Cierra otras aplicaciones que usen la cámara y pulsa Reintentar.');
+        }
+      });
+
+      // Intentar detectar cuando el video comienza: MindAR usa internal events, pero podemos vigilar cambios en video elements
+      const checkInterval = setInterval(() => {
+        // buscar elementos de video en la escena
+        const video = document.querySelector('video');
+        if (video) {
+          if (!video.paused || video.readyState >= 2) {
+            cameraStarted = true;
+            hideOverlay();
+            clearInterval(checkInterval);
+            console.log('Video/cámara aparentemente iniciada');
+          }
+        }
+      }, 800);
+
+      // Después de un tiempo, si no arrancó la cámara, mostrar overlay
+      setTimeout(() => {
+        if (!cameraStarted) {
+          showOverlay('La cámara no responde', 'No se detectó la cámara. Comprueba permisos y que ninguna otra aplicación esté usando la cámara, luego pulsa Reintentar.');
+        }
+      }, 5000);
+
+      retryBtn.addEventListener('click', () => {
+        hideOverlay();
+        // intentar reiniciar la página para re-iniciar getUserMedia y MindAR
+        console.log('Reintentando acceso a la cámara (recargando página)');
+        location.reload();
+      });
+
+      helpBtn.addEventListener('click', () => {
+        alert('Pasos recomendados:\n1) Asegúrate de que no hay otra app usando la cámara.\n2) En configuración del navegador, permite el acceso a la cámara.\n3) Recarga esta página y acepta el permiso cuando el navegador lo pida.');
+      });
     })();
 
-    // Verificar el estado cada 2 segundos
-    setInterval(() => {
-      const brasilModel = document.getElementById('brasil-model');
-      if (brasilModel) {
-        const isVisible = brasilModel.getAttribute('visible');
-        console.log('Estado modelo Brasil - Visible:', isVisible);
+    // Añadir listeners específicos por target para asegurar que el modelo
+    // correspondiente se muestre/oculte cuando se detecte/mande perder el target.
+    // Esto ayuda a diagnosticar por qué el modelo no aparece al escanear.
+    const aframeScene = document.querySelector('a-scene');
+    if (aframeScene) {
+      aframeScene.addEventListener('loaded', () => {
+        console.log('A-Frame escena cargada: registrando listeners por target');
+        const targets = document.querySelectorAll('.country-target');
+        targets.forEach((tgt, idx) => {
+          // Escuchar targetFound/targetLost en cada entidad objetivo
+          tgt.addEventListener('targetFound', () => {
+            console.log(`targetFound en country-target index=${idx}`);
+            // Buscar dentro del target un elemento con id que termine en -model
+            const model = tgt.querySelector('[id$="-model"]');
+            if (model) {
+              model.setAttribute('visible', 'true');
+              // Iniciar cualquier animación interna
+              model.querySelectorAll('[animation]').forEach(el => {
+                try { el.emit('startAnimation'); } catch (e) { /* safe */ }
+              });
+            } else {
+              console.warn('No se encontró elemento *-model dentro del target', tgt);
+            }
+            document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
+          });
+
+          tgt.addEventListener('targetLost', () => {
+            console.log(`targetLost en country-target index=${idx}`);
+            const model = tgt.querySelector('[id$="-model"]');
+            if (model) {
+              model.setAttribute('visible', 'false');
+              model.querySelectorAll('[animation]').forEach(el => {
+                try { el.emit('stopAnimation'); } catch (e) { /* safe */ }
+              });
+            }
+            document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
+          });
+        });
+      });
+    }
+    // === DEBUG Y MANEJO DE MODELOS ===
+function checkModels() {
+  console.log("Verificando modelos 3D...");
+  
+  // Verificar si los modelos se cargaron
+  const argentinaModel = document.querySelector('[gltf-model*="world-cup-trophy"]');
+  const brasilModel = document.querySelector('[gltf-model*="soccer-ball"]');
+  
+  console.log("Modelo Argentina:", argentinaModel);
+  console.log("Modelo Brasil:", brasilModel);
+  
+  // Si los modelos GLTF fallan, mostrar modelos de respaldo
+  setTimeout(() => {
+    document.querySelectorAll('[gltf-model]').forEach(model => {
+      const fallback = model.querySelector('.fallback-model');
+      if (fallback && !model.hasLoaded) {
+        console.log("Modelo GLTF falló, mostrando respaldo");
+        fallback.setAttribute('visible', 'true');
       }
-    }, 2000);
+    });
+  }, 2000);
+}
+
+// Modificar la función show3DModel para mejor debug
+function show3DModel(country) {
+  console.log(`Mostrando modelo 3D para: ${country}`);
+  
+  const model = document.getElementById(`${country}-model`);
+  const text = document.getElementById(`${country}-text`);
+  
+  if (!model) {
+    console.error(`Modelo no encontrado: ${country}-model`);
+    return;
+  }
+  
+  model.setAttribute('visible', 'true');
+  
+  // Forzar la animación
+  const animatedElement = model.querySelector('[animation]');
+  if (animatedElement) {
+    animatedElement.emit('startAnimation');
+    console.log("Animación iniciada");
+  }
+  
+  if (text) text.setAttribute('visible', 'false');
+  
+  // Verificar el estado después de un momento
+  setTimeout(() => {
+    console.log(`Modelo ${country} visible:`, model.getAttribute('visible'));
+  }, 500);
+}
+
+// Verificar modelos cuando la escena cargue
+document.querySelector('a-scene').addEventListener('loaded', checkModels);
+
+// === DEBUG ADICIONAL: escuchar eventos targetFound/targetLost en captura ===
+(function setupDebugEventCapture() {
+  function logEvent(e) {
+    try {
+      console.log('CAPTURE EVENT:', e.type, 'target=', e.target, 'currentTarget=', e.currentTarget, 'detail=', e.detail);
+      // si el evento tiene índice, intentar mapear al selector
+      const idx = (e && e.detail && (e.detail.targetIndex ?? e.detail.index)) ?? null;
+      if (idx !== null) console.log('CAPTURE: índice detectado=', idx);
+
+      // Mostrar estado de modelos dentro del elemento que recibió el evento
+      const el = e.target && e.target.nodeType === 1 ? e.target : document;
+      const argentina = el.querySelector ? el.querySelector('#argentina-model') : null;
+      const brasil = el.querySelector ? el.querySelector('#brasil-model') : null;
+      console.log('CAPTURE: argentina-model (from event target) =', argentina ? argentina.getAttribute('visible') : 'no-encontrado');
+      console.log('CAPTURE: brasil-model (from event target) =', brasil ? brasil.getAttribute('visible') : 'no-encontrado');
+    } catch (err) {
+      console.error('Error en logEvent debug:', err);
+    }
+  }
+
+  // Capturar en document y en la escena (capturing=true)
+  document.addEventListener('targetFound', logEvent, true);
+  document.addEventListener('targetLost', logEvent, true);
+  const sc = document.querySelector('a-scene');
+  if (sc) {
+    sc.addEventListener('targetFound', logEvent, true);
+    sc.addEventListener('targetLost', logEvent, true);
+  }
+
+  // Monitor periódico del estado de los modelos principales
+  setInterval(() => {
+    const a = document.getElementById('argentina-model');
+    const b = document.getElementById('brasil-model');
+    console.log('MONITOR: argentina-model visible=', a ? a.getAttribute('visible') : 'no-encontrado', ' brasil-model visible=', b ? b.getAttribute('visible') : 'no-encontrado');
+  }, 3000);
+})();
+
+// === MODO TEST: Simular targetFound/targetLost sin cámara ===
+(function setupTestMode() {
+  let testModeEnabled = false;
+  let currentTarget = null;
+
+  // Activar botón test (toca 5 veces el logo en 2 segundos)
+  let headerClicks = 0;
+  const header = document.querySelector('.header');
+  if (header) {
+    header.addEventListener('click', () => {
+      headerClicks++;
+      if (headerClicks === 5) {
+        testModeEnabled = !testModeEnabled;
+        const btn = document.getElementById('testModeBtn');
+        if (btn) btn.style.display = testModeEnabled ? 'block' : 'none';
+        console.log('🧪 MODO TEST:', testModeEnabled ? 'ACTIVADO' : 'DESACTIVADO');
+        headerClicks = 0;
+      }
+      setTimeout(() => { headerClicks = 0; }, 2000);
+    });
+  }
+
+  // Funciones de simulación disponibles en la consola
+  window.simulateTargetFound = function(targetIndex) {
+    if (!testModeEnabled) {
+      console.warn('Modo test desactivado. Toca el header 5 veces rápido para activarlo.');
+      return;
+    }
+    currentTarget = targetIndex;
+    const scene = document.querySelector('a-scene');
+    if (scene) {
+      const evt = new CustomEvent('targetFound', { detail: { targetIndex: targetIndex } });
+      scene.dispatchEvent(evt);
+      console.log(`✅ targetFound simulado: targetIndex=${targetIndex}`);
+    }
+  };
+
+  window.simulateTargetLost = function() {
+    if (!testModeEnabled) {
+      console.warn('Modo test desactivado. Toca el header 5 veces rápido para activarlo.');
+      return;
+    }
+    const scene = document.querySelector('a-scene');
+    if (scene) {
+      const evt = new CustomEvent('targetLost', { detail: { targetIndex: currentTarget } });
+      scene.dispatchEvent(evt);
+      console.log(`❌ targetLost simulado: targetIndex=${currentTarget}`);
+    }
+    currentTarget = null;
+  };
+
+  window.showAllModels = function() {
+    document.querySelectorAll('[id$="-model"]').forEach(m => {
+      m.setAttribute('visible', 'true');
+      m.querySelectorAll('[animation]').forEach(el => { try { el.emit('startAnimation'); } catch(e){} });
+    });
+    console.log('📺 Todos los modelos visibles');
+  };
+
+  window.hideAllModels = function() {
+    document.querySelectorAll('[id$="-model"]').forEach(m => {
+      m.setAttribute('visible', 'false');
+      m.querySelectorAll('[animation]').forEach(el => { try { el.emit('stopAnimation'); } catch(e){} });
+    });
+    console.log('🚫 Todos los modelos ocultos');
+  };
+
+  // Botón para toggle test
+  window.toggleTestMode = function() {
+    testModeEnabled = !testModeEnabled;
+    const btn = document.getElementById('testModeBtn');
+    if (btn) btn.style.display = testModeEnabled ? 'block' : 'none';
+    console.log('🧪 Modo test toggled:', testModeEnabled);
+  };
+
+  console.log('%c🧪 MODO TEST DISPONIBLE', 'color: #FF6600; font-size: 14px; font-weight: bold;');
+  console.log('%cToca el header 5 veces rápido para activar, luego usa en consola:', 'color: #FFF;');
+  console.log('%csimulateTargetFound(0) // para Argentina', 'color: #74ACDF;');
+  console.log('%csimulateTargetFound(1) // para Brasil', 'color: #009C3B;');
+  console.log('%csimulateTargetLost() // perder target', 'color: #FF0000;');
+  console.log('%cshowAllModels() // mostrar todos', 'color: #00FF00;');
+  console.log('%chideAllModels() // ocultar todos', 'color: #FF0000;');
+})();
   </script>
 </body>
 </html>
