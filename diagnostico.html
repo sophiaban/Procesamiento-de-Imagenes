@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico AR - Mundial 2026</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Courier New', monospace;
+      background: #1e1e1e;
+      color: #00ff00;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #0d0d0d;
+      border: 2px solid #00ff00;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+    }
+    .section {
+      margin: 20px 0;
+      padding: 15px;
+      border-left: 3px solid #00ff00;
+      background: rgba(0, 255, 0, 0.05);
+    }
+    .section h2 {
+      color: #00ff00;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .status {
+      display: flex;
+      align-items: center;
+      margin: 8px 0;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+    }
+    .icon {
+      margin-right: 10px;
+      font-size: 20px;
+      min-width: 30px;
+    }
+    .label {
+      flex: 1;
+      font-weight: bold;
+    }
+    .value {
+      color: #ffff00;
+    }
+    .error {
+      color: #ff3333;
+    }
+    .success {
+      color: #00ff00;
+    }
+    .warning {
+      color: #ffaa00;
+    }
+    button {
+      background: #00ff00;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: 'Courier New', monospace;
+    }
+    button:hover {
+      background: #00cc00;
+      box-shadow: 0 0 10px #00ff00;
+    }
+    .console-output {
+      background: #000;
+      border: 1px solid #00ff00;
+      padding: 10px;
+      border-radius: 5px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    .console-line {
+      margin: 2px 0;
+      padding: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔧 Diagnóstico del Sistema AR</h1>
+    
+    <div class="section">
+      <h2>📱 Información del Navegador</h2>
+      <div class="status">
+        <span class="icon">🌐</span>
+        <span class="label">Navegador:</span>
+        <span class="value" id="browser">Detectando...</span>
+      </div>
+      <div class="status">
+        <span class="icon">🔒</span>
+        <span class="label">HTTPS:</span>
+        <span class="value" id="https">Verificando...</span>
+      </div>
+      <div class="status">
+        <span class="icon">📷</span>
+        <span class="label">Cámara disponible:</span>
+        <span class="value" id="camera">Verificando...</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>📦 Librerías Cargadas</h2>
+      <div class="status">
+        <span class="icon">🎬</span>
+        <span class="label">A-Frame:</span>
+        <span class="value" id="aframe">Verificando...</span>
+      </div>
+      <div class="status">
+        <span class="icon">🧠</span>
+        <span class="label">MindAR:</span>
+        <span class="value" id="mindar">Verificando...</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🎯 Archivo de Destinos (.mind)</h2>
+      <div class="status">
+        <span class="icon">📄</span>
+        <span class="label">URL:</span>
+        <span class="value" id="mindUrl">Verificando...</span>
+      </div>
+      <div class="status">
+        <span class="icon">✅</span>
+        <span class="label">Accesible:</span>
+        <span class="value" id="mindAccessible">Verificando...</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🎮 Sistema AR</h2>
+      <div class="status">
+        <span class="icon">🎯</span>
+        <span class="label">Targets encontrados:</span>
+        <span class="value" id="targets">Verificando...</span>
+      </div>
+      <div class="status">
+        <span class="icon">🔍</span>
+        <span class="label">Estado de escaneo:</span>
+        <span class="value" id="arStatus">Esperando carga...</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🔧 Acciones</h2>
+      <button onclick="reloadPage()">🔄 Recargar Página</button>
+      <button onclick="requestCameraPermission()">📷 Solicitar Permiso de Cámara</button>
+      <button onclick="checkMindFile()">🔍 Verificar Archivo .mind</button>
+      <button onclick="openDevTools()">👨‍💻 Abrir Consola (F12)</button>
+    </div>
+
+    <div class="section">
+      <h2>📋 Consola de Salida</h2>
+      <div class="console-output" id="consoleOutput"></div>
+      <button onclick="clearConsole()">Limpiar</button>
+    </div>
+  </div>
+
+  <script>
+    const consoleOutput = document.getElementById('consoleOutput');
+    let logCount = 0;
+
+    // Interceptar console.log
+    const originalLog = console.log;
+    console.log = function(...args) {
+      originalLog.apply(console, args);
+      addConsoleLog('LOG', args.join(' '));
+    };
+
+    const originalError = console.error;
+    console.error = function(...args) {
+      originalError.apply(console, args);
+      addConsoleLog('ERROR', args.join(' '), 'error');
+    };
+
+    function addConsoleLog(type, message, style = 'log') {
+      logCount++;
+      const color = style === 'error' ? '#ff3333' : '#00ff00';
+      const line = document.createElement('div');
+      line.className = 'console-line';
+      line.style.color = color;
+      line.textContent = `[${new Date().toLocaleTimeString()}] ${type}: ${message}`;
+      consoleOutput.appendChild(line);
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+      
+      if (logCount > 100) {
+        consoleOutput.removeChild(consoleOutput.firstChild);
+      }
+    }
+
+    function clearConsole() {
+      consoleOutput.innerHTML = '';
+      logCount = 0;
+    }
+
+    function reloadPage() {
+      location.reload();
+    }
+
+    function openDevTools() {
+      alert('Presiona F12 para abrir las herramientas de desarrollador');
+    }
+
+    async function checkMindFile() {
+      const url = 'https://juansdl10.github.io/mundial-2026-ar/targets.mind';
+      console.log('🔍 Verificando archivo .mind en:', url);
+      try {
+        const response = await fetch(url, { method: 'HEAD' });
+        const size = response.headers.get('content-length');
+        const status = response.status;
+        console.log(`✅ Archivo accesible - Status: ${status}, Tamaño: ${size} bytes`);
+        document.getElementById('mindAccessible').innerHTML = `<span class="success">✅ SÍ (${size} bytes)</span>`;
+      } catch (err) {
+        console.error('❌ Error accediendo archivo:', err);
+        document.getElementById('mindAccessible').innerHTML = '<span class="error">❌ NO - ' + err.message + '</span>';
+      }
+    }
+
+    async function requestCameraPermission() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: 'environment' } 
+        });
+        console.log('✅ Permiso de cámara otorgado');
+        stream.getTracks().forEach(track => track.stop());
+        document.getElementById('camera').innerHTML = '<span class="success">✅ SÍ</span>';
+      } catch (err) {
+        console.error('❌ Permiso denegado:', err);
+        document.getElementById('camera').innerHTML = '<span class="error">❌ DENEGADO</span>';
+      }
+    }
+
+    function detectBrowser() {
+      const ua = navigator.userAgent;
+      let browser = 'Desconocido';
+      if (ua.includes('Chrome')) browser = 'Chrome';
+      else if (ua.includes('Firefox')) browser = 'Firefox';
+      else if (ua.includes('Safari')) browser = 'Safari';
+      else if (ua.includes('Edge')) browser = 'Edge';
+      
+      document.getElementById('browser').innerHTML = `<span>${browser}</span>`;
+      console.log('🌐 Navegador:', browser);
+    }
+
+    function checkHTTPS() {
+      const isHttps = window.location.protocol === 'https:';
+      const status = isHttps ? '✅ SÍ' : '⚠️ NO (Local OK)';
+      const className = isHttps ? 'success' : 'warning';
+      document.getElementById('https').innerHTML = `<span class="${className}">${status}</span>`;
+      console.log('🔒 HTTPS:', isHttps ? 'SÍ' : 'NO (pero es local)');
+    }
+
+    function checkLibraries() {
+      // A-Frame
+      const aframeLoaded = typeof AFRAME !== 'undefined';
+      document.getElementById('aframe').innerHTML = aframeLoaded ? '<span class="success">✅ Cargado</span>' : '<span class="error">❌ No encontrado</span>';
+      console.log('🎬 A-Frame:', aframeLoaded ? 'Cargado' : 'No encontrado');
+
+      // MindAR
+      const mindarLoaded = typeof MINDAR !== 'undefined';
+      document.getElementById('mindar').innerHTML = mindarLoaded ? '<span class="success">✅ Cargado</span>' : '<span class="error">❌ No encontrado</span>';
+      console.log('🧠 MindAR:', mindarLoaded ? 'Cargado' : 'No encontrado');
+    }
+
+    function checkMindUrl() {
+      const url = 'https://juansdl10.github.io/mundial-2026-ar/targets.mind';
+      document.getElementById('mindUrl').innerHTML = `<span class="value">${url}</span>`;
+      console.log('📄 URL del archivo:', url);
+    }
+
+    function checkTargets() {
+      const targets = document.querySelectorAll('[mindar-image-target]');
+      document.getElementById('targets').innerHTML = `<span class="value">${targets.length}</span>`;
+      console.log(`🎯 Targets encontrados: ${targets.length}`);
+      targets.forEach((t, i) => {
+        const idx = t.getAttribute('mindar-image-target');
+        console.log(`   Target ${i}: ${idx}`);
+      });
+    }
+
+    // Ejecutar diagnósticos
+    window.addEventListener('load', () => {
+      console.log('🎬 ======= INICIANDO DIAGNÓSTICO =======');
+      detectBrowser();
+      checkHTTPS();
+      setTimeout(() => {
+        checkLibraries();
+        checkMindUrl();
+        checkTargets();
+        requestCameraPermission();
+        checkMindFile();
+        document.getElementById('arStatus').innerHTML = '<span class="warning">⏳ Escaneando...</span>';
+        console.log('📊 Diagnóstico completado');
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

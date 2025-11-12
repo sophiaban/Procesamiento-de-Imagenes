@@ -344,14 +344,72 @@
       alert('ℹ️ Mundial 2026 AR\nEscanea banderas para ver contenido interactivo.');
     }
 
-    // === ESTADO DEL ESCANEO ===
+    // === ESTADO DEL ESCANEO Y DEBUGGING ===
     const scene = document.querySelector('a-scene');
-    scene.addEventListener('targetFound', () => {
-      document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
-    });
-    scene.addEventListener('targetLost', () => {
-      document.getElementById('scanningStatus').textContent = '🔍 Enfoca la cámara a una bandera';
-    });
+    const statusEl = document.getElementById('scanningStatus');
+    
+    console.log('🎬 INICIANDO DIAGNÓSTICO AR');
+    console.log('📍 Escena encontrada:', scene ? 'SÍ ✅' : 'NO ❌');
+    
+    if (!scene) {
+      statusEl.textContent = '❌ Error: Escena no encontrada';
+      console.error('❌ No se encontró la escena a-scene');
+    } else {
+      // Esperar a que A-Frame esté listo
+      scene.addEventListener('loaded', () => {
+        console.log('✅ A-Frame Scene cargada');
+        statusEl.textContent = '⏳ Cargando MindAR...';
+        
+        // Verificar atributos de mindar-image
+        const mindarAttr = scene.getAttribute('mindar-image');
+        console.log('🔍 Atributos MindAR:', mindarAttr);
+      });
+      
+      // Detectar cuando MindAR está listo
+      scene.addEventListener('arReady', () => {
+        console.log('✅✅✅ MindAR LISTO - Sistema AR inicializado');
+        statusEl.textContent = '🔍 Escanea una bandera para detectarla...';
+      });
+      
+      scene.addEventListener('targetFound', (event) => {
+        const targetIndex = event.detail?.targetIndex || 'desconocido';
+        console.log('🎯 TARGET ENCONTRADO! Index:', targetIndex);
+        statusEl.textContent = `✅ Bandera detectada (Target ${targetIndex})`;
+      });
+      
+      scene.addEventListener('targetLost', (event) => {
+        const targetIndex = event.detail?.targetIndex || 'desconocido';
+        console.log('❌ Target perdido:', targetIndex);
+        statusEl.textContent = '🔍 Enfoca la cámara a una bandera';
+      });
+      
+      // Detectar errores de carga
+      scene.addEventListener('error', (event) => {
+        console.error('🔴 ERROR EN AR:', event);
+        statusEl.textContent = '❌ Error en sistema AR. Ver consola (F12)';
+      });
+      
+      // Monitorear permisos de cámara
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+        .then(() => {
+          console.log('✅ Permisos de cámara otorgados');
+        })
+        .catch((err) => {
+          console.error('❌ Error de cámara:', err);
+          statusEl.textContent = '❌ Permiso de cámara denegado';
+        });
+      
+      // Monitorear eventos de imagen cargada
+      setTimeout(() => {
+        console.log('� Estado después de 3s:');
+        console.log('  - Sistema AR inicializado: ' + (scene.hasLoaded ? 'SÍ ✅' : 'NO ❌'));
+        const targets = document.querySelectorAll('[mindar-image-target]');
+        console.log('  - Targets detectados: ' + targets.length);
+        targets.forEach((t, i) => {
+          console.log(`    Target ${i}: targetIndex=${t.getAttribute('mindar-image-target')}`);
+        });
+      }, 3000);
+    }
   </script>
 </body>
 </html>
