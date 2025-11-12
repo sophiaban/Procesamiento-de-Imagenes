@@ -248,17 +248,28 @@
                     device-orientation-permission-ui="enabled: false">
                     
                     <a-assets>
-                        <img id="card" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png" />
+                        <a-asset-item id="banderaModel" src="./models/bandera.glb"></a-asset-item>
+                        <img id="marcador" src="./marcador/br.png" />
                     </a-assets>
 
                     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
                     
                     <a-entity mindar-image-target="targetIndex: 0">
                         <!-- Marcador de referencia -->
-                        <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0" visible="false"></a-plane>
+                        <a-plane src="#marcador" position="0 0 0" height="0.552" width="1" rotation="0 0 0" visible="true"></a-plane>
                         
-                        <!-- Bandera animada -->
-                        <a-entity id="flag" position="0 0.3 0" rotation="0 0 0">
+                        <!-- Bandera animada - Versión con modelo 3D -->
+                        <a-entity id="flag-3d" position="0 0.3 0" rotation="0 0 0" visible="true">
+                            <a-gltf-model
+                                src="#banderaModel"
+                                position="0 0.5 0"
+                                scale="0.5 0.5 0.5"
+                                animation="property: rotation; to: 0 0 10; dur: 2000; easing: easeInOutSine; loop: true; dir: alternate">
+                            </a-gltf-model>
+                        </a-entity>
+                        
+                        <!-- Bandera animada - Versión con planos (backup) -->
+                        <a-entity id="flag" position="0 0.3 0" rotation="0 0 0" visible="false">
                             <!-- Asta de la bandera -->
                             <a-cylinder 
                                 id="flag-pole"
@@ -326,7 +337,7 @@
                     <div class="step-number">1</div>
                     <div class="step-text">
                         <h3>Prepara tu marcador</h3>
-                        <p>Asegúrate de tener tu archivo .mind cargado y el marcador físico a la vista de la cámara.</p>
+                        <p>Enfoca la cámara hacia la imagen del marcador (br.png) para activar la bandera.</p>
                     </div>
                 </div>
                 
@@ -361,6 +372,14 @@
             
             <div class="control-group">
                 <div class="control">
+                    <label for="flag-type">Tipo de Bandera</label>
+                    <select id="flag-type" class="flag-select">
+                        <option value="3d">Modelo 3D (bandera.glb)</option>
+                        <option value="planes">Bandera con Planos</option>
+                    </select>
+                </div>
+                
+                <div class="control">
                     <label for="flag-color">Color de la Bandera</label>
                     <input type="color" id="flag-color" value="#FF0000">
                 </div>
@@ -370,11 +389,19 @@
                     <input type="range" id="wave-speed" min="500" max="3000" value="1000">
                     <div class="value-display" id="speed-value">Normal</div>
                 </div>
-                
+            </div>
+            
+            <div class="control-group">
                 <div class="control">
                     <label for="flag-size">Tamaño de la Bandera</label>
                     <input type="range" id="flag-size" min="0.5" max="2" step="0.1" value="1">
                     <div class="value-display" id="size-value">Normal</div>
+                </div>
+                
+                <div class="control">
+                    <label for="flag-height">Altura de la Bandera</label>
+                    <input type="range" id="flag-height" min="0.1" max="1" step="0.1" value="0.3">
+                    <div class="value-display" id="height-value">0.3</div>
                 </div>
             </div>
             
@@ -409,17 +436,31 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Referencias a elementos de la bandera
             const flagSegments = document.querySelectorAll('.flag-segment');
-            const flagPole = document.getElementById('flag-pole');
             const flagEntity = document.getElementById('flag');
+            const flag3D = document.getElementById('flag-3d');
             const statusElement = document.getElementById('status');
             
             // Controles
+            const flagTypeSelect = document.getElementById('flag-type');
             const colorPicker = document.getElementById('flag-color');
             const speedSlider = document.getElementById('wave-speed');
             const sizeSlider = document.getElementById('flag-size');
+            const heightSlider = document.getElementById('flag-height');
             const flagOptions = document.querySelectorAll('.flag-option');
             
-            // Actualizar el color de la bandera
+            // Cambiar entre modelo 3D y bandera de planos
+            flagTypeSelect.addEventListener('change', function() {
+                const type = this.value;
+                if (type === '3d') {
+                    flag3D.setAttribute('visible', 'true');
+                    flagEntity.setAttribute('visible', 'false');
+                } else {
+                    flag3D.setAttribute('visible', 'false');
+                    flagEntity.setAttribute('visible', 'true');
+                }
+            });
+            
+            // Actualizar el color de la bandera (solo para versión de planos)
             colorPicker.addEventListener('input', function() {
                 const color = this.value;
                 flagSegments.forEach(segment => {
@@ -430,12 +471,19 @@
             // Actualizar la velocidad del ondeo
             speedSlider.addEventListener('input', function() {
                 const speed = parseInt(this.value);
-                const invertedSpeed = 3000 - speed + 500; // Invertir para que mayor valor = más lento
+                const invertedSpeed = 3000 - speed + 500;
                 
+                // Para la bandera de planos
                 flagSegments.forEach((segment, index) => {
                     const delay = index * 200;
                     segment.setAttribute('animation', `property: rotation; to: 0 0 ${getSegmentAngle(index)}; dur: ${invertedSpeed}; easing: easeInOutSine; loop: true; dir: alternate; delay: ${delay}`);
                 });
+                
+                // Para el modelo 3D
+                const banderaModel = document.querySelector('a-gltf-model');
+                if (banderaModel) {
+                    banderaModel.setAttribute('animation', `property: rotation; to: 0 0 10; dur: ${invertedSpeed}; easing: easeInOutSine; loop: true; dir: alternate`);
+                }
                 
                 // Actualizar display de velocidad
                 const speedValue = document.getElementById('speed-value');
@@ -452,6 +500,7 @@
             sizeSlider.addEventListener('input', function() {
                 const size = parseFloat(this.value);
                 flagEntity.setAttribute('scale', `${size} ${size} ${size}`);
+                flag3D.setAttribute('scale', `${size * 0.5} ${size * 0.5} ${size * 0.5}`);
                 
                 // Actualizar display de tamaño
                 const sizeValue = document.getElementById('size-value');
@@ -464,7 +513,17 @@
                 }
             });
             
-            // Cambiar tipo de bandera
+            // Actualizar la altura de la bandera
+            heightSlider.addEventListener('input', function() {
+                const height = parseFloat(this.value);
+                flagEntity.setAttribute('position', `0 ${height} 0`);
+                flag3D.setAttribute('position', `0 ${height} 0`);
+                
+                // Actualizar display de altura
+                document.getElementById('height-value').textContent = height.toFixed(1);
+            });
+            
+            // Cambiar tipo de bandera (solo para versión de planos)
             flagOptions.forEach(option => {
                 option.addEventListener('click', function() {
                     // Remover clase active de todas las opciones
@@ -527,12 +586,19 @@
                 return index < angles.length ? angles[index] : -15;
             }
             
-            // Simular detección de marcador (en una aplicación real, esto se manejaría con eventos de MindAR)
-            setTimeout(() => {
+            // Detección de eventos de MindAR
+            const scene = document.querySelector('a-scene');
+            scene.addEventListener('targetFound', event => {
                 statusElement.textContent = "¡Marcador detectado! Bandera visible.";
                 statusElement.style.background = "rgba(0, 200, 0, 0.3)";
                 statusElement.classList.remove('pulse');
-            }, 3000);
+            });
+            
+            scene.addEventListener('targetLost', event => {
+                statusElement.textContent = "Marcador perdido. Buscando...";
+                statusElement.style.background = "rgba(0, 0, 0, 0.3)";
+                statusElement.classList.add('pulse');
+            });
         });
     </script>
 </body>
