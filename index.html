@@ -1,83 +1,589 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Banderas AR - MindAR</title>
-
-    <!-- Librerías -->
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detector Automático de Banderas AR - Mundial 2026</title>
+  
+  <!-- Librerías -->
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+    }
+    
+    .header {
+      background: rgba(0, 0, 0, 0.9);
+      padding: 20px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      border-bottom: 3px solid gold;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+    
+    .header p {
+      opacity: 0.8;
+      font-size: 14px;
+    }
+    
+    .detection-banner {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      padding: 25px 40px;
+      border-radius: 20px;
+      z-index: 100;
+      text-align: center;
+      display: none;
+      animation: slideUp 0.5s ease-out;
+      border: 3px solid white;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      min-width: 280px;
+      backdrop-filter: blur(10px);
+    }
+    
+    @keyframes slideUp {
+      from {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
       }
-      #loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-family: sans-serif;
+      to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
       }
-    </style>
-  </head>
+    }
+    
+    .control-panel {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.9);
+      padding: 15px 30px;
+      border-radius: 50px;
+      z-index: 1000;
+      display: flex;
+      gap: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .control-btn {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .control-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+    
+    .country-info {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      z-index: 2000;
+      text-align: center;
+      display: none;
+      max-width: 90%;
+      border: 3px solid gold;
+      backdrop-filter: blur(10px);
+    }
+    
+    .country-info.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -40%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .info-content h2 {
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+    
+    .info-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .stat-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: gold;
+      display: block;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+    
+    .ar-container {
+      width: 100%;
+      height: 100vh;
+    }
+    
+    /* Estilos para el UI de MindAR */
+    .mindar-ui-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      pointer-events: none;
+    }
+    
+    .scanning-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 998;
+    }
+    
+    .scanning-text {
+      color: white;
+      font-size: 24px;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
 
-  <body>
-    <div id="loading">Cargando cámara...</div>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <h1>🌍 Detector Automático de Banderas AR</h1>
+    <p>Apunta tu cámara a cualquier bandera: México 🇲🇽, USA 🇺🇸 o España 🇪🇸</p>
+  </div>
 
-    <a-scene
-      mindar-image="imageTargetSrc: ./assets/targets/flags.mind;"
-      color-space="sRGB"
-      renderer="colorManagement: true;"
-      vr-mode-ui="enabled: false"
+  <!-- Banner de detección -->
+  <div class="detection-banner" id="detectionBanner">
+    <h2 id="bannerTitle">¡Bandera Detectada!</h2>
+    <p id="bannerSubtitle">Contenido cargado correctamente</p>
+  </div>
+
+  <!-- Información del país -->
+  <div class="country-info" id="countryInfo">
+    <button class="close-btn" onclick="closeCountryInfo()">×</button>
+    <div class="info-content">
+      <h2 id="infoTitle">🇲🇽 México</h2>
+      <div class="info-stats" id="infoStats">
+        <!-- Las estadísticas se llenan dinámicamente -->
+      </div>
+      <p id="infoDescription" style="line-height: 1.6; margin-top: 15px;">
+        Información sobre el país y su participación en el Mundial 2026.
+      </p>
+    </div>
+  </div>
+
+  <!-- Escena AR Principal -->
+  <div class="ar-container">
+    <a-scene 
+      mindar-image="imageTargetSrc: ./assets/targets/banderas-combinadas.mind; 
+                    autoStart: true; 
+                    uiScanning: yes; 
+                    uiLoading: yes; 
+                    filterMinCF: 0.001; 
+                    filterBeta: 0.001;"
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
       device-orientation-permission-ui="enabled: false"
-    >
+      xr-mode-ui="enabled: false">
+      
+      <a-assets>
+        <!-- Imágenes de banderas -->
+        <img id="mexico-flag" src="./assets/images/bandera-mexico.png" crossorigin="anonymous">
+        <img id="usa-flag" src="./assets/images/bandera-usa.png" crossorigin="anonymous">
+        <img id="espana-flag" src="./assets/images/bandera-espana.png" crossorigin="anonymous">
+        
+        <!-- Modelos 3D -->
+        <a-asset-item id="mexico-model" src="./assets/models/modelo-mexico.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="usa-model" src="./assets/models/modelo-usa.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="espana-model" src="./assets/models/modelo-espana.glb" crossorigin="anonymous"></a-asset-item>
+      </a-assets>
+
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- 🇲🇽 MÉXICO (targetIndex 0) -->
+      <!-- TARGET 0: MÉXICO -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model
-          src="./assets/models/modelo-mexico.glb"
-          position="0 0 0"
-          scale="0.2 0.2 0.2"
+        <a-plane 
+          src="#mexico-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
           rotation="0 0 0"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 8000"
-        ></a-gltf-model>
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="mexico-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#mexico-model"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇲🇽 México" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="mexico"
+          mindar-face-up-button>
+          <a-ring color="#006847" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
       </a-entity>
 
-      <!-- 🇪🇸 ESPAÑA (targetIndex 1) -->
+      <!-- TARGET 1: USA -->
       <a-entity mindar-image-target="targetIndex: 1">
-        <a-gltf-model
-          src="./assets/models/modelo-espana.glb"
-          position="0 0 0"
-          scale="0.2 0.2 0.2"
+        <a-plane 
+          src="#usa-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
           rotation="0 0 0"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 8000"
-        ></a-gltf-model>
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="usa-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#usa-model"
+          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇺🇸 Estados Unidos" 
+          position="-0.6 0.4 0" 
+          scale="0.6 0.6 0.6" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="usa"
+          mindar-face-up-button>
+          <a-ring color="#B22234" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
       </a-entity>
 
-      <!-- 🇦🇷 USA (targetIndex 2) -->
+      <!-- TARGET 2: ESPAÑA -->
       <a-entity mindar-image-target="targetIndex: 2">
-        <a-gltf-model
-          src="./assets/models/modelo-usa.glb"
-          position="0 0 0"
-          scale="0.2 0.2 0.2"
+        <a-plane 
+          src="#espana-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
           rotation="0 0 0"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 8000"
-        ></a-gltf-model>
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="espana-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#espana-model"
+          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇪🇸 España" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="espana"
+          mindar-face-up-button>
+          <a-ring color="#AA151B" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
       </a-entity>
     </a-scene>
+  </div>
 
-    <script>
-      // Oculta el mensaje cuando la cámara está lista
-      document
-        .querySelector("a-scene")
-        .addEventListener("arReady", () => {
-          document.getElementById("loading").style.display = "none";
+  <!-- Panel de control -->
+  <div class="control-panel">
+    <button class="control-btn" onclick="showAllInfo()" title="Información de todos los países">🌍</button>
+    <button class="control-btn" onclick="resetAR()" title="Reiniciar experiencia">🔄</button>
+    <button class="control-btn" onclick="toggleAnimations()" title="Pausar/Reanudar animaciones">⏯️</button>
+  </div>
+
+  <script>
+    // Datos de los países
+    const countries = {
+      mexico: {
+        name: "México",
+        emoji: "🇲🇽",
+        color: "#006847",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Cuartos de Final",
+          "Participaciones": "17",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La selección mexicana busca hacer historia en el Mundial 2026 como anfitrión conjuntamente con USA y Canadá."
+      },
+      usa: {
+        name: "Estados Unidos",
+        emoji: "🇺🇸", 
+        color: "#B22234",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Semifinales (1930)",
+          "Participaciones": "11",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Como anfitrión del Mundial 2026, USA espera aprovechar su ventaja local para lograr un resultado histórico."
+      },
+      espana: {
+        name: "España",
+        emoji: "🇪🇸",
+        color: "#AA151B", 
+        stats: {
+          "Copas del Mundo": "1 (2010)",
+          "Mejor Resultado": "Campeón (2010)",
+          "Participaciones": "16", 
+          "Grupo 2026": "Por definir"
+        },
+        description: "La furia roja busca repetir el éxito del 2010 con una nueva generación de talentosos jugadores."
+      }
+    };
+
+    let currentCountry = null;
+
+    // Inicialización cuando la escena cargue
+    document.addEventListener('DOMContentLoaded', function() {
+      const scene = document.querySelector('a-scene');
+      
+      // Configurar botones AR
+      scene.addEventListener('loaded', function() {
+        document.querySelectorAll('.info-button').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const country = this.getAttribute('data-country');
+            showCountryInfo(country);
+          });
         });
-    </script>
-  </body>
+      });
+
+      // Eventos de detección
+      scene.addEventListener('targetFound', (event) => {
+        const targetIndex = event.detail.targetIndex;
+        const countryNames = ['México', 'Estados Unidos', 'España'];
+        const countryEmojis = ['🇲🇽', '🇺🇸', '🇪🇸'];
+        const countryColors = ['#006847', '#B22234', '#AA151B'];
+        
+        currentCountry = ['mexico', 'usa', 'espana'][targetIndex];
+        
+        // Mostrar banner de detección
+        const banner = document.getElementById('detectionBanner');
+        document.getElementById('bannerTitle').textContent = `${countryEmojis[targetIndex]} ${countryNames[targetIndex]} Detectado`;
+        document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
+        banner.style.background = `linear-gradient(135deg, ${countryColors[targetIndex]}, ${countryColors[targetIndex]}CC)`;
+        banner.style.display = 'block';
+        
+        // Ocultar banner después de 3 segundos
+        setTimeout(() => {
+          banner.style.display = 'none';
+        }, 3000);
+      });
+
+      scene.addEventListener('targetLost', () => {
+        // Mantener el país actual hasta que se detecte uno nuevo
+      });
+    });
+
+    // Funciones de la interfaz
+    function showCountryInfo(countryKey) {
+      const country = countries[countryKey];
+      const infoDiv = document.getElementById('countryInfo');
+      
+      document.getElementById('infoTitle').textContent = `${country.emoji} ${country.name}`;
+      document.getElementById('infoTitle').style.color = country.color;
+      
+      // Llenar estadísticas
+      const statsDiv = document.getElementById('infoStats');
+      statsDiv.innerHTML = '';
+      
+      Object.entries(country.stats).forEach(([key, value]) => {
+        const statItem = document.createElement('div');
+        statItem.className = 'stat-item';
+        statItem.innerHTML = `
+          <span class="stat-value">${value}</span>
+          <span class="stat-label">${key}</span>
+        `;
+        statsDiv.appendChild(statItem);
+      });
+      
+      document.getElementById('infoDescription').textContent = country.description;
+      infoDiv.classList.add('active');
+    }
+
+    function closeCountryInfo() {
+      document.getElementById('countryInfo').classList.remove('active');
+    }
+
+    function showAllInfo() {
+      let allInfo = "🌍 INFORMACIÓN DEL MUNDIAL 2026\n\n";
+      Object.values(countries).forEach(country => {
+        allInfo += `${country.emoji} ${country.name}\n`;
+        allInfo += `Copas del Mundo: ${country.stats['Copas del Mundo']}\n`;
+        allInfo += `Participaciones: ${country.stats['Participaciones']}\n\n`;
+      });
+      allInfo += "🏆 Primer Mundial con 48 equipos\n⚽ 3 países anfitriones\n🎯 80 partidos en total";
+      
+      alert(allInfo);
+    }
+
+    function resetAR() {
+      // Reiniciar todas las animaciones
+      document.querySelectorAll('a-gltf-model').forEach(model => {
+        model.emit('animationrestart');
+      });
+      
+      // Mostrar mensaje
+      const banner = document.getElementById('detectionBanner');
+      document.getElementById('bannerTitle').textContent = '🔄 Experiencia Reiniciada';
+      document.getElementById('bannerSubtitle').textContent = 'Todas las animaciones reiniciadas';
+      banner.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+      banner.style.display = 'block';
+      
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 2000);
+    }
+
+    function toggleAnimations() {
+      const models = document.querySelectorAll('a-gltf-model');
+      const isPaused = models[0].getAttribute('animation-mixer');
+      
+      models.forEach(model => {
+        if (isPaused) {
+          model.removeAttribute('animation-mixer');
+        } else {
+          model.setAttribute('animation-mixer', 'clip: *; loop: repeat');
+        }
+      });
+      
+      // Mostrar estado
+      const banner = document.getElementById('detectionBanner');
+      document.getElementById('bannerTitle').textContent = isPaused ? '▶️ Animaciones Reanudadas' : '⏸️ Animaciones Pausadas';
+      document.getElementById('bannerSubtitle').textContent = isPaused ? 'Todas las animaciones activadas' : 'Animaciones en pausa';
+      banner.style.background = 'linear-gradient(135deg, #fdbb2d, #b21f1f)';
+      banner.style.display = 'block';
+      
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 2000);
+    }
+
+    // Cerrar modal al hacer clic fuera
+    document.getElementById('countryInfo').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeCountryInfo();
+      }
+    });
+  </script>
+</body>
 </html>
