@@ -6,10 +6,10 @@
   <title>Detector de Banderas AR - Mundial 2026</title>
 
   <!-- Librerías CORRECTAS para compatibilidad -->
- <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-  <script src="https://aframe.io/releases/1.4.0/aframe-animation-component.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
+  <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image-aframe.prod.js"></script>
+
   <style>
     * { 
       margin: 0; 
@@ -49,6 +49,15 @@
     .ar-container {
       width: 100%;
       height: 100vh;
+      position: relative;
+    }
+    
+    .ar-scene {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
     
     .scanning-status {
@@ -70,7 +79,6 @@
       bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
-      background: linear-gradient(135deg, #006847, #00a86b);
       color: white;
       padding: 25px 40px;
       border-radius: 20px;
@@ -289,12 +297,12 @@
   <div class="permission-screen" id="permissionScreen">
     <div class="permission-content">
       <div class="permission-icon">📱</div>
-      <h2>Permiso de Cámara Requerido</h2>
+      <h2>Detector Automático de Banderas AR</h2>
       <p style="margin-top: 15px; line-height: 1.5;">
-        Esta experiencia de Realidad Aumentada necesita acceso a tu cámara para detectar banderas.
+        Esta experiencia detecta automáticamente banderas de México, USA y España.
       </p>
       <p style="margin-top: 10px; opacity: 0.8; font-size: 14px;">
-        Al hacer clic en "Activar Cámara", se te pedirá permiso para usar la cámara.
+        Solo apunta tu cámara a cualquier bandera y el sistema la reconocerá automáticamente.
       </p>
       <button class="start-button" onclick="requestCameraPermission()">
         🎥 Activar Cámara
@@ -305,19 +313,19 @@
   <!-- Pantalla de carga -->
   <div class="loading" id="loading" style="display: none;">
     <div class="spinner"></div>
-    <h2>Cargando Experiencia AR</h2>
-    <p style="margin-top: 10px; opacity: 0.8;">Preparando cámara y modelos...</p>
+    <h2>Iniciando Detector de Banderas</h2>
+    <p style="margin-top: 10px; opacity: 0.8;">Cargando modelos de reconocimiento...</p>
   </div>
 
   <!-- Header -->
   <div class="header" style="display: none;">
-    <h1>🌍 Detector de Banderas AR - Mundial 2026</h1>
-    <p>Escanea banderas de México, USA y España para ver contenido especial</p>
+    <h1>🌍 Detector Automático de Banderas AR</h1>
+    <p>Apunta tu cámara a cualquier bandera: México 🇲🇽, USA 🇺🇸 o España 🇪🇸</p>
   </div>
 
   <!-- Estado del escaneo -->
   <div class="scanning-status" id="scanningStatus" style="display: none;">
-    🔍 Buscando banderas... Enfoca tu cámara
+    🔍 Escaneando en busca de banderas...
   </div>
 
   <!-- Banner de detección -->
@@ -340,123 +348,16 @@
     </div>
   </div>
 
-  <!-- Escena AR Principal -->
-  <div class="ar-container">
-    <a-scene
-      id="arScene"
-      mindar-image="imageTargetSrc: ./assets/targets/banderas.mind; autoStart: false; uiScanning: no; uiLoading: no;"
-      embedded
-      color-space="sRGB"
-      renderer="colorManagement: true"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-      style="display: none;"
-    >
-      <a-assets>
-        <!-- Imágenes de banderas -->
-        <img id="mexico-flag" src="./assets/images/bandera-mexico.png">
-        <img id="usa-flag" src="./assets/images/bandera-usa.png">
-        <img id="espana-flag" src="./assets/images/bandera-espana.png">
-        
-        <!-- Modelos 3D -->
-        <a-asset-item id="mexico-model" src="./assets/models/modelo-mexico.glb"></a-asset-item>
-        <a-asset-item id="usa-model" src="./assets/models/modelo-usa.glb"></a-asset-item>
-        <a-asset-item id="espana-model" src="./assets/models/modelo-espana.glb"></a-asset-item>
-      </a-assets>
-
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <!-- TARGET 0: MÉXICO -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane src="#mexico-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
-                material="transparent: true; opacity: 0.8">
-        </a-plane>
-        
-        <a-gltf-model 
-          id="mexico-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#mexico-model"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear">
-        </a-gltf-model>
-        
-        <a-text value="🇲🇽 México" 
-                position="-0.6 0.4 0" 
-                scale="0.8 0.8 0.8" 
-                color="#FFFFFF"
-                align="center">
-        </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity position="0 0.8 0" class="info-button" data-country="mexico">
-          <a-ring color="#006847" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
-      </a-entity>
-
-      <!-- TARGET 1: USA -->
-      <a-entity mindar-image-target="targetIndex: 1">
-        <a-plane src="#usa-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
-                material="transparent: true; opacity: 0.8">
-        </a-plane>
-        
-        <a-gltf-model 
-          id="usa-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#usa-model"
-          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear">
-        </a-gltf-model>
-        
-        <a-text value="🇺🇸 Estados Unidos" 
-                position="-0.6 0.4 0" 
-                scale="0.6 0.6 0.6" 
-                color="#FFFFFF"
-                align="center">
-        </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity position="0 0.8 0" class="info-button" data-country="usa">
-          <a-ring color="#B22234" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
-      </a-entity>
-
-      <!-- TARGET 2: ESPAÑA -->
-      <a-entity mindar-image-target="targetIndex: 2">
-        <a-plane src="#espana-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
-                material="transparent: true; opacity: 0.8">
-        </a-plane>
-        
-        <a-gltf-model 
-          id="espana-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#espana-model"
-          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear">
-        </a-gltf-model>
-        
-        <a-text value="🇪🇸 España" 
-                position="-0.6 0.4 0" 
-                scale="0.8 0.8 0.8" 
-                color="#FFFFFF"
-                align="center">
-        </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity position="0 0.8 0" class="info-button" data-country="espana">
-          <a-ring color="#AA151B" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
-      </a-entity>
-    </a-scene>
+  <!-- Contenedor para escenas AR -->
+  <div class="ar-container" id="arContainer">
+    <!-- Las escenas se crearán dinámicamente aquí -->
   </div>
 
   <!-- Panel de control -->
   <div class="control-panel" style="display: none;">
     <button class="control-btn" onclick="showAllInfo()" title="Información de todos los países">🌍</button>
-    <button class="control-btn" onclick="resetAR()" title="Reiniciar experiencia">🔄</button>
-    <button class="control-btn" onclick="toggleAnimations()" title="Pausar/Reanudar animaciones">⏯️</button>
+    <button class="control-btn" onclick="resetDetection()" title="Reiniciar detección">🔄</button>
+    <button class="control-btn" onclick="showCountryInfo(currentCountry)" title="Información del país">ℹ️</button>
   </div>
 
   <script>
@@ -466,6 +367,7 @@
         name: "México",
         emoji: "🇲🇽",
         color: "#006847",
+        mindFile: "./assets/targets/bandera-mexico.mind",
         stats: {
           "Copas del Mundo": "0",
           "Mejor Resultado": "Cuartos de Final",
@@ -478,6 +380,7 @@
         name: "Estados Unidos",
         emoji: "🇺🇸", 
         color: "#B22234",
+        mindFile: "./assets/targets/bandera-usa.mind",
         stats: {
           "Copas del Mundo": "0",
           "Mejor Resultado": "Semifinales (1930)",
@@ -490,6 +393,7 @@
         name: "España",
         emoji: "🇪🇸",
         color: "#AA151B", 
+        mindFile: "./assets/targets/bandera-espana.mind",
         stats: {
           "Copas del Mundo": "1 (2010)",
           "Mejor Resultado": "Campeón (2010)",
@@ -499,6 +403,10 @@
         description: "La furia roja busca repetir el éxito del 2010 con una nueva generación de talentosos jugadores."
       }
     };
+
+    let currentCountry = null;
+    let currentScene = null;
+    let isDetecting = false;
 
     // Solicitar permisos de cámara
     async function requestCameraPermission() {
@@ -520,8 +428,8 @@
         document.getElementById('permissionScreen').style.display = 'none';
         document.getElementById('loading').style.display = 'flex';
         
-        // Inicializar AR después de un breve delay
-        setTimeout(initializeAR, 1000);
+        // Iniciar detección después de un breve delay
+        setTimeout(startDetection, 1000);
         
       } catch (error) {
         console.error('Error al acceder a la cámara:', error);
@@ -539,53 +447,142 @@
       }
     }
 
-    // Inicializar AR
-    function initializeAR() {
-      const scene = document.getElementById('arScene');
-      scene.style.display = 'block';
+    // Función para crear escena AR para un país específico
+    function createARScene(countryKey) {
+      const country = countries[countryKey];
+      
+      return `
+        <a-scene
+          mindar-image="imageTargetSrc: ${country.mindFile}; autoStart: true; uiScanning: no; uiLoading: no;"
+          embedded
+          color-space="sRGB"
+          renderer="colorManagement: true"
+          vr-mode-ui="enabled: false"
+          device-orientation-permission-ui="enabled: false"
+          style="display: none;"
+        >
+          <a-assets>
+            <img id="${countryKey}-flag" src="./assets/images/bandera-${countryKey}.png">
+            <a-asset-item id="${countryKey}-model" src="./assets/models/modelo-${countryKey}.glb"></a-asset-item>
+          </a-assets>
 
-      scene.addEventListener('loaded', function() {
-        document.getElementById('loading').style.display = 'none';
-        document.querySelector('.header').style.display = 'block';
-        document.getElementById('scanningStatus').style.display = 'block';
-        document.querySelector('.control-panel').style.display = 'flex';
+          <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        // Configurar botones AR
-        document.querySelectorAll('.info-button').forEach(btn => {
-          btn.addEventListener('click', function() {
-            const country = this.getAttribute('data-country');
-            showCountryInfo(country);
+          <a-entity mindar-image-target="targetIndex: 0">
+            <a-plane src="#${countryKey}-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
+                    material="transparent: true; opacity: 0.8">
+            </a-plane>
+            
+            <a-gltf-model 
+              position="0.6 0.3 0.1" 
+              scale="0.25 0.25 0.25" 
+              src="#${countryKey}-model"
+              animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear">
+            </a-gltf-model>
+            
+            <a-text value="${country.emoji} ${country.name}" 
+                    position="-0.6 0.4 0" 
+                    scale="0.8 0.8 0.8" 
+                    color="#FFFFFF"
+                    align="center">
+            </a-text>
+            
+            <!-- Botón de información -->
+            <a-entity position="0 0.8 0" class="info-button" data-country="${countryKey}">
+              <a-ring color="${country.color}" radius-inner="0.04" radius-outer="0.06"></a-ring>
+              <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+            </a-entity>
+          </a-entity>
+        </a-scene>
+      `;
+    }
+
+    // Iniciar detección automática
+    function startDetection() {
+      document.getElementById('loading').style.display = 'none';
+      document.querySelector('.header').style.display = 'block';
+      document.getElementById('scanningStatus').style.display = 'block';
+      document.querySelector('.control-panel').style.display = 'flex';
+      
+      isDetecting = true;
+      detectNextFlag();
+    }
+
+    // Detectar banderas secuencialmente
+    function detectNextFlag() {
+      if (!isDetecting) return;
+      
+      const countryKeys = Object.keys(countries);
+      let currentIndex = 0;
+      
+      function testNextCountry() {
+        if (currentIndex >= countryKeys.length || currentCountry) {
+          // Si ya detectamos un país o probamos todos, reiniciar
+          if (!currentCountry) {
+            setTimeout(() => detectNextFlag(), 1000);
+          }
+          return;
+        }
+        
+        const countryKey = countryKeys[currentIndex];
+        console.log(`Probando detección: ${countries[countryKey].name}`);
+        
+        // Limpiar escena anterior
+        if (currentScene) {
+          currentScene.parentNode.removeChild(currentScene);
+        }
+        
+        // Crear nueva escena
+        const sceneHTML = createARScene(countryKey);
+        document.getElementById('arContainer').innerHTML = sceneHTML;
+        currentScene = document.querySelector('a-scene');
+        currentScene.style.display = 'block';
+        
+        // Configurar eventos para esta escena
+        currentScene.addEventListener('loaded', function() {
+          const arSystem = this.systems['mindar-image-system'];
+          
+          arSystem.el.addEventListener('targetFound', function() {
+            if (!currentCountry) {
+              currentCountry = countryKey;
+              console.log(`✅ ${countries[countryKey].name} detectado!`);
+              showDetection(countryKey);
+              isDetecting = false;
+            }
           });
         });
-
-        // Iniciar el sistema AR
-        const arSystem = scene.systems['mindar-image-system'];
-        arSystem.start();
-      });
-
-      // Eventos de detección
-      scene.addEventListener('targetFound', (event) => {
-        const targetIndex = event.detail.targetIndex;
-        const countryNames = ['México', 'Estados Unidos', 'España'];
-        const countryEmojis = ['🇲🇽', '🇺🇸', '🇪🇸'];
-        const countryColors = ['#006847', '#B22234', '#AA151B'];
         
-        document.getElementById('scanningStatus').textContent = '✅ Bandera detectada';
-        
-        const banner = document.getElementById('detectionBanner');
-        document.getElementById('bannerTitle').textContent = `${countryEmojis[targetIndex]} ${countryNames[targetIndex]} Detectado`;
-        document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
-        banner.style.background = `linear-gradient(135deg, ${countryColors[targetIndex]}, ${countryColors[targetIndex]}CC)`;
-        banner.style.display = 'block';
-        
-        setTimeout(() => {
-          banner.style.display = 'none';
-        }, 3000);
-      });
+        // Esperar 2 segundos antes de probar el siguiente país
+        currentIndex++;
+        setTimeout(testNextCountry, 2000);
+      }
+      
+      testNextCountry();
+    }
 
-      scene.addEventListener('targetLost', () => {
-        document.getElementById('scanningStatus').textContent = '🔍 Buscando banderas... Enfoca tu cámara';
+    // Mostrar detección
+    function showDetection(countryKey) {
+      const country = countries[countryKey];
+      
+      document.getElementById('scanningStatus').textContent = `✅ ${country.emoji} ${country.name} Detectado`;
+      
+      const banner = document.getElementById('detectionBanner');
+      document.getElementById('bannerTitle').textContent = `${country.emoji} ${country.name} Detectado`;
+      document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
+      banner.style.background = `linear-gradient(135deg, ${country.color}, ${country.color}CC)`;
+      banner.style.display = 'block';
+      
+      // Configurar botones AR
+      document.querySelectorAll('.info-button').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const country = this.getAttribute('data-country');
+          showCountryInfo(country);
+        });
       });
+      
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 3000);
     }
 
     // Funciones de la interfaz
@@ -629,38 +626,26 @@
       alert(allInfo);
     }
 
-    function resetAR() {
-      document.querySelectorAll('a-gltf-model').forEach(model => {
-        model.emit('animationrestart');
-      });
+    function resetDetection() {
+      currentCountry = null;
+      isDetecting = true;
       
-      const banner = document.getElementById('detectionBanner');
-      document.getElementById('bannerTitle').textContent = '🔄 Experiencia Reiniciada';
-      document.getElementById('bannerSubtitle').textContent = 'Todas las animaciones reiniciadas';
-      banner.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
-      banner.style.display = 'block';
+      if (currentScene) {
+        currentScene.parentNode.removeChild(currentScene);
+        currentScene = null;
+      }
+      
+      document.getElementById('scanningStatus').textContent = '🔍 Reiniciando detección...';
       
       setTimeout(() => {
-        banner.style.display = 'none';
-      }, 2000);
-    }
-
-    function toggleAnimations() {
-      const models = document.querySelectorAll('a-gltf-model');
-      const isPaused = models[0].getAttribute('animation-mixer');
-      
-      models.forEach(model => {
-        if (isPaused) {
-          model.removeAttribute('animation-mixer');
-        } else {
-          model.setAttribute('animation-mixer', 'clip: *; loop: repeat');
-        }
-      });
+        document.getElementById('scanningStatus').textContent = '🔍 Escaneando en busca de banderas...';
+        detectNextFlag();
+      }, 1000);
       
       const banner = document.getElementById('detectionBanner');
-      document.getElementById('bannerTitle').textContent = isPaused ? '▶️ Animaciones Reanudadas' : '⏸️ Animaciones Pausadas';
-      document.getElementById('bannerSubtitle').textContent = isPaused ? 'Todas las animaciones activadas' : 'Animaciones en pausa';
-      banner.style.background = 'linear-gradient(135deg, #fdbb2d, #b21f1f)';
+      document.getElementById('bannerTitle').textContent = '🔄 Detección Reiniciada';
+      document.getElementById('bannerSubtitle').textContent = 'Buscando nuevas banderas...';
+      banner.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
       banner.style.display = 'block';
       
       setTimeout(() => {
