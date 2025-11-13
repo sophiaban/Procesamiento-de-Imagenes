@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detector AR de Banderas - Mundial 2026</title>
+  <title>Detector Automático de Banderas AR - Mundial 2026</title>
   
   <!-- Librerías -->
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   
   <style>
+    /* Tus estilos CSS permanecen igual */
     * {
       margin: 0;
       padding: 0;
@@ -108,7 +109,7 @@
       box-shadow: 0 5px 20px rgba(0,0,0,0.3);
     }
     
-    .country-menu {
+    .country-info {
       position: fixed;
       top: 50%;
       left: 50%;
@@ -117,16 +118,14 @@
       padding: 30px;
       border-radius: 20px;
       z-index: 2000;
+      text-align: center;
       display: none;
       max-width: 90%;
-      max-height: 85vh;
-      overflow-y: auto;
       border: 3px solid gold;
       backdrop-filter: blur(10px);
-      width: 90%;
     }
     
-    .country-menu.active {
+    .country-info.active {
       display: block;
       animation: fadeIn 0.3s ease;
     }
@@ -157,122 +156,16 @@
       background: rgba(255, 255, 255, 0.1);
     }
     
-    .menu-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 25px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    .country-flag {
-      font-size: 48px;
-      margin-right: 15px;
-    }
-    
-    .country-name {
+    .info-content h2 {
+      margin-bottom: 20px;
       font-size: 28px;
-      font-weight: bold;
     }
     
-    .menu-section {
-      margin-bottom: 25px;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 15px;
-    }
-    
-    .section-title {
-      font-size: 20px;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-    }
-    
-    .section-icon {
-      margin-right: 10px;
-      font-size: 24px;
-    }
-    
-    .quiz-question {
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
-    
-    .quiz-options {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    
-    .quiz-option {
-      padding: 12px 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .quiz-option:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-    
-    .quiz-option.selected {
-      background: rgba(255, 215, 0, 0.3);
-      border: 1px solid gold;
-    }
-    
-    .video-container {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      background: #000;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 15px;
-    }
-    
-    .video-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: #111;
-    }
-    
-    .video-title {
-      margin-top: 10px;
-      text-align: center;
-      font-size: 14px;
-    }
-    
-    .filter-controls {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-    
-    .filter-btn {
-      padding: 8px 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      border-radius: 20px;
-      color: white;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .filter-btn.active {
-      background: rgba(255, 215, 0, 0.3);
-      border: 1px solid gold;
-    }
-    
-    .stats-grid {
+    .info-stats {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 15px;
+      margin: 20px 0;
     }
     
     .stat-item {
@@ -297,19 +190,6 @@
     .ar-container {
       width: 100%;
       height: 100vh;
-    }
-    
-    /* Filtros de video */
-    .video-placeholder.bw-filter {
-      filter: grayscale(100%);
-    }
-    
-    .video-placeholder.sepia-filter {
-      filter: sepia(100%);
-    }
-    
-    .video-placeholder.contrast-filter {
-      filter: contrast(200%);
     }
     
     /* Estilos para el UI de MindAR */
@@ -359,57 +239,17 @@
     <p id="bannerSubtitle">Contenido cargado correctamente</p>
   </div>
 
-  <!-- Menú del país -->
-  <div class="country-menu" id="countryMenu">
-    <button class="close-btn" onclick="closeCountryMenu()">×</button>
-    <div class="menu-header">
-      <div class="country-flag" id="menuFlag">🇦🇷</div>
-      <div class="country-name" id="menuName">Argentina</div>
-    </div>
-    
-    <!-- Sección de encuestas -->
-    <div class="menu-section">
-      <div class="section-title">
-        <span class="section-icon">🔹</span>
-        <span>Trivia</span>
-      </div>
-      <div class="quiz-question" id="quizQuestion">
-        ¿En qué año ganó Argentina su primera Copa del Mundo?
-      </div>
-      <div class="quiz-options" id="quizOptions">
-        <!-- Las opciones se llenan dinámicamente -->
-      </div>
-    </div>
-    
-    <!-- Sección de video -->
-    <div class="menu-section">
-      <div class="section-title">
-        <span class="section-icon">🎥</span>
-        <span>Video recomendado</span>
-      </div>
-      <div class="video-container">
-        <div class="video-placeholder" id="videoPlaceholder">
-          <div style="font-size: 48px;">▶️</div>
-          <div class="video-title" id="videoTitle">Argentina Campeón del Mundo 2022 – Resumen oficial FIFA</div>
-        </div>
-      </div>
-      <div class="filter-controls">
-        <button class="filter-btn" data-filter="normal">Normal</button>
-        <button class="filter-btn" data-filter="bw">Blanco y Negro</button>
-        <button class="filter-btn" data-filter="sepia">Sepia</button>
-        <button class="filter-btn" data-filter="contrast">Alto Contraste</button>
-      </div>
-    </div>
-    
-    <!-- Sección de estadísticas -->
-    <div class="menu-section">
-      <div class="section-title">
-        <span class="section-icon">📊</span>
-        <span>Estadísticas</span>
-      </div>
-      <div class="stats-grid" id="statsGrid">
+  <!-- Información del país -->
+  <div class="country-info" id="countryInfo">
+    <button class="close-btn" onclick="closeCountryInfo()">×</button>
+    <div class="info-content">
+      <h2 id="infoTitle">🇦🇷 Argentina</h2>
+      <div class="info-stats" id="infoStats">
         <!-- Las estadísticas se llenan dinámicamente -->
       </div>
+      <p id="infoDescription" style="line-height: 1.6; margin-top: 15px;">
+        Información sobre el país y su participación en el Mundial 2026.
+      </p>
     </div>
   </div>
 
@@ -1244,223 +1084,239 @@
   </div>
 
   <script>
-    // Datos completos de los países con encuestas, videos y estadísticas
+    // Datos de los países
     const countries = {
       argentina: {
         name: "Argentina",
         emoji: "🇦🇷",
         color: "#74ACDF",
-        quizzes: [
-          {
-            question: "¿En qué año ganó Argentina su primera Copa del Mundo?",
-            options: ["1978", "1986", "1930", "2014"],
-            correct: 0
-          },
-          {
-            question: "¿Qué jugador argentino es el máximo goleador histórico de los Mundiales?",
-            options: ["Lionel Messi", "Gabriel Batistuta", "Diego Maradona", "Mario Kempes"],
-            correct: 1
-          },
-          {
-            question: "¿Cuántas finales ha jugado Argentina?",
-            options: ["3", "4", "5", "6"],
-            correct: 3
-          },
-          {
-            question: "¿Qué entrenador ganó el Mundial 1986?",
-            options: ["Carlos Bilardo", "César Luis Menotti", "Marcelo Bielsa", "Daniel Passarella"],
-            correct: 0
-          },
-          {
-            question: "¿Contra qué país ganó Argentina la final de 2022?",
-            options: ["Francia", "Brasil", "Alemania", "Países Bajos"],
-            correct: 0
-          }
-        ],
-        video: {
-          title: "Argentina Campeón del Mundo 2022 – Resumen oficial FIFA",
-          url: "#"
-        },
         stats: {
+          "Copas del Mundo": "3 (1978, 1986, 2022)",
+          "Mejor Resultado": "Campeón",
           "Participaciones": "18",
-          "Mundiales ganados": "3 (1978, 1986, 2022)",
-          "Mejor resultado": "Campeón",
-          "Goleador histórico": "Lionel Messi",
-          "Partidos jugados": "88+"
-        }
+          "Grupo 2026": "Por definir"
+        },
+        description: "La selección argentina, actual campeona del mundo, buscará defender su título en el Mundial 2026 con Lionel Messi como figura principal."
       },
       australia: {
         name: "Australia",
         emoji: "🇦🇺",
         color: "#012169",
-        quizzes: [
-          {
-            question: "¿En qué año Australia clasificó por primera vez a un Mundial?",
-            options: ["1974", "2006", "1998", "2010"],
-            correct: 0
-          },
-          {
-            question: "¿Qué confederación representa desde 2006?",
-            options: ["AFC", "OFC", "UEFA", "CONMEBOL"],
-            correct: 0
-          },
-          {
-            question: "¿En qué Mundial llegó por primera vez a octavos?",
-            options: ["2006", "2010", "2014", "2022"],
-            correct: 0
-          },
-          {
-            question: "¿Qué selección eliminó a Australia en 2022?",
-            options: ["Argentina", "Francia", "Brasil", "Países Bajos"],
-            correct: 0
-          },
-          {
-            question: "¿Cuál es su apodo futbolístico?",
-            options: ["Socceroos", "Kangaroos", "Wallabies", "Matildas"],
-            correct: 0
-          }
-        ],
-        video: {
-          title: "Australia vs Argentina – Octavos Qatar 2022 Highlights",
-          url: "#"
-        },
         stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Octavos de Final (2006)",
           "Participaciones": "6",
-          "Mejor resultado": "Octavos (2006, 2022)",
-          "Partidos jugados": "20+",
-          "Goleador mundialista": "Tim Cahill"
-        }
+          "Grupo 2026": "Por definir"
+        },
+        description: "Los Socceroos buscan superar su mejor actuación histórica en el Mundial 2026 con un equipo en crecimiento."
       },
       brasil: {
         name: "Brasil",
         emoji: "🇧🇷",
         color: "#009739",
-        quizzes: [
-          {
-            question: "¿Cuántas Copas del Mundo ha ganado Brasil?",
-            options: ["5", "4", "6", "3"],
-            correct: 0
-          },
-          {
-            question: "¿Quién es su máximo goleador en Mundiales?",
-            options: ["Ronaldo Nazário", "Pelé", "Neymar", "Romário"],
-            correct: 0
-          },
-          {
-            question: "¿Qué país le ganó 7-1 en 2014?",
-            options: ["Alemania", "Argentina", "Francia", "Italia"],
-            correct: 0
-          },
-          {
-            question: "¿Qué selección enfrentó Brasil en la final de 2002?",
-            options: ["Alemania", "Italia", "Francia", "Argentina"],
-            correct: 0
-          },
-          {
-            question: "¿Qué jugador brasileño ganó el Mundial a los 17 años?",
-            options: ["Pelé", "Ronaldo", "Garrincha", "Zico"],
-            correct: 0
-          }
-        ],
-        video: {
-          title: "Brasil mejores goles en Copas del Mundo – FIFA Archive",
-          url: "#"
-        },
         stats: {
-          "Participaciones": "22 (único en todos)",
-          "Mundiales ganados": "5",
-          "Goleador mundialista": "Ronaldo Nazário",
-          "Partidos jugados": "115+"
-        }
+          "Copas del Mundo": "5 (1958, 1962, 1970, 1994, 2002)",
+          "Mejor Resultado": "Campeón",
+          "Participaciones": "22",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La canarinha, la selección más exitosa de la historia, busca su sexta Copa del Mundo en 2026 con una nueva generación de talentos."
       },
       canada: {
         name: "Canadá",
         emoji: "🇨🇦",
         color: "#FF0000",
-        quizzes: [
-          {
-            question: "¿En qué año debutó Canadá en un Mundial?",
-            options: ["1986", "2002", "2010", "2022"],
-            correct: 0
-          },
-          {
-            question: "¿En qué Mundial anotó su primer gol?",
-            options: ["2022", "1986", "2002", "Nunca anotó"],
-            correct: 0
-          },
-          {
-            question: "¿Qué confederación representa?",
-            options: ["CONCACAF", "CONMEBOL", "UEFA", "AFC"],
-            correct: 0
-          },
-          {
-            question: "¿Cuál es el apodo del equipo?",
-            options: ["Canucks", "Maple Leafs", "The Reds", "Canadiens"],
-            correct: 0
-          },
-          {
-            question: "¿Qué jugador es su mayor figura reciente?",
-            options: ["Alphonso Davies", "Jonathan David", "Cyle Larin", "Atiba Hutchinson"],
-            correct: 0
-          }
-        ],
-        video: {
-          title: "Canadá vs Croacia – Mundial Qatar 2022 Resumen",
-          url: "#"
-        },
         stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Fase de Grupos",
           "Participaciones": "2",
-          "Mejor resultado": "Fase de grupos",
-          "Primer gol": "2022",
-          "Jugador destacado": "Alphonso Davies"
-        }
+          "Grupo 2026": "Por definir"
+        },
+        description: "Como anfitrión del Mundial 2026, Canadá espera hacer historia en casa con un equipo en constante mejora."
       },
       colombia: {
         name: "Colombia",
         emoji: "🇨🇴",
         color: "#FCD116",
-        quizzes: [
-          {
-            question: "¿En qué año debutó Colombia en un Mundial?",
-            options: ["1962", "1990", "1994", "1998"],
-            correct: 0
-          },
-          {
-            question: "¿Cuál ha sido su mejor participación?",
-            options: ["Cuartos de final 2014", "Octavos 1990", "Fase grupos 1998", "Octavos 2018"],
-            correct: 0
-          },
-          {
-            question: "¿Qué jugador marcó el famoso gol olímpico en 2014?",
-            options: ["James Rodríguez", "Juan Cuadrado", "Radamel Falcao", "Carlos Bacca"],
-            correct: 0
-          },
-          {
-            question: "¿Qué país eliminó a Colombia en octavos 2014?",
-            options: ["Brasil", "Argentina", "Alemania", "Francia"],
-            correct: 0
-          },
-          {
-            question: "¿Quién es su goleador mundialista?",
-            options: ["James Rodríguez", "Radamel Falcao", "Faustino Asprilla", "Adolfo Valencia"],
-            correct: 0
-          }
-        ],
-        video: {
-          title: "Colombia mejores goles en Copas del Mundo",
-          url: "#"
-        },
         stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Cuartos de Final (2014)",
           "Participaciones": "6",
-          "Mejor resultado": "Cuartos (2014)",
-          "Goleador": "James Rodríguez"
-        }
+          "Grupo 2026": "Por definir"
+        },
+        description: "La selección colombiana busca repetir su exitosa campaña de 2014 con un equipo lleno de talento y garra."
+      },
+      "corea-del-sur": {
+        name: "Corea del Sur",
+        emoji: "🇰🇷",
+        color: "#CD2E3A",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Semifinales (2002)",
+          "Participaciones": "11",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Los Taegeuk Warriors buscan repetir la hazaña del 2002 con un equipo disciplinado y técnico."
+      },
+      ecuador: {
+        name: "Ecuador",
+        emoji: "🇪🇨",
+        color: "#FFD100",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Octavos de Final (2006)",
+          "Participaciones": "4",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La tricolor ecuatoriana busca superar su mejor actuación en un Mundial con un equipo joven y prometedor."
+      },
+      espana: {
+        name: "España",
+        emoji: "🇪🇸",
+        color: "#AA151B",
+        stats: {
+          "Copas del Mundo": "1 (2010)",
+          "Mejor Resultado": "Campeón (2010)",
+          "Participaciones": "16",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La furia roja busca repetir el éxito del 2010 con una nueva generación de talentosos jugadores."
+      },
+      iran: {
+        name: "Irán",
+        emoji: "🇮🇷",
+        color: "#DA0000",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Fase de Grupos",
+          "Participaciones": "6",
+          "Grupo 2026": "Por definir"
+        },
+        description: "El equipo persa busca hacer historia y pasar por primera vez a octavos de final en el Mundial 2026."
+      },
+      japon: {
+        name: "Japón",
+        emoji: "🇯🇵",
+        color: "#BC002D",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Octavos de Final (2002, 2010, 2018, 2022)",
+          "Participaciones": "7",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Los Samuráis Azules buscan superar por primera vez los octavos de final con su estilo técnico y disciplinado."
+      },
+      jordania: {
+        name: "Jordania",
+        emoji: "🇯🇴",
+        color: "#007A3D",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Nunca clasificó",
+          "Participaciones": "0",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Jordania busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026."
+      },
+      marruecos: {
+        name: "Marruecos",
+        emoji: "🇲🇦",
+        color: "#C1272D",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Semifinales (2022)",
+          "Participaciones": "6",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Tras su histórica semifinal en 2022, los Leones del Atlas buscan repetir el éxito en 2026."
+      },
+      mexico: {
+        name: "México",
+        emoji: "🇲🇽",
+        color: "#006847",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Cuartos de Final",
+          "Participaciones": "17",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La selección mexicana busca hacer historia en el Mundial 2026 como anfitrión conjuntamente con USA y Canadá."
+      },
+      "nueva-zelanda": {
+        name: "Nueva Zelanda",
+        emoji: "🇳🇿",
+        color: "#00247D",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Fase de Grupos",
+          "Participaciones": "2",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Los All Whites buscan ganar su primer partido en una Copa del Mundo en la edición de 2026."
+      },
+      paraguay: {
+        name: "Paraguay",
+        emoji: "🇵🇾",
+        color: "#D52B1E",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Cuartos de Final (2010)",
+          "Participaciones": "8",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La albirroja paraguaya busca repetir su exitosa campaña de 2010 con un equipo sólido defensivamente."
+      },
+      tunez: {
+        name: "Túnez",
+        emoji: "🇹🇳",
+        color: "#E70013",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Fase de Grupos",
+          "Participaciones": "6",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Las Águilas de Cartago buscan por primera vez pasar a octavos de final en un Mundial."
+      },
+      uruguay: {
+        name: "Uruguay",
+        emoji: "🇺🇾",
+        color: "#0038A8",
+        stats: {
+          "Copas del Mundo": "2 (1930, 1950)",
+          "Mejor Resultado": "Campeón",
+          "Participaciones": "14",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La celeste, primera campeona del mundo, busca su tercer título con su característica garra charrúa."
+      },
+      usa: {
+        name: "Estados Unidos",
+        emoji: "🇺🇸",
+        color: "#B22234",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Semifinales (1930)",
+          "Participaciones": "11",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Como anfitrión del Mundial 2026, USA espera aprovechar su ventaja local para lograr un resultado histórico."
+      },
+      uzbekistan: {
+        name: "Uzbekistán",
+        emoji: "🇺🇿",
+        color: "#1EB53A",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Nunca clasificó",
+          "Participaciones": "0",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Uzbekistán busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026."
       }
-      // ... (los demás países seguirían el mismo patrón)
     };
 
     let currentCountry = null;
-    let currentQuiz = null;
 
     // Inicialización cuando la escena cargue
     document.addEventListener('DOMContentLoaded', function() {
@@ -1471,36 +1327,37 @@
         document.querySelectorAll('.info-button').forEach(btn => {
           btn.addEventListener('click', function() {
             const country = this.getAttribute('data-country');
-            showCountryMenu(country);
+            showCountryInfo(country);
           });
         });
       });
 
-      // Eventos de detección
+      // Eventos de detección - CORREGIDO
       scene.addEventListener('targetFound', (event) => {
         const targetIndex = event.detail.targetIndex;
+        console.log("Target encontrado:", targetIndex); // Para debug
         
         // Mapeo directo de índices a países
         const countryMap = {
-          0: { key: 'argentina' },
-          1: { key: 'australia' },
-          2: { key: 'brasil' },
-          3: { key: 'canada' },
-          4: { key: 'colombia' },
-          5: { key: 'corea-del-sur' },
-          6: { key: 'ecuador' },
-          7: { key: 'espana' },
-          8: { key: 'iran' },
-          9: { key: 'japon' },
-          10: { key: 'jordania' },
-          11: { key: 'marruecos' },
-          12: { key: 'mexico' },
-          13: { key: 'nueva-zelanda' },
-          14: { key: 'paraguay' },
-          15: { key: 'tunez' },
-          16: { key: 'uruguay' },
-          17: { key: 'usa' },
-          18: { key: 'uzbekistan' }
+          0: { name: 'Argentina', emoji: '🇦🇷', color: '#74ACDF', key: 'argentina' },
+          1: { name: 'Australia', emoji: '🇦🇺', color: '#012169', key: 'australia' },
+          2: { name: 'Brasil', emoji: '🇧🇷', color: '#009739', key: 'brasil' },
+          3: { name: 'Canadá', emoji: '🇨🇦', color: '#FF0000', key: 'canada' },
+          4: { name: 'Colombia', emoji: '🇨🇴', color: '#FCD116', key: 'colombia' },
+          5: { name: 'Corea del Sur', emoji: '🇰🇷', color: '#CD2E3A', key: 'corea-del-sur' },
+          6: { name: 'Ecuador', emoji: '🇪🇨', color: '#FFD100', key: 'ecuador' },
+          7: { name: 'España', emoji: '🇪🇸', color: '#AA151B', key: 'espana' },
+          8: { name: 'Irán', emoji: '🇮🇷', color: '#DA0000', key: 'iran' },
+          9: { name: 'Japón', emoji: '🇯🇵', color: '#BC002D', key: 'japon' },
+          10: { name: 'Jordania', emoji: '🇯🇴', color: '#007A3D', key: 'jordania' },
+          11: { name: 'Marruecos', emoji: '🇲🇦', color: '#C1272D', key: 'marruecos' },
+          12: { name: 'México', emoji: '🇲🇽', color: '#006847', key: 'mexico' },
+          13: { name: 'Nueva Zelanda', emoji: '🇳🇿', color: '#00247D', key: 'nueva-zelanda' },
+          14: { name: 'Paraguay', emoji: '🇵🇾', color: '#D52B1E', key: 'paraguay' },
+          15: { name: 'Túnez', emoji: '🇹🇳', color: '#E70013', key: 'tunez' },
+          16: { name: 'Uruguay', emoji: '🇺🇾', color: '#0038A8', key: 'uruguay' },
+          17: { name: 'Estados Unidos', emoji: '🇺🇸', color: '#B22234', key: 'usa' },
+          18: { name: 'Uzbekistán', emoji: '🇺🇿', color: '#1EB53A', key: 'uzbekistan' }
         };
 
         const detectedCountry = countryMap[targetIndex];
@@ -1510,10 +1367,9 @@
           
           // Mostrar banner de detección
           const banner = document.getElementById('detectionBanner');
-          const country = countries[currentCountry];
-          document.getElementById('bannerTitle').textContent = `${country.emoji} ${country.name} Detectado`;
+          document.getElementById('bannerTitle').textContent = `${detectedCountry.emoji} ${detectedCountry.name} Detectado`;
           document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
-          banner.style.background = `linear-gradient(135deg, ${country.color}, ${country.color}CC)`;
+          banner.style.background = `linear-gradient(135deg, ${detectedCountry.color}, ${detectedCountry.color}CC)`;
           banner.style.display = 'block';
           
           // Ocultar banner después de 3 segundos
@@ -1526,52 +1382,19 @@
       scene.addEventListener('targetLost', () => {
         // Mantener el país actual hasta que se detecte uno nuevo
       });
-
-      // Configurar filtros de video
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const filter = this.getAttribute('data-filter');
-          applyVideoFilter(filter);
-          
-          // Actualizar estado activo de los botones
-          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-        });
-      });
     });
 
-    // Mostrar menú del país
-    function showCountryMenu(countryKey) {
+    // Funciones de la interfaz (permanecen igual)
+    function showCountryInfo(countryKey) {
       const country = countries[countryKey];
-      const menu = document.getElementById('countryMenu');
+      const infoDiv = document.getElementById('countryInfo');
       
-      // Actualizar encabezado
-      document.getElementById('menuFlag').textContent = country.emoji;
-      document.getElementById('menuName').textContent = country.name;
+      document.getElementById('infoTitle').textContent = `${country.emoji} ${country.name}`;
+      document.getElementById('infoTitle').style.color = country.color;
       
-      // Seleccionar encuesta aleatoria
-      const randomIndex = Math.floor(Math.random() * country.quizzes.length);
-      currentQuiz = country.quizzes[randomIndex];
-      
-      // Actualizar encuesta
-      document.getElementById('quizQuestion').textContent = currentQuiz.question;
-      const quizOptions = document.getElementById('quizOptions');
-      quizOptions.innerHTML = '';
-      
-      currentQuiz.options.forEach((option, index) => {
-        const optionElement = document.createElement('div');
-        optionElement.className = 'quiz-option';
-        optionElement.textContent = option;
-        optionElement.addEventListener('click', () => selectQuizOption(index));
-        quizOptions.appendChild(optionElement);
-      });
-      
-      // Actualizar video
-      document.getElementById('videoTitle').textContent = country.video.title;
-      
-      // Actualizar estadísticas
-      const statsGrid = document.getElementById('statsGrid');
-      statsGrid.innerHTML = '';
+      // Llenar estadísticas
+      const statsDiv = document.getElementById('infoStats');
+      statsDiv.innerHTML = '';
       
       Object.entries(country.stats).forEach(([key, value]) => {
         const statItem = document.createElement('div');
@@ -1580,54 +1403,22 @@
           <span class="stat-value">${value}</span>
           <span class="stat-label">${key}</span>
         `;
-        statsGrid.appendChild(statItem);
+        statsDiv.appendChild(statItem);
       });
       
-      // Resetear filtros de video
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelector('.filter-btn[data-filter="normal"]').classList.add('active');
-      document.getElementById('videoPlaceholder').className = 'video-placeholder';
-      
-      menu.classList.add('active');
+      document.getElementById('infoDescription').textContent = country.description;
+      infoDiv.classList.add('active');
     }
 
-    // Cerrar menú del país
-    function closeCountryMenu() {
-      document.getElementById('countryMenu').classList.remove('active');
+    function closeCountryInfo() {
+      document.getElementById('countryInfo').classList.remove('active');
     }
 
-    // Seleccionar opción de encuesta
-    function selectQuizOption(optionIndex) {
-      const options = document.querySelectorAll('.quiz-option');
-      options.forEach(option => option.classList.remove('selected'));
-      options[optionIndex].classList.add('selected');
-      
-      // Mostrar resultado después de un breve tiempo
-      setTimeout(() => {
-        if (optionIndex === currentQuiz.correct) {
-          alert('¡Respuesta correcta! 🎉');
-        } else {
-          alert(`Incorrecto. La respuesta correcta es: ${currentQuiz.options[currentQuiz.correct]}`);
-        }
-      }, 500);
-    }
-
-    // Aplicar filtro de video
-    function applyVideoFilter(filter) {
-      const video = document.getElementById('videoPlaceholder');
-      video.className = 'video-placeholder';
-      
-      if (filter !== 'normal') {
-        video.classList.add(`${filter}-filter`);
-      }
-    }
-
-    // Funciones de control
     function showAllInfo() {
       let allInfo = "🌍 INFORMACIÓN DEL MUNDIAL 2026\n\n";
       Object.values(countries).forEach(country => {
         allInfo += `${country.emoji} ${country.name}\n`;
-        allInfo += `Copas del Mundo: ${country.stats['Mundiales ganados'] || '0'}\n`;
+        allInfo += `Copas del Mundo: ${country.stats['Copas del Mundo']}\n`;
         allInfo += `Participaciones: ${country.stats['Participaciones']}\n\n`;
       });
       allInfo += "🏆 Primer Mundial con 48 equipos\n⚽ 3 países anfitriones\n🎯 80 partidos en total";
@@ -1678,9 +1469,9 @@
     }
 
     // Cerrar modal al hacer clic fuera
-    document.getElementById('countryMenu').addEventListener('click', function(e) {
+    document.getElementById('countryInfo').addEventListener('click', function(e) {
       if (e.target === this) {
-        closeCountryMenu();
+        closeCountryInfo();
       }
     });
   </script>
