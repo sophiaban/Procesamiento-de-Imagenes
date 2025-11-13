@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   
   <style>
+    /* Tus estilos CSS permanecen igual */
     * {
       margin: 0;
       padding: 0;
@@ -1331,46 +1332,51 @@
         });
       });
 
-      // Eventos de detección
+      // Eventos de detección - CORREGIDO
       scene.addEventListener('targetFound', (event) => {
         const targetIndex = event.detail.targetIndex;
-        const countryNames = [
-          'Argentina', 'Australia', 'Brasil', 'Canadá', 'Colombia', 
-          'Corea del Sur', 'Ecuador', 'España', 'Irán', 'Japón',
-          'Jordania', 'Marruecos', 'México', 'Nueva Zelanda', 'Paraguay',
-          'Túnez', 'Uruguay', 'Estados Unidos', 'Uzbekistán'
-        ];
-        const countryEmojis = [
-          '🇦🇷', '🇦🇺', '🇧🇷', '🇨🇦', '🇨🇴', 
-          '🇰🇷', '🇪🇨', '🇪🇸', '🇮🇷', '🇯🇵',
-          '🇯🇴', '🇲🇦', '🇲🇽', '🇳🇿', '🇵🇾',
-          '🇹🇳', '🇺🇾', '🇺🇸', '🇺🇿'
-        ];
-        const countryColors = [
-          '#74ACDF', '#012169', '#009739', '#FF0000', '#FCD116',
-          '#CD2E3A', '#FFD100', '#AA151B', '#DA0000', '#BC002D',
-          '#007A3D', '#C1272D', '#006847', '#00247D', '#D52B1E',
-          '#E70013', '#0038A8', '#B22234', '#1EB53A'
-        ];
+        console.log("Target encontrado:", targetIndex); // Para debug
         
-        currentCountry = [
-          'argentina', 'australia', 'brasil', 'canada', 'colombia',
-          'corea-del-sur', 'ecuador', 'espana', 'iran', 'japon',
-          'jordania', 'marruecos', 'mexico', 'nueva-zelanda', 'paraguay',
-          'tunez', 'uruguay', 'usa', 'uzbekistan'
-        ][targetIndex];
+        // Mapeo directo de índices a países
+        const countryMap = {
+          0: { name: 'Argentina', emoji: '🇦🇷', color: '#74ACDF', key: 'argentina' },
+          1: { name: 'Australia', emoji: '🇦🇺', color: '#012169', key: 'australia' },
+          2: { name: 'Brasil', emoji: '🇧🇷', color: '#009739', key: 'brasil' },
+          3: { name: 'Canadá', emoji: '🇨🇦', color: '#FF0000', key: 'canada' },
+          4: { name: 'Colombia', emoji: '🇨🇴', color: '#FCD116', key: 'colombia' },
+          5: { name: 'Corea del Sur', emoji: '🇰🇷', color: '#CD2E3A', key: 'corea-del-sur' },
+          6: { name: 'Ecuador', emoji: '🇪🇨', color: '#FFD100', key: 'ecuador' },
+          7: { name: 'España', emoji: '🇪🇸', color: '#AA151B', key: 'espana' },
+          8: { name: 'Irán', emoji: '🇮🇷', color: '#DA0000', key: 'iran' },
+          9: { name: 'Japón', emoji: '🇯🇵', color: '#BC002D', key: 'japon' },
+          10: { name: 'Jordania', emoji: '🇯🇴', color: '#007A3D', key: 'jordania' },
+          11: { name: 'Marruecos', emoji: '🇲🇦', color: '#C1272D', key: 'marruecos' },
+          12: { name: 'México', emoji: '🇲🇽', color: '#006847', key: 'mexico' },
+          13: { name: 'Nueva Zelanda', emoji: '🇳🇿', color: '#00247D', key: 'nueva-zelanda' },
+          14: { name: 'Paraguay', emoji: '🇵🇾', color: '#D52B1E', key: 'paraguay' },
+          15: { name: 'Túnez', emoji: '🇹🇳', color: '#E70013', key: 'tunez' },
+          16: { name: 'Uruguay', emoji: '🇺🇾', color: '#0038A8', key: 'uruguay' },
+          17: { name: 'Estados Unidos', emoji: '🇺🇸', color: '#B22234', key: 'usa' },
+          18: { name: 'Uzbekistán', emoji: '🇺🇿', color: '#1EB53A', key: 'uzbekistan' }
+        };
+
+        const detectedCountry = countryMap[targetIndex];
         
-        // Mostrar banner de detección
-        const banner = document.getElementById('detectionBanner');
-        document.getElementById('bannerTitle').textContent = `${countryEmojis[targetIndex]} ${countryNames[targetIndex]} Detectado`;
-        document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
-        banner.style.background = `linear-gradient(135deg, ${countryColors[targetIndex]}, ${countryColors[targetIndex]}CC)`;
-        banner.style.display = 'block';
-        
-        // Ocultar banner después de 3 segundos
-        setTimeout(() => {
-          banner.style.display = 'none';
-        }, 3000);
+        if (detectedCountry) {
+          currentCountry = detectedCountry.key;
+          
+          // Mostrar banner de detección
+          const banner = document.getElementById('detectionBanner');
+          document.getElementById('bannerTitle').textContent = `${detectedCountry.emoji} ${detectedCountry.name} Detectado`;
+          document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
+          banner.style.background = `linear-gradient(135deg, ${detectedCountry.color}, ${detectedCountry.color}CC)`;
+          banner.style.display = 'block';
+          
+          // Ocultar banner después de 3 segundos
+          setTimeout(() => {
+            banner.style.display = 'none';
+          }, 3000);
+        }
       });
 
       scene.addEventListener('targetLost', () => {
@@ -1378,7 +1384,7 @@
       });
     });
 
-    // Funciones de la interfaz
+    // Funciones de la interfaz (permanecen igual)
     function showCountryInfo(countryKey) {
       const country = countries[countryKey];
       const infoDiv = document.getElementById('countryInfo');
