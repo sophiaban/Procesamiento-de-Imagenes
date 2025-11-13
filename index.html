@@ -228,8 +228,8 @@
 <body>
   <!-- Header -->
   <div class="header">
-    <h1>🌍 Detector Automático de Banderas AR</h1>
-    <p>Apunta tu cámara a cualquier bandera: México 🇲🇽, USA 🇺🇸 o España 🇪🇸</p>
+    <h1>🌍 Detector Automático de Banderas AR - Mundial 2026</h1>
+    <p>Apunta tu cámara a cualquier bandera de los 19 países participantes</p>
   </div>
 
   <!-- Banner de detección -->
@@ -242,7 +242,7 @@
   <div class="country-info" id="countryInfo">
     <button class="close-btn" onclick="closeCountryInfo()">×</button>
     <div class="info-content">
-      <h2 id="infoTitle">🇲🇽 México</h2>
+      <h2 id="infoTitle">🇦🇷 Argentina</h2>
       <div class="info-stats" id="infoStats">
         <!-- Las estadísticas se llenan dinámicamente -->
       </div>
@@ -269,20 +269,532 @@
       
       <a-assets>
         <!-- Imágenes de banderas -->
-        <img id="mexico-flag" src="./assets/images/bandera-mexico.png" crossorigin="anonymous">
-        <img id="usa-flag" src="./assets/images/bandera-usa.png" crossorigin="anonymous">
-        <img id="espana-flag" src="./assets/images/bandera-espana.png" crossorigin="anonymous">
+        <img id="argentina-flag" src="./assets/images/argentina.png" crossorigin="anonymous">
+        <img id="australia-flag" src="./assets/images/australia.png" crossorigin="anonymous">
+        <img id="brasil-flag" src="./assets/images/brasil.png" crossorigin="anonymous">
+        <img id="canada-flag" src="./assets/images/canada.png" crossorigin="anonymous">
+        <img id="colombia-flag" src="./assets/images/colombia.png" crossorigin="anonymous">
+        <img id="corea-del-sur-flag" src="./assets/images/corea-del-sur.png" crossorigin="anonymous">
+        <img id="ecuador-flag" src="./assets/images/ecuador.png" crossorigin="anonymous">
+        <img id="espana-flag" src="./assets/images/espana.png" crossorigin="anonymous">
+        <img id="iran-flag" src="./assets/images/iran.png" crossorigin="anonymous">
+        <img id="japon-flag" src="./assets/images/japon.png" crossorigin="anonymous">
+        <img id="jordania-flag" src="./assets/images/jordania.png" crossorigin="anonymous">
+        <img id="marruecos-flag" src="./assets/images/marruecos.png" crossorigin="anonymous">
+        <img id="mexico-flag" src="./assets/images/mexico.png" crossorigin="anonymous">
+        <img id="nueva-zelanda-flag" src="./assets/images/nueva-zelanda.png" crossorigin="anonymous">
+        <img id="paraguay-flag" src="./assets/images/paraguay.png" crossorigin="anonymous">
+        <img id="tunez-flag" src="./assets/images/tunez.png" crossorigin="anonymous">
+        <img id="uruguay-flag" src="./assets/images/uruguay.png" crossorigin="anonymous">
+        <img id="usa-flag" src="./assets/images/usa.png" crossorigin="anonymous">
+        <img id="uzbekistan-flag" src="./assets/images/uzbekistan.png" crossorigin="anonymous">
         
         <!-- Modelos 3D -->
-        <a-asset-item id="mexico-model" src="./assets/models/modelo-mexico.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="usa-model" src="./assets/models/modelo-usa.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="espana-model" src="./assets/models/modelo-espana.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="argentina-model" src="./assets/models/argentina.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="australia-model" src="./assets/models/australia.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="brasil-model" src="./assets/models/brasil.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="canada-model" src="./assets/models/canada.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="colombia-model" src="./assets/models/colombia.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="corea-del-sur-model" src="./assets/models/corea-del-sur.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="ecuador-model" src="./assets/models/ecuador.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="espana-model" src="./assets/models/espana.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="iran-model" src="./assets/models/iran.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="japon-model" src="./assets/models/japon.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="jordania-model" src="./assets/models/jordania.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="marruecos-model" src="./assets/models/marruecos.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="mexico-model" src="./assets/models/mexico.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="nueva-zelanda-model" src="./assets/models/nueva-zelanda.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="paraguay-model" src="./assets/models/paraguay.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="tunez-model" src="./assets/models/tunez.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="uruguay-model" src="./assets/models/uruguay.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="usa-model" src="./assets/models/usa.glb" crossorigin="anonymous"></a-asset-item>
+        <a-asset-item id="uzbekistan-model" src="./assets/models/uzbekistan.glb" crossorigin="anonymous"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- TARGET 0: MÉXICO -->
+      <!-- TARGET 0: ARGENTINA -->
       <a-entity mindar-image-target="targetIndex: 0">
+        <a-plane 
+          src="#argentina-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="argentina-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#argentina-model"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇦🇷 Argentina" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="argentina"
+          mindar-face-up-button>
+          <a-ring color="#74ACDF" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 1: AUSTRALIA -->
+      <a-entity mindar-image-target="targetIndex: 1">
+        <a-plane 
+          src="#australia-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="australia-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#australia-model"
+          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇦🇺 Australia" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="australia"
+          mindar-face-up-button>
+          <a-ring color="#012169" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 2: BRASIL -->
+      <a-entity mindar-image-target="targetIndex: 2">
+        <a-plane 
+          src="#brasil-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="brasil-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#brasil-model"
+          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇧🇷 Brasil" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="brasil"
+          mindar-face-up-button>
+          <a-ring color="#009739" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 3: CANADÁ -->
+      <a-entity mindar-image-target="targetIndex: 3">
+        <a-plane 
+          src="#canada-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="canada-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#canada-model"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇨🇦 Canadá" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="canada"
+          mindar-face-up-button>
+          <a-ring color="#FF0000" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 4: COLOMBIA -->
+      <a-entity mindar-image-target="targetIndex: 4">
+        <a-plane 
+          src="#colombia-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="colombia-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#colombia-model"
+          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇨🇴 Colombia" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="colombia"
+          mindar-face-up-button>
+          <a-ring color="#FCD116" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 5: COREA DEL SUR -->
+      <a-entity mindar-image-target="targetIndex: 5">
+        <a-plane 
+          src="#corea-del-sur-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="corea-del-sur-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#corea-del-sur-model"
+          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇰🇷 Corea del Sur" 
+          position="-0.6 0.4 0" 
+          scale="0.7 0.7 0.7" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="corea-del-sur"
+          mindar-face-up-button>
+          <a-ring color="#CD2E3A" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 6: ECUADOR -->
+      <a-entity mindar-image-target="targetIndex: 6">
+        <a-plane 
+          src="#ecuador-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="ecuador-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#ecuador-model"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇪🇨 Ecuador" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="ecuador"
+          mindar-face-up-button>
+          <a-ring color="#FFD100" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 7: ESPAÑA -->
+      <a-entity mindar-image-target="targetIndex: 7">
+        <a-plane 
+          src="#espana-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="espana-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#espana-model"
+          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇪🇸 España" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="espana"
+          mindar-face-up-button>
+          <a-ring color="#AA151B" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 8: IRÁN -->
+      <a-entity mindar-image-target="targetIndex: 8">
+        <a-plane 
+          src="#iran-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="iran-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#iran-model"
+          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇮🇷 Irán" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="iran"
+          mindar-face-up-button>
+          <a-ring color="#DA0000" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 9: JAPÓN -->
+      <a-entity mindar-image-target="targetIndex: 9">
+        <a-plane 
+          src="#japon-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="japon-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#japon-model"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇯🇵 Japón" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="japon"
+          mindar-face-up-button>
+          <a-ring color="#BC002D" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 10: JORDANIA -->
+      <a-entity mindar-image-target="targetIndex: 10">
+        <a-plane 
+          src="#jordania-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="jordania-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#jordania-model"
+          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇯🇴 Jordania" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="jordania"
+          mindar-face-up-button>
+          <a-ring color="#007A3D" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 11: MARRUECOS -->
+      <a-entity mindar-image-target="targetIndex: 11">
+        <a-plane 
+          src="#marruecos-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="marruecos-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#marruecos-model"
+          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇲🇦 Marruecos" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="marruecos"
+          mindar-face-up-button>
+          <a-ring color="#C1272D" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 12: MÉXICO -->
+      <a-entity mindar-image-target="targetIndex: 12">
         <a-plane 
           src="#mexico-flag" 
           position="0 0 0" 
@@ -321,8 +833,168 @@
         </a-entity>
       </a-entity>
 
-      <!-- TARGET 1: USA -->
-      <a-entity mindar-image-target="targetIndex: 1">
+      <!-- TARGET 13: NUEVA ZELANDA -->
+      <a-entity mindar-image-target="targetIndex: 13">
+        <a-plane 
+          src="#nueva-zelanda-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="nueva-zelanda-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#nueva-zelanda-model"
+          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇳🇿 Nueva Zelanda" 
+          position="-0.6 0.4 0" 
+          scale="0.7 0.7 0.7" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="nueva-zelanda"
+          mindar-face-up-button>
+          <a-ring color="#00247D" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 14: PARAGUAY -->
+      <a-entity mindar-image-target="targetIndex: 14">
+        <a-plane 
+          src="#paraguay-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="paraguay-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#paraguay-model"
+          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇵🇾 Paraguay" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="paraguay"
+          mindar-face-up-button>
+          <a-ring color="#D52B1E" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 15: TÚNEZ -->
+      <a-entity mindar-image-target="targetIndex: 15">
+        <a-plane 
+          src="#tunez-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="tunez-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#tunez-model"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇹🇳 Túnez" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="tunez"
+          mindar-face-up-button>
+          <a-ring color="#E70013" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 16: URUGUAY -->
+      <a-entity mindar-image-target="targetIndex: 16">
+        <a-plane 
+          src="#uruguay-flag" 
+          position="0 0 0" 
+          height="0.552" 
+          width="1" 
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0.9; side: double">
+        </a-plane>
+        
+        <a-gltf-model 
+          id="uruguay-3d"
+          position="0.6 0.3 0.1" 
+          scale="0.25 0.25 0.25" 
+          src="#uruguay-model"
+          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
+        </a-gltf-model>
+        
+        <a-text 
+          value="🇺🇾 Uruguay" 
+          position="-0.6 0.4 0" 
+          scale="0.8 0.8 0.8" 
+          color="#FFFFFF"
+          align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+        
+        <!-- Botón de información -->
+        <a-entity 
+          position="0 0.8 0" 
+          class="info-button" 
+          data-country="uruguay"
+          mindar-face-up-button>
+          <a-ring color="#0038A8" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
+      </a-entity>
+
+      <!-- TARGET 17: ESTADOS UNIDOS -->
+      <a-entity mindar-image-target="targetIndex: 17">
         <a-plane 
           src="#usa-flag" 
           position="0 0 0" 
@@ -337,8 +1009,8 @@
           position="0.6 0.3 0.1" 
           scale="0.25 0.25 0.25" 
           src="#usa-model"
-          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
+          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
         </a-gltf-model>
         
         <a-text 
@@ -361,10 +1033,10 @@
         </a-entity>
       </a-entity>
 
-      <!-- TARGET 2: ESPAÑA -->
-      <a-entity mindar-image-target="targetIndex: 2">
+      <!-- TARGET 18: UZBEKISTÁN -->
+      <a-entity mindar-image-target="targetIndex: 18">
         <a-plane 
-          src="#espana-flag" 
+          src="#uzbekistan-flag" 
           position="0 0 0" 
           height="0.552" 
           width="1" 
@@ -373,18 +1045,18 @@
         </a-plane>
         
         <a-gltf-model 
-          id="espana-3d"
+          id="uzbekistan-3d"
           position="0.6 0.3 0.1" 
           scale="0.25 0.25 0.25" 
-          src="#espana-model"
-          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
+          src="#uzbekistan-model"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
         </a-gltf-model>
         
         <a-text 
-          value="🇪🇸 España" 
+          value="🇺🇿 Uzbekistán" 
           position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
+          scale="0.7 0.7 0.7" 
           color="#FFFFFF"
           align="center"
           font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
@@ -394,9 +1066,9 @@
         <a-entity 
           position="0 0.8 0" 
           class="info-button" 
-          data-country="espana"
+          data-country="uzbekistan"
           mindar-face-up-button>
-          <a-ring color="#AA151B" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-ring color="#1EB53A" radius-inner="0.04" radius-outer="0.06"></a-ring>
           <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
         </a-entity>
       </a-entity>
@@ -413,6 +1085,150 @@
   <script>
     // Datos de los países
     const countries = {
+      argentina: {
+        name: "Argentina",
+        emoji: "🇦🇷",
+        color: "#74ACDF",
+        stats: {
+          "Copas del Mundo": "3 (1978, 1986, 2022)",
+          "Mejor Resultado": "Campeón",
+          "Participaciones": "18",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La selección argentina, actual campeona del mundo, buscará defender su título en el Mundial 2026 con Lionel Messi como figura principal."
+      },
+      australia: {
+        name: "Australia",
+        emoji: "🇦🇺",
+        color: "#012169",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Octavos de Final (2006)",
+          "Participaciones": "6",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Los Socceroos buscan superar su mejor actuación histórica en el Mundial 2026 con un equipo en crecimiento."
+      },
+      brasil: {
+        name: "Brasil",
+        emoji: "🇧🇷",
+        color: "#009739",
+        stats: {
+          "Copas del Mundo": "5 (1958, 1962, 1970, 1994, 2002)",
+          "Mejor Resultado": "Campeón",
+          "Participaciones": "22",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La canarinha, la selección más exitosa de la historia, busca su sexta Copa del Mundo en 2026 con una nueva generación de talentos."
+      },
+      canada: {
+        name: "Canadá",
+        emoji: "🇨🇦",
+        color: "#FF0000",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Fase de Grupos",
+          "Participaciones": "2",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Como anfitrión del Mundial 2026, Canadá espera hacer historia en casa con un equipo en constante mejora."
+      },
+      colombia: {
+        name: "Colombia",
+        emoji: "🇨🇴",
+        color: "#FCD116",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Cuartos de Final (2014)",
+          "Participaciones": "6",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La selección colombiana busca repetir su exitosa campaña de 2014 con un equipo lleno de talento y garra."
+      },
+      "corea-del-sur": {
+        name: "Corea del Sur",
+        emoji: "🇰🇷",
+        color: "#CD2E3A",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Semifinales (2002)",
+          "Participaciones": "11",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Los Taegeuk Warriors buscan repetir la hazaña del 2002 con un equipo disciplinado y técnico."
+      },
+      ecuador: {
+        name: "Ecuador",
+        emoji: "🇪🇨",
+        color: "#FFD100",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Octavos de Final (2006)",
+          "Participaciones": "4",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La tricolor ecuatoriana busca superar su mejor actuación en un Mundial con un equipo joven y prometedor."
+      },
+      espana: {
+        name: "España",
+        emoji: "🇪🇸",
+        color: "#AA151B",
+        stats: {
+          "Copas del Mundo": "1 (2010)",
+          "Mejor Resultado": "Campeón (2010)",
+          "Participaciones": "16",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La furia roja busca repetir el éxito del 2010 con una nueva generación de talentosos jugadores."
+      },
+      iran: {
+        name: "Irán",
+        emoji: "🇮🇷",
+        color: "#DA0000",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Fase de Grupos",
+          "Participaciones": "6",
+          "Grupo 2026": "Por definir"
+        },
+        description: "El equipo persa busca hacer historia y pasar por primera vez a octavos de final en el Mundial 2026."
+      },
+      japon: {
+        name: "Japón",
+        emoji: "🇯🇵",
+        color: "#BC002D",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Octavos de Final (2002, 2010, 2018, 2022)",
+          "Participaciones": "7",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Los Samuráis Azules buscan superar por primera vez los octavos de final con su estilo técnico y disciplinado."
+      },
+      jordania: {
+        name: "Jordania",
+        emoji: "🇯🇴",
+        color: "#007A3D",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Nunca clasificó",
+          "Participaciones": "0",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Jordania busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026."
+      },
+      marruecos: {
+        name: "Marruecos",
+        emoji: "🇲🇦",
+        color: "#C1272D",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Semifinales (2022)",
+          "Participaciones": "6",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Tras su histórica semifinal en 2022, los Leones del Atlas buscan repetir el éxito en 2026."
+      },
       mexico: {
         name: "México",
         emoji: "🇲🇽",
@@ -425,9 +1241,57 @@
         },
         description: "La selección mexicana busca hacer historia en el Mundial 2026 como anfitrión conjuntamente con USA y Canadá."
       },
+      "nueva-zelanda": {
+        name: "Nueva Zelanda",
+        emoji: "🇳🇿",
+        color: "#00247D",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Fase de Grupos",
+          "Participaciones": "2",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Los All Whites buscan ganar su primer partido en una Copa del Mundo en la edición de 2026."
+      },
+      paraguay: {
+        name: "Paraguay",
+        emoji: "🇵🇾",
+        color: "#D52B1E",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Cuartos de Final (2010)",
+          "Participaciones": "8",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La albirroja paraguaya busca repetir su exitosa campaña de 2010 con un equipo sólido defensivamente."
+      },
+      tunez: {
+        name: "Túnez",
+        emoji: "🇹🇳",
+        color: "#E70013",
+        stats: {
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Fase de Grupos",
+          "Participaciones": "6",
+          "Grupo 2026": "Por definir"
+        },
+        description: "Las Águilas de Cartago buscan por primera vez pasar a octavos de final en un Mundial."
+      },
+      uruguay: {
+        name: "Uruguay",
+        emoji: "🇺🇾",
+        color: "#0038A8",
+        stats: {
+          "Copas del Mundo": "2 (1930, 1950)",
+          "Mejor Resultado": "Campeón",
+          "Participaciones": "14",
+          "Grupo 2026": "Por definir"
+        },
+        description: "La celeste, primera campeona del mundo, busca su tercer título con su característica garra charrúa."
+      },
       usa: {
         name: "Estados Unidos",
-        emoji: "🇺🇸", 
+        emoji: "🇺🇸",
         color: "#B22234",
         stats: {
           "Copas del Mundo": "0",
@@ -437,17 +1301,17 @@
         },
         description: "Como anfitrión del Mundial 2026, USA espera aprovechar su ventaja local para lograr un resultado histórico."
       },
-      espana: {
-        name: "España",
-        emoji: "🇪🇸",
-        color: "#AA151B", 
+      uzbekistan: {
+        name: "Uzbekistán",
+        emoji: "🇺🇿",
+        color: "#1EB53A",
         stats: {
-          "Copas del Mundo": "1 (2010)",
-          "Mejor Resultado": "Campeón (2010)",
-          "Participaciones": "16", 
+          "Copas del Mundo": "0",
+          "Mejor Resultado": "Nunca clasificó",
+          "Participaciones": "0",
           "Grupo 2026": "Por definir"
         },
-        description: "La furia roja busca repetir el éxito del 2010 con una nueva generación de talentosos jugadores."
+        description: "Uzbekistán busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026."
       }
     };
 
@@ -470,11 +1334,31 @@
       // Eventos de detección
       scene.addEventListener('targetFound', (event) => {
         const targetIndex = event.detail.targetIndex;
-        const countryNames = ['México', 'Estados Unidos', 'España'];
-        const countryEmojis = ['🇲🇽', '🇺🇸', '🇪🇸'];
-        const countryColors = ['#006847', '#B22234', '#AA151B'];
+        const countryNames = [
+          'Argentina', 'Australia', 'Brasil', 'Canadá', 'Colombia', 
+          'Corea del Sur', 'Ecuador', 'España', 'Irán', 'Japón',
+          'Jordania', 'Marruecos', 'México', 'Nueva Zelanda', 'Paraguay',
+          'Túnez', 'Uruguay', 'Estados Unidos', 'Uzbekistán'
+        ];
+        const countryEmojis = [
+          '🇦🇷', '🇦🇺', '🇧🇷', '🇨🇦', '🇨🇴', 
+          '🇰🇷', '🇪🇨', '🇪🇸', '🇮🇷', '🇯🇵',
+          '🇯🇴', '🇲🇦', '🇲🇽', '🇳🇿', '🇵🇾',
+          '🇹🇳', '🇺🇾', '🇺🇸', '🇺🇿'
+        ];
+        const countryColors = [
+          '#74ACDF', '#012169', '#009739', '#FF0000', '#FCD116',
+          '#CD2E3A', '#FFD100', '#AA151B', '#DA0000', '#BC002D',
+          '#007A3D', '#C1272D', '#006847', '#00247D', '#D52B1E',
+          '#E70013', '#0038A8', '#B22234', '#1EB53A'
+        ];
         
-        currentCountry = ['mexico', 'usa', 'espana'][targetIndex];
+        currentCountry = [
+          'argentina', 'australia', 'brasil', 'canada', 'colombia',
+          'corea-del-sur', 'ecuador', 'espana', 'iran', 'japon',
+          'jordania', 'marruecos', 'mexico', 'nueva-zelanda', 'paraguay',
+          'tunez', 'uruguay', 'usa', 'uzbekistan'
+        ][targetIndex];
         
         // Mostrar banner de detección
         const banner = document.getElementById('detectionBanner');
