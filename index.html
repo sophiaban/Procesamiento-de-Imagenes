@@ -1,504 +1,381 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bandera Animada - Realidad Aumentada</title>
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-        
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .ar-container {
-            width: 100%;
-            max-width: 600px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
-            padding: 15px;
-        }
-        
-        #ar-scene {
-            width: 100%;
-            height: 400px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .status {
-            text-align: center;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 10px;
-            font-weight: bold;
-            background: rgba(0, 0, 0, 0.3);
-        }
-        
-        .controls {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            width: 100%;
-            max-width: 600px;
-        }
-        
-        .control-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 15px;
-            justify-content: center;
-        }
-        
-        .control {
-            flex: 1;
-            min-width: 150px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            text-align: center;
-        }
-        
-        input[type="color"] {
-            width: 100%;
-            height: 40px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-        
-        input[type="range"] {
-            width: 100%;
-        }
-        
-        .value-display {
-            text-align: center;
-            margin-top: 5px;
-            font-weight: 600;
-        }
-        
-        .flag-types {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .flag-option {
-            flex: 1;
-            min-width: 100px;
-            text-align: center;
-            padding: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .flag-option:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .flag-option.active {
-            background: #ffcc00;
-            color: #1a2a6c;
-            font-weight: bold;
-        }
-        
-        .flag-preview {
-            width: 100%;
-            height: 40px;
-            border-radius: 5px;
-            margin-bottom: 5px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .instructions {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
-            width: 100%;
-            max-width: 600px;
-        }
-        
-        .instructions h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #ffcc00;
-        }
-        
-        .step {
-            display: flex;
-            margin-bottom: 10px;
-            align-items: flex-start;
-        }
-        
-        .step-number {
-            background: #ffcc00;
-            color: #1a2a6c;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Banderas AR 🇲🇽🇺🇸🇪🇸</title>
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #000;
+      color: white;
+      overflow: hidden;
+      touch-action: none;
+    }
+    
+    #permission-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+      text-align: center;
+      padding: 30px;
+    }
+    
+    .permission-content {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px 30px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      max-width: 400px;
+    }
+    
+    .permission-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+    
+    #start-button {
+      margin-top: 30px;
+      padding: 18px 40px;
+      background: white;
+      color: black;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      transition: transform 0.2s;
+    }
+    
+    #start-button:active {
+      transform: scale(0.95);
+    }
+    
+    .instructions {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      z-index: 100;
+      text-align: center;
+      border: 2px solid rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+    }
+    
+    .detection-banner {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #006847 0%, #00a86b 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      z-index: 100;
+      text-align: center;
+      display: none;
+      animation: slideUp 0.3s ease-out;
+      border: 2px solid white;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    
+    @keyframes slideUp {
+      from {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .error-message {
+      position: fixed;
+      top: 50%;
+      left: 20px;
+      right: 20px;
+      transform: translateY(-50%);
+      background: rgba(255, 0, 0, 0.95);
+      color: white;
+      padding: 30px 20px;
+      border-radius: 15px;
+      z-index: 1000;
+      text-align: center;
+      display: none;
+      border: 2px solid white;
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+    
+    /* Optimizar para móvil */
+    @media (max-width: 768px) {
+      .instructions {
+        font-size: 14px;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+      }
+      
+      .detection-banner {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+      }
+      
+      .permission-content {
+        padding: 30px 20px;
+        margin: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🇦🇷 Bandera Animada en RA 🇦🇷</h1>
-            <p>Usa tu marcador para ver la bandera animada en realidad aumentada</p>
-        </header>
-        
-        <div class="content">
-            <div class="ar-container">
-                <a-scene 
-                    id="ar-scene"
-                    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; maxTrack: 1;" 
-                    color-space="sRGB" 
-                    renderer="colorManagement: true; physicallyCorrectLights: false;"
-                    vr-mode-ui="enabled: false" 
-                    device-orientation-permission-ui="enabled: false"
-                    embedded>
-                    
-                    <a-assets>
-                        <!-- No necesitamos cargar assets externos -->
-                    </a-assets>
-
-                    <a-camera position="0 0 0" look-controls="enabled: false" fov="60"></a-camera>
-                    
-                    <a-entity mindar-image-target="targetIndex: 0">
-                        <!-- Bandera animada simplificada -->
-                        <a-entity id="flag" position="0 0.3 0" rotation="0 0 0">
-                            <!-- Asta de la bandera -->
-                            <a-cylinder 
-                                id="flag-pole"
-                                position="0 0.5 0" 
-                                radius="0.015" 
-                                height="1" 
-                                color="#8B4513">
-                            </a-cylinder>
-                            
-                            <!-- Tela de la bandera con animación de ondeo -->
-                            <a-entity id="flag-cloth" position="0.5 0.5 0">
-                                <a-plane 
-                                    class="flag-segment" 
-                                    position="0.1 0 0" 
-                                    width="0.2" 
-                                    height="0.6" 
-                                    color="#FF0000"
-                                    animation="property: rotation; to: 0 0 15; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate">
-                                </a-plane>
-                                <a-plane 
-                                    class="flag-segment" 
-                                    position="0.3 0 0" 
-                                    width="0.2" 
-                                    height="0.6" 
-                                    color="#FF0000"
-                                    animation="property: rotation; to: 0 0 10; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 200">
-                                </a-plane>
-                                <a-plane 
-                                    class="flag-segment" 
-                                    position="0.5 0 0" 
-                                    width="0.2" 
-                                    height="0.6" 
-                                    color="#FF0000"
-                                    animation="property: rotation; to: 0 0 5; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 400">
-                                </a-plane>
-                                <a-plane 
-                                    class="flag-segment" 
-                                    position="0.7 0 0" 
-                                    width="0.2" 
-                                    height="0.6" 
-                                    color="#FF0000"
-                                    animation="property: rotation; to: 0 0 -5; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 600">
-                                </a-plane>
-                                <a-plane 
-                                    class="flag-segment" 
-                                    position="0.9 0 0" 
-                                    width="0.2" 
-                                    height="0.6" 
-                                    color="#FF0000"
-                                    animation="property: rotation; to: 0 0 -10; dur: 1000; easing: easeInOutSine; loop: true; dir: alternate; delay: 800">
-                                </a-plane>
-                            </a-entity>
-                        </a-entity>
-                    </a-entity>
-                </a-scene>
-                <div class="status" id="status">
-                    Iniciando cámara...
-                </div>
-            </div>
-            
-            <div class="controls">
-                <h2>🎨 Personaliza tu Bandera</h2>
-                
-                <div class="control-group">
-                    <div class="control">
-                        <label for="flag-color">Color Principal</label>
-                        <input type="color" id="flag-color" value="#FF0000">
-                    </div>
-                    
-                    <div class="control">
-                        <label for="wave-speed">Velocidad</label>
-                        <input type="range" id="wave-speed" min="500" max="3000" value="1000">
-                        <div class="value-display" id="speed-value">Normal</div>
-                    </div>
-                    
-                    <div class="control">
-                        <label for="flag-size">Tamaño</label>
-                        <input type="range" id="flag-size" min="0.5" max="2" step="0.1" value="1">
-                        <div class="value-display" id="size-value">Normal</div>
-                    </div>
-                </div>
-                
-                <h3 style="text-align: center; margin: 15px 0 10px 0;">🚩 Diseños de Bandera</h3>
-                <div class="flag-types">
-                    <div class="flag-option active" data-type="normal">
-                        <div class="flag-preview" style="background: #FF0000;"></div>
-                        <div>Roja</div>
-                    </div>
-                    <div class="flag-option" data-type="tricolor">
-                        <div class="flag-preview" style="background: linear-gradient(to right, #0000FF, #FFFFFF, #FF0000);"></div>
-                        <div>Tricolor</div>
-                    </div>
-                    <div class="flag-option" data-type="rainbow">
-                        <div class="flag-preview" style="background: linear-gradient(to right, #FF0018, #FFA52C, #FFFF41, #008018, #0000F9, #86007D);"></div>
-                        <div>Arcoíris</div>
-                    </div>
-                    <div class="flag-option" data-type="stripes">
-                        <div class="flag-preview" style="background: repeating-linear-gradient(0deg, #FF0000, #FF0000 10px, #FFFFFF 10px, #FFFFFF 20px);"></div>
-                        <div>Rayada</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="instructions">
-                <h2>📋 Cómo Usar</h2>
-                
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-text">
-                        <strong>Permite el acceso a la cámara</strong> cuando el navegador lo solicite
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-text">
-                        <strong>Enfoca tu marcador</strong> con la cámara (la imagen que usaste para crear el .mind)
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-text">
-                        <strong>La bandera aparecerá</strong> automáticamente cuando se detecte el marcador
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-text">
-                        <strong>Personaliza</strong> la bandera con los controles de arriba
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Pantalla de permisos que se muestra primero -->
+  <div id="permission-screen">
+    <div class="permission-content">
+      <div class="permission-icon">📱</div>
+      <h2>Permiso de Cámara</h2>
+      <p style="margin-top: 15px; line-height: 1.5;">
+        Esta aplicación de Realidad Aumentada necesita acceso a tu cámara para detectar banderas.
+      </p>
+      <p style="margin-top: 10px; opacity: 0.8; font-size: 14px;">
+        Al hacer clic en "Activar Cámara", se te pedirá permiso para usar la cámara.
+      </p>
+      <button id="start-button" onclick="requestCameraPermission()">
+        🎥 Activar Cámara
+      </button>
     </div>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Referencias a elementos
-            const flagSegments = document.querySelectorAll('.flag-segment');
-            const flagEntity = document.getElementById('flag');
-            const statusElement = document.getElementById('status');
-            
-            // Controles
-            const colorPicker = document.getElementById('flag-color');
-            const speedSlider = document.getElementById('wave-speed');
-            const sizeSlider = document.getElementById('flag-size');
-            const flagOptions = document.querySelectorAll('.flag-option');
-            
-            // Configuración inicial
-            let sceneStarted = false;
-            
-            // Actualizar color
-            colorPicker.addEventListener('input', function() {
-                const color = this.value;
-                flagSegments.forEach(segment => {
-                    segment.setAttribute('color', color);
-                });
-            });
-            
-            // Actualizar velocidad
-            speedSlider.addEventListener('input', function() {
-                const speed = parseInt(this.value);
-                const invertedSpeed = 3000 - speed + 500;
-                
-                flagSegments.forEach((segment, index) => {
-                    const delay = index * 200;
-                    segment.setAttribute('animation', `property: rotation; to: 0 0 ${getSegmentAngle(index)}; dur: ${invertedSpeed}; easing: easeInOutSine; loop: true; dir: alternate; delay: ${delay}`);
-                });
-                
-                // Actualizar display
-                const speedValue = document.getElementById('speed-value');
-                if (speed < 1000) {
-                    speedValue.textContent = 'Rápido';
-                } else if (speed < 2000) {
-                    speedValue.textContent = 'Normal';
-                } else {
-                    speedValue.textContent = 'Lento';
-                }
-            });
-            
-            // Actualizar tamaño
-            sizeSlider.addEventListener('input', function() {
-                const size = parseFloat(this.value);
-                flagEntity.setAttribute('scale', `${size} ${size} ${size}`);
-                
-                const sizeValue = document.getElementById('size-value');
-                if (size < 1) {
-                    sizeValue.textContent = 'Pequeño';
-                } else if (size < 1.5) {
-                    sizeValue.textContent = 'Normal';
-                } else {
-                    sizeValue.textContent = 'Grande';
-                }
-            });
-            
-            // Cambiar tipo de bandera
-            flagOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    flagOptions.forEach(opt => opt.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const type = this.getAttribute('data-type');
-                    applyFlagType(type);
-                });
-            });
-            
-            // Aplicar tipo de bandera
-            function applyFlagType(type) {
-                switch(type) {
-                    case 'normal':
-                        const currentColor = colorPicker.value;
-                        flagSegments.forEach(segment => {
-                            segment.setAttribute('color', currentColor);
-                        });
-                        break;
-                    case 'tricolor':
-                        flagSegments.forEach((segment, index) => {
-                            if (index < 2) {
-                                segment.setAttribute('color', '#0000FF');
-                            } else if (index < 3) {
-                                segment.setAttribute('color', '#FFFFFF');
-                            } else {
-                                segment.setAttribute('color', '#FF0000');
-                            }
-                        });
-                        break;
-                    case 'rainbow':
-                        const rainbowColors = ['#FF0018', '#FFA52C', '#FFFF41', '#008018', '#0000F9', '#86007D'];
-                        flagSegments.forEach((segment, index) => {
-                            if (index < rainbowColors.length) {
-                                segment.setAttribute('color', rainbowColors[index]);
-                            }
-                        });
-                        break;
-                    case 'stripes':
-                        flagSegments.forEach((segment, index) => {
-                            if (index % 2 === 0) {
-                                segment.setAttribute('color', '#FF0000');
-                            } else {
-                                segment.setAttribute('color', '#FFFFFF');
-                            }
-                        });
-                        break;
-                }
-            }
-            
-            // Función auxiliar para ángulos
-            function getSegmentAngle(index) {
-                const angles = [15, 10, 5, -5, -10];
-                return index < angles.length ? angles[index] : -15;
-            }
-            
-            // Eventos de MindAR
-            const scene = document.querySelector('a-scene');
-            
-            scene.addEventListener('arReady', function() {
-                statusElement.textContent = "RA lista! Apunta al marcador";
-                statusElement.style.background = "rgba(0, 200, 0, 0.3)";
-            });
-            
-            scene.addEventListener('targetFound', function() {
-                statusElement.textContent = "¡Marcador detectado! Bandera visible";
-                statusElement.style.background = "rgba(0, 150, 0, 0.3)";
-            });
-            
-            scene.addEventListener('targetLost', function() {
-                statusElement.textContent = "Buscando marcador...";
-                statusElement.style.background = "rgba(0, 0, 0, 0.3)";
-            });
-            
-            // Manejar errores de cámara
-            setTimeout(() => {
-                if (statusElement.textContent === "Iniciando cámara...") {
-                    statusElement.textContent = "Haz clic en permitir cuando se solicite el acceso a la cámara";
-                    statusElement.style.background = "rgba(255, 165, 0, 0.3)";
-                }
-            }, 3000);
+  <div class="instructions" style="display: none;">
+    📱 Apunta a la bandera de México<br>
+    <small style="opacity: 0.8;">Asegura buena iluminación</small>
+  </div>
+
+  <div class="detection-banner" id="detection-banner">
+    <h2>🇲🇽 ¡México Detectado!</h2>
+    <p>Bandera reconocida correctamente</p>
+  </div>
+
+  <div class="error-message" id="error-message">
+    <h3>⚠️ Cámara No Disponible</h3>
+    <p>No se puede acceder a la cámara. Verifica los permisos.</p>
+    <button id="retry-button" onclick="requestCameraPermission()">Intentar Nuevamente</button>
+  </div>
+
+  <a-scene 
+    id="ar-scene"
+    mindar-image="imageTargetSrc: ./assets/targets/bandera-mexico.mind; autoStart: false; uiLoading: no; uiError: no; uiScanning: no;" 
+    color-space="sRGB" 
+    renderer="colorManagement: true, physicallyCorrectLights" 
+    vr-mode-ui="enabled: false" 
+    device-orientation-permission-ui="enabled: false"
+    class="hidden">
+    
+    <a-assets>
+      <img id="mexico-flag" src="./assets/images/bandera-mexico.png" crossorigin="anonymous">
+      <a-asset-item id="mexico-model" src="./assets/models/modelo-mexico.glb"></a-asset-item>
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-plane 
+        src="#mexico-flag" 
+        position="0 0 0" 
+        height="0.552" 
+        width="1" 
+        rotation="0 0 0"
+        material="transparent: true; opacity: 0.8">
+      </a-plane>
+      
+      <a-gltf-model 
+        rotation="0 0 0" 
+        position="0 0.3 0.1" 
+        scale="0.2 0.2 0.2" 
+        src="#mexico-model"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 5000; easing: linear">
+      </a-gltf-model>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    let arSystem = null;
+    let isInitialized = false;
+
+    // Función principal para solicitar permisos de cámara
+    async function requestCameraPermission() {
+      try {
+        // Mostrar mensaje de carga
+        document.getElementById('start-button').innerHTML = '⌛ Solicitando...';
+        document.getElementById('start-button').disabled = true;
+
+        // Solicitar acceso a la cámara
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            facingMode: 'environment', // Usar cámara trasera
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          } 
         });
-    </script>
+
+        // Permiso concedido - ocultar pantalla de permisos
+        document.getElementById('permission-screen').classList.add('hidden');
+        document.querySelector('.instructions').style.display = 'block';
+        
+        // Detener el stream ya que A-Frame lo manejará por sí mismo
+        stream.getTracks().forEach(track => track.stop());
+        
+        // Inicializar AR
+        initializeAR();
+        
+      } catch (error) {
+        console.error('Error al acceder a la cámara:', error);
+        
+        // Restaurar botón
+        document.getElementById('start-button').innerHTML = '🎥 Activar Cámara';
+        document.getElementById('start-button').disabled = false;
+        
+        // Mostrar error específico
+        let errorMessage = 'No se pudo acceder a la cámara. ';
+        
+        if (error.name === 'NotAllowedError') {
+          errorMessage += 'Permiso denegado. Por favor, permite el acceso a la cámara en la configuración de tu navegador.';
+        } else if (error.name === 'NotFoundError') {
+          errorMessage += 'No se encontró ninguna cámara.';
+        } else if (error.name === 'NotSupportedError') {
+          errorMessage += 'Tu navegador no soporta acceso a la cámara.';
+        } else {
+          errorMessage += 'Error desconocido: ' + error.message;
+        }
+        
+        document.getElementById('banner-text').textContent = errorMessage;
+        showError();
+      }
+    }
+
+    function showDetection() {
+      const banner = document.getElementById('detection-banner');
+      banner.style.display = 'block';
+    }
+
+    function hideDetection() {
+      document.getElementById('detection-banner').style.display = 'none';
+    }
+
+    function showError() {
+      document.getElementById('error-message').style.display = 'block';
+    }
+
+    function hideError() {
+      document.getElementById('error-message').style.display = 'none';
+    }
+
+    function initializeAR() {
+      if (isInitialized) return;
+      
+      const scene = document.getElementById('ar-scene');
+      scene.classList.remove('hidden');
+
+      const onSceneLoaded = function() {
+        console.log('✅ Escena AR cargada');
+        isInitialized = true;
+        
+        try {
+          arSystem = scene.systems['mindar-image-system'];
+          
+          arSystem.start().then(() => {
+            console.log('✅ AR iniciado correctamente');
+          }).catch(error => {
+            console.error('❌ Error al iniciar AR:', error);
+            showError();
+          });
+          
+          scene.addEventListener('targetFound', () => {
+            console.log('🎯 Bandera detectada');
+            showDetection();
+          });
+          
+          scene.addEventListener('targetLost', () => {
+            console.log('📭 Bandera perdida');
+            hideDetection();
+          });
+          
+        } catch (error) {
+          console.error('❌ Error configurando AR:', error);
+          showError();
+        }
+      };
+
+      if (scene.hasLoaded) {
+        onSceneLoaded();
+      } else {
+        scene.addEventListener('loaded', onSceneLoaded);
+      }
+
+      scene.addEventListener('error', (error) => {
+        console.error('❌ Error en escena AR:', error);
+        showError();
+      });
+
+      // Timeout de seguridad
+      setTimeout(() => {
+        if (!isInitialized) {
+          console.log('⏰ Timeout - AR no se inicializó');
+          showError();
+        }
+      }, 15000);
+    }
+
+    // Verificar si ya tenemos permisos de cámara
+    window.addEventListener('load', function() {
+      // Verificar si el navegador soporta mediaDevices
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        document.getElementById('banner-text').textContent = 'Tu navegador no soporta acceso a la cámara. Usa Chrome o Safari.';
+        showError();
+        return;
+      }
+      
+      // Opcional: Verificar permisos existentes (no funciona en todos los navegadores)
+      navigator.mediaDevices.enumerateDevices()
+        .then(devices => {
+          const cameras = devices.filter(device => device.kind === 'videoinput');
+          if (cameras.length === 0) {
+            document.getElementById('banner-text').textContent = 'No se encontró ninguna cámara en tu dispositivo.';
+            showError();
+          }
+        })
+        .catch(() => {
+          // Ignorar errores de enumerateDevices
+        });
+    });
+  </script>
 </body>
 </html>
