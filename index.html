@@ -191,39 +191,6 @@
       height: 100vh;
     }
     
-    /* Estilos para el UI de MindAR */
-    .mindar-ui-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 999;
-      pointer-events: none;
-    }
-    
-    .scanning-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 998;
-    }
-    
-    .scanning-text {
-      color: white;
-      font-size: 24px;
-      margin-top: 20px;
-      text-align: center;
-    }
-    
-    /* Nuevos estilos para el menú inferior */
     .bottom-menu {
       position: fixed;
       bottom: 0;
@@ -470,18 +437,18 @@
       display: none;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
     }
     
     .video-modal.active {
       display: flex;
     }
     
-    .video-modal iframe {
+    .video-player {
       width: 90%;
-      height: 70%;
       max-width: 800px;
-      border: none;
       border-radius: 10px;
+      margin-bottom: 20px;
     }
     
     .close-video {
@@ -504,6 +471,11 @@
     .close-video:hover {
       background: rgba(255, 255, 255, 0.1);
     }
+
+    .video-player.normal { filter: none; }
+    .video-player.warm { filter: sepia(0.5) hue-rotate(-10deg) saturate(1.2); }
+    .video-player.cold { filter: hue-rotate(180deg) saturate(0.8) brightness(1.1); }
+    .video-player.vintage { filter: sepia(0.8) contrast(1.2) brightness(0.9); }
   </style>
 </head>
 
@@ -525,9 +497,7 @@
     <button class="close-btn" onclick="closeCountryInfo()">×</button>
     <div class="info-content">
       <h2 id="infoTitle">🇦🇷 Argentina</h2>
-      <div class="info-stats" id="infoStats">
-        <!-- Las estadísticas se llenan dinámicamente -->
-      </div>
+      <div class="info-stats" id="infoStats"></div>
       <p id="infoDescription" style="line-height: 1.6; margin-top: 15px;">
         Información sobre el país y su participación en el Mundial 2026.
       </p>
@@ -537,7 +507,17 @@
   <!-- Modal de video -->
   <div class="video-modal" id="videoModal">
     <button class="close-video" onclick="closeVideo()">×</button>
-    <iframe id="videoFrame" src="" allowfullscreen></iframe>
+    <div class="video-player-container">
+      <video id="videoPlayer" class="video-player normal" controls>
+        Tu navegador no soporta el elemento video.
+      </video>
+    </div>
+    <div class="video-filters">
+      <button class="video-filter active" onclick="applyVideoFilter('normal')">Normal</button>
+      <button class="video-filter" onclick="applyVideoFilter('warm')">Cálido</button>
+      <button class="video-filter" onclick="applyVideoFilter('cold')">Frío</button>
+      <button class="video-filter" onclick="applyVideoFilter('vintage')">Vintage</button>
+    </div>
   </div>
 
   <!-- Escena AR Principal -->
@@ -576,789 +556,198 @@
         <img id="uruguay-flag" src="./assets/images/Uruguay.png" crossorigin="anonymous">
         <img id="usa-flag" src="./assets/images/usa.png" crossorigin="anonymous">
         <img id="uzbekistan-flag" src="./assets/images/Uzbekistan.png" crossorigin="anonymous">
-        
-        <!-- Modelos 3D -->
-        <a-asset-item id="argentina-model" src="./assets/models/argentina.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="australia-model" src="./assets/models/australia.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="brasil-model" src="./assets/models/brasil.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="canada-model" src="./assets/models/canada.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="colombia-model" src="./assets/models/colombia.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="corea-del-sur-model" src="./assets/models/corea-del-sur.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="ecuador-model" src="./assets/models/ecuador.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="espana-model" src="./assets/models/espana.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="iran-model" src="./assets/models/iran.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="japon-model" src="./assets/models/japon.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="jordania-model" src="./assets/models/jordania.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="marruecos-model" src="./assets/models/marruecos.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="mexico-model" src="./assets/models/mexico.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="nueva-zelanda-model" src="./assets/models/nueva-zelanda.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="paraguay-model" src="./assets/models/paraguay.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="tunez-model" src="./assets/models/tunez.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="uruguay-model" src="./assets/models/uruguay.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="usa-model" src="./assets/models/usa.glb" crossorigin="anonymous"></a-asset-item>
-        <a-asset-item id="uzbekistan-model" src="./assets/models/uzbekistan.glb" crossorigin="anonymous"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <!-- TARGET 0: ARGENTINA -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane 
-          src="#argentina-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#argentina-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="argentina-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#argentina-model"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇦🇷 Argentina" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇦🇷 Argentina" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="argentina"
-          mindar-face-up-button>
-          <a-ring color="#74ACDF" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 1: AUSTRALIA -->
       <a-entity mindar-image-target="targetIndex: 1">
-        <a-plane 
-          src="#australia-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#australia-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="australia-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#australia-model"
-          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇦🇺 Australia" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇦🇺 Australia" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="australia"
-          mindar-face-up-button>
-          <a-ring color="#012169" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 2: BRASIL -->
       <a-entity mindar-image-target="targetIndex: 2">
-        <a-plane 
-          src="#brasil-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#brasil-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="brasil-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#brasil-model"
-          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇧🇷 Brasil" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇧🇷 Brasil" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="brasil"
-          mindar-face-up-button>
-          <a-ring color="#009739" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 3: CANADÁ -->
       <a-entity mindar-image-target="targetIndex: 3">
-        <a-plane 
-          src="#canada-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#canada-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="canada-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#canada-model"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇨🇦 Canadá" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇨🇦 Canadá" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="canada"
-          mindar-face-up-button>
-          <a-ring color="#FF0000" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 4: COLOMBIA -->
       <a-entity mindar-image-target="targetIndex: 4">
-        <a-plane 
-          src="#colombia-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#colombia-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="colombia-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#colombia-model"
-          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇨🇴 Colombia" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇨🇴 Colombia" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="colombia"
-          mindar-face-up-button>
-          <a-ring color="#FCD116" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 5: COREA DEL SUR -->
       <a-entity mindar-image-target="targetIndex: 5">
-        <a-plane 
-          src="#corea-del-sur-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#corea-del-sur-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="corea-del-sur-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#corea-del-sur-model"
-          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇰🇷 Corea del Sur" 
-          position="-0.6 0.4 0" 
-          scale="0.7 0.7 0.7" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇰🇷 Corea del Sur" position="-0.6 0.4 0" scale="0.7 0.7 0.7" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="corea-del-sur"
-          mindar-face-up-button>
-          <a-ring color="#CD2E3A" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 6: ECUADOR -->
       <a-entity mindar-image-target="targetIndex: 6">
-        <a-plane 
-          src="#ecuador-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#ecuador-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="ecuador-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#ecuador-model"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇪🇨 Ecuador" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇪🇨 Ecuador" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="ecuador"
-          mindar-face-up-button>
-          <a-ring color="#FFD100" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 7: ESPAÑA -->
       <a-entity mindar-image-target="targetIndex: 7">
-        <a-plane 
-          src="#espana-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#espana-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="espana-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#espana-model"
-          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇪🇸 España" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇪🇸 España" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="espana"
-          mindar-face-up-button>
-          <a-ring color="#AA151B" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 8: IRÁN -->
       <a-entity mindar-image-target="targetIndex: 8">
-        <a-plane 
-          src="#iran-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#iran-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="iran-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#iran-model"
-          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇮🇷 Irán" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇮🇷 Irán" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="iran"
-          mindar-face-up-button>
-          <a-ring color="#DA0000" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 9: JAPÓN -->
       <a-entity mindar-image-target="targetIndex: 9">
-        <a-plane 
-          src="#japon-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#japon-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="japon-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#japon-model"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇯🇵 Japón" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇯🇵 Japón" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="japon"
-          mindar-face-up-button>
-          <a-ring color="#BC002D" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 10: JORDANIA -->
       <a-entity mindar-image-target="targetIndex: 10">
-        <a-plane 
-          src="#jordania-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#jordania-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="jordania-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#jordania-model"
-          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇯🇴 Jordania" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇯🇴 Jordania" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="jordania"
-          mindar-face-up-button>
-          <a-ring color="#007A3D" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 11: MARRUECOS -->
       <a-entity mindar-image-target="targetIndex: 11">
-        <a-plane 
-          src="#marruecos-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#marruecos-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="marruecos-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#marruecos-model"
-          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇲🇦 Marruecos" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇲🇦 Marruecos" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="marruecos"
-          mindar-face-up-button>
-          <a-ring color="#C1272D" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 12: MÉXICO -->
       <a-entity mindar-image-target="targetIndex: 12">
-        <a-plane 
-          src="#mexico-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#mexico-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="mexico-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#mexico-model"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇲🇽 México" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇲🇽 México" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="mexico"
-          mindar-face-up-button>
-          <a-ring color="#006847" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 13: NUEVA ZELANDA -->
       <a-entity mindar-image-target="targetIndex: 13">
-        <a-plane 
-          src="#nueva-zelanda-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#nueva-zelanda-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="nueva-zelanda-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#nueva-zelanda-model"
-          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇳🇿 Nueva Zelanda" 
-          position="-0.6 0.4 0" 
-          scale="0.7 0.7 0.7" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇳🇿 Nueva Zelanda" position="-0.6 0.4 0" scale="0.7 0.7 0.7" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="nueva-zelanda"
-          mindar-face-up-button>
-          <a-ring color="#00247D" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 14: PARAGUAY -->
       <a-entity mindar-image-target="targetIndex: 14">
-        <a-plane 
-          src="#paraguay-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#paraguay-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="paraguay-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#paraguay-model"
-          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇵🇾 Paraguay" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇵🇾 Paraguay" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="paraguay"
-          mindar-face-up-button>
-          <a-ring color="#D52B1E" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 15: TÚNEZ -->
       <a-entity mindar-image-target="targetIndex: 15">
-        <a-plane 
-          src="#tunez-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#tunez-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="tunez-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#tunez-model"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇹🇳 Túnez" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇹🇳 Túnez" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="tunez"
-          mindar-face-up-button>
-          <a-ring color="#E70013" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 16: URUGUAY -->
       <a-entity mindar-image-target="targetIndex: 16">
-        <a-plane 
-          src="#uruguay-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#uruguay-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="uruguay-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#uruguay-model"
-          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇺🇾 Uruguay" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇺🇾 Uruguay" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="uruguay"
-          mindar-face-up-button>
-          <a-ring color="#0038A8" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 17: ESTADOS UNIDOS -->
       <a-entity mindar-image-target="targetIndex: 17">
-        <a-plane 
-          src="#usa-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#usa-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="usa-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#usa-model"
-          animation="property: rotation; to: 0 0 360; loop: true; dur: 5500; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2200; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇺🇸 Estados Unidos" 
-          position="-0.6 0.4 0" 
-          scale="0.6 0.6 0.6" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇺🇸 Estados Unidos" position="-0.6 0.4 0" scale="0.6 0.6 0.6" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="usa"
-          mindar-face-up-button>
-          <a-ring color="#B22234" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
 
       <!-- TARGET 18: UZBEKISTÁN -->
       <a-entity mindar-image-target="targetIndex: 18">
-        <a-plane 
-          src="#uzbekistan-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
+        <a-plane src="#uzbekistan-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-        
-        <a-gltf-model 
-          id="uzbekistan-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#uzbekistan-model"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇺🇿 Uzbekistán" 
-          position="-0.6 0.4 0" 
-          scale="0.7 0.7 0.7" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        <a-text value="🇺🇿 Uzbekistán" position="-0.6 0.4 0" scale="0.7 0.7 0.7" color="#FFFFFF"
+          align="center" font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="uzbekistan"
-          mindar-face-up-button>
-          <a-ring color="#1EB53A" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
       </a-entity>
     </a-scene>
   </div>
@@ -1398,114 +787,29 @@
           <button class="video-filter" data-filter="history">Históricos</button>
         </div>
         
-        <div class="video-item" data-category="highlights">
-          <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-          </div>
-          <div class="video-title">Argentina Campeón del Mundo 2022 – Resumen oficial FIFA</div>
-        </div>
-        
-        <div class="video-item" data-category="goals">
-          <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-          </div>
-          <div class="video-title">Brasil mejores goles en Copas del Mundo – FIFA Archive</div>
-        </div>
-        
-        <div class="video-item" data-category="history">
-          <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-          </div>
-          <div class="video-title">Uruguay – Historia en los Mundiales FIFA</div>
-        </div>
-        
-        <div class="video-item" data-category="highlights">
-          <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-          </div>
-          <div class="video-title">España Campeón del Mundo 2010 – Highlights Oficiales</div>
+        <div id="videosContainer">
+          <!-- Los videos se cargan dinámicamente aquí -->
         </div>
       </div>
       
       <!-- Sección de Trivia -->
       <div class="menu-section" id="trivia-section">
-        <div class="trivia-item">
-          <div class="trivia-question">¿En qué año ganó Argentina su primera Copa del Mundo?</div>
-          <div class="trivia-options">
-            <div class="trivia-option" data-correct="true">1978</div>
-            <div class="trivia-option">1986</div>
-            <div class="trivia-option">1990</div>
-            <div class="trivia-option">2022</div>
-          </div>
-        </div>
-        <div class="trivia-item">
-          <div class="trivia-question">¿Qué jugador argentino es el máximo goleador histórico de los Mundiales?</div>
-          <div class="trivia-options">
-            <div class="trivia-option">Diego Maradona</div>
-            <div class="trivia-option" data-correct="true">Lionel Messi</div>
-            <div class="trivia-option">Gabriel Batistuta</div>
-            <div class="trivia-option">Mario Kempes</div>
-          </div>
-        </div>
-        <div class="trivia-item">
-          <div class="trivia-question">¿Cuántas finales ha jugado Argentina?</div>
-          <div class="trivia-options">
-            <div class="trivia-option">3</div>
-            <div class="trivia-option">4</div>
-            <div class="trivia-option" data-correct="true">6</div>
-            <div class="trivia-option">5</div>
-          </div>
-        </div>
-        <div class="trivia-item">
-          <div class="trivia-question">¿Qué entrenador ganó el Mundial 1986?</div>
-          <div class="trivia-options">
-            <div class="trivia-option">Marcelo Bielsa</div>
-            <div class="trivia-option">Daniel Passarella</div>
-            <div class="trivia-option" data-correct="true">Carlos Bilardo</div>
-            <div class="trivia-option">César Luis Menotti</div>
-          </div>
-        </div>
-        <div class="trivia-item">
-          <div class="trivia-question">¿Contra qué país ganó Argentina la final de 2022?</div>
-          <div class="trivia-options">
-            <div class="trivia-option">Brasil</div>
-            <div class="trivia-option">Alemania</div>
-            <div class="trivia-option">Países Bajos</div>
-            <div class="trivia-option" data-correct="true">Francia</div>
-          </div>
+        <div id="triviaContainer">
+          <!-- La trivia se carga dinámicamente aquí -->
         </div>
       </div>
       
       <!-- Sección de Estadísticas -->
       <div class="menu-section" id="stats-section">
-        <div class="stats-grid">
-          <div class="stats-item">
-            <span class="stats-value">18</span>
-            <span class="stats-label">Participaciones</span>
-          </div>
-          <div class="stats-item">
-            <span class="stats-value">3</span>
-            <span class="stats-label">Mundiales ganados</span>
-          </div>
-          <div class="stats-item">
-            <span class="stats-value">Campeón</span>
-            <span class="stats-label">Mejor resultado</span>
-          </div>
-          <div class="stats-item">
-            <span class="stats-value">Lionel Messi</span>
-            <span class="stats-label">Goleador histórico</span>
-          </div>
-          <div class="stats-item">
-            <span class="stats-value">88+</span>
-            <span class="stats-label">Partidos jugados</span>
-          </div>
-          <div class="stats-item">
-            <span class="stats-value">1978, 1986, 2022</span>
-            <span class="stats-label">Años campeón</span>
-          </div>
+        <div id="statsContainer">
+          <!-- Las estadísticas se cargan dinámicamente aquí -->
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // Datos de los países
+    // Datos completos de todos los países
     const countries = {
       argentina: {
         name: "Argentina",
@@ -1515,9 +819,55 @@
           "Copas del Mundo": "3 (1978, 1986, 2022)",
           "Mejor Resultado": "Campeón",
           "Participaciones": "18",
+          "Goleador histórico": "Lionel Messi",
+          "Partidos jugados": "88+",
           "Grupo 2026": "Por definir"
         },
-        description: "La selección argentina, actual campeona del mundo, buscará defender su título en el Mundial 2026 con Lionel Messi como figura principal."
+        description: "La selección argentina, actual campeona del mundo, buscará defender su título en el Mundial 2026 con Lionel Messi como figura principal.",
+        videos: [
+          {
+            title: "Argentina Campeón del Mundo 2022 – Resumen oficial FIFA",
+            url: "https://youtu.be/FA1sR2SZAlY",
+            category: "highlights"
+          },
+          {
+            title: "Mejores goles de Argentina en Mundiales",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "goals"
+          },
+          {
+            title: "Historia de Argentina en Copas del Mundo",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "history"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año ganó Argentina su primera Copa del Mundo?",
+            options: ["1978", "1986", "1990", "2022"],
+            correct: 0
+          },
+          {
+            question: "¿Qué jugador argentino es el máximo goleador histórico de los Mundiales?",
+            options: ["Diego Maradona", "Lionel Messi", "Gabriel Batistuta", "Mario Kempes"],
+            correct: 1
+          },
+          {
+            question: "¿Cuántas finales ha jugado Argentina?",
+            options: ["3", "4", "6", "5"],
+            correct: 2
+          },
+          {
+            question: "¿Qué entrenador ganó el Mundial 1986?",
+            options: ["Marcelo Bielsa", "Daniel Passarella", "Carlos Bilardo", "César Luis Menotti"],
+            correct: 2
+          },
+          {
+            question: "¿Contra qué país ganó Argentina la final de 2022?",
+            options: ["Brasil", "Alemania", "Países Bajos", "Francia"],
+            correct: 3
+          }
+        ]
       },
       australia: {
         name: "Australia",
@@ -1527,9 +877,30 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Octavos de Final (2006)",
           "Participaciones": "6",
+          "Goleador histórico": "Tim Cahill",
+          "Partidos jugados": "20+",
           "Grupo 2026": "Por definir"
         },
-        description: "Los Socceroos buscan superar su mejor actuación histórica en el Mundial 2026 con un equipo en crecimiento."
+        description: "Los Socceroos buscan superar su mejor actuación histórica en el Mundial 2026 con un equipo en crecimiento.",
+        videos: [
+          {
+            title: "Australia vs Argentina – Octavos Qatar 2022 Highlights",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año Australia clasificó por primera vez a un Mundial?",
+            options: ["1974", "2006", "2010", "2014"],
+            correct: 0
+          },
+          {
+            question: "¿Qué confederación representa desde 2006?",
+            options: ["AFC", "UEFA", "CONMEBOL", "CONCACAF"],
+            correct: 0
+          }
+        ]
       },
       brasil: {
         name: "Brasil",
@@ -1539,9 +910,35 @@
           "Copas del Mundo": "5 (1958, 1962, 1970, 1994, 2002)",
           "Mejor Resultado": "Campeón",
           "Participaciones": "22",
+          "Goleador histórico": "Ronaldo Nazário",
+          "Partidos jugados": "115+",
           "Grupo 2026": "Por definir"
         },
-        description: "La canarinha, la selección más exitosa de la historia, busca su sexta Copa del Mundo en 2026 con una nueva generación de talentos."
+        description: "La canarinha, la selección más exitosa de la historia, busca su sexta Copa del Mundo en 2026 con una nueva generación de talentos.",
+        videos: [
+          {
+            title: "Brasil mejores goles en Copas del Mundo – FIFA Archive",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "goals"
+          },
+          {
+            title: "Brasil Campeón 2002 - Resumen",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿Cuántas Copas del Mundo ha ganado Brasil?",
+            options: ["3", "4", "5", "6"],
+            correct: 2
+          },
+          {
+            question: "¿Quién es su máximo goleador en Mundiales?",
+            options: ["Pelé", "Ronaldo", "Romário", "Neymar"],
+            correct: 1
+          }
+        ]
       },
       canada: {
         name: "Canadá",
@@ -1551,9 +948,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Fase de Grupos",
           "Participaciones": "2",
+          "Goleador histórico": "Alphonso Davies",
+          "Partidos jugados": "6+",
           "Grupo 2026": "Por definir"
         },
-        description: "Como anfitrión del Mundial 2026, Canadá espera hacer historia en casa con un equipo en constante mejora."
+        description: "Como anfitrión del Mundial 2026, Canadá espera hacer historia en casa con un equipo en constante mejora.",
+        videos: [
+          {
+            title: "Canadá vs Croacia – Mundial Qatar 2022 Resumen",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año debutó Canadá en un Mundial?",
+            options: ["1986", "2002", "2010", "2022"],
+            correct: 0
+          }
+        ]
       },
       colombia: {
         name: "Colombia",
@@ -1563,9 +976,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Cuartos de Final (2014)",
           "Participaciones": "6",
+          "Goleador histórico": "James Rodríguez",
+          "Partidos jugados": "25+",
           "Grupo 2026": "Por definir"
         },
-        description: "La selección colombiana busca repetir su exitosa campaña de 2014 con un equipo lleno de talento y garra."
+        description: "La selección colombiana busca repetir su exitosa campaña de 2014 con un equipo lleno de talento y garra.",
+        videos: [
+          {
+            title: "Colombia mejores goles en Copas del Mundo",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "goals"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año debutó Colombia en un Mundial?",
+            options: ["1962", "1990", "1994", "1998"],
+            correct: 0
+          }
+        ]
       },
       "corea-del-sur": {
         name: "Corea del Sur",
@@ -1575,9 +1004,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Semifinales (2002)",
           "Participaciones": "11",
+          "Goleador histórico": "Son Heung-min",
+          "Partidos jugados": "38+",
           "Grupo 2026": "Por definir"
         },
-        description: "Los Taegeuk Warriors buscan repetir la hazaña del 2002 con un equipo disciplinado y técnico."
+        description: "Los Taegeuk Warriors buscan repetir la hazaña del 2002 con un equipo disciplinado y técnico.",
+        videos: [
+          {
+            title: "Corea del Sur vs Alemania 2018 – Partido histórico",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año fue semifinalista Corea del Sur?",
+            options: ["1998", "2002", "2010", "2018"],
+            correct: 1
+          }
+        ]
       },
       ecuador: {
         name: "Ecuador",
@@ -1587,9 +1032,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Octavos de Final (2006)",
           "Participaciones": "4",
+          "Goleador histórico": "Enner Valencia",
+          "Partidos jugados": "13+",
           "Grupo 2026": "Por definir"
         },
-        description: "La tricolor ecuatoriana busca superar su mejor actuación en un Mundial con un equipo joven y prometedor."
+        description: "La tricolor ecuatoriana busca superar su mejor actuación en un Mundial con un equipo joven y prometedor.",
+        videos: [
+          {
+            title: "Ecuador vs Qatar – Apertura Mundial 2022 Resumen",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año debutó Ecuador en un Mundial?",
+            options: ["2002", "2006", "2014", "2022"],
+            correct: 0
+          }
+        ]
       },
       espana: {
         name: "España",
@@ -1597,11 +1058,27 @@
         color: "#AA151B",
         stats: {
           "Copas del Mundo": "1 (2010)",
-          "Mejor Resultado": "Campeón (2010)",
+          "Mejor Resultado": "Campeón",
           "Participaciones": "16",
+          "Goleador histórico": "David Villa",
+          "Partidos jugados": "70+",
           "Grupo 2026": "Por definir"
         },
-        description: "La furia roja busca repetir el éxito del 2010 con una nueva generación de talentosos jugadores."
+        description: "La furia roja busca repetir el éxito del 2010 con una nueva generación de talentosos jugadores.",
+        videos: [
+          {
+            title: "España Campeón del Mundo 2010 – Highlights Oficiales",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año ganó España su único Mundial?",
+            options: ["2006", "2010", "2014", "2018"],
+            correct: 1
+          }
+        ]
       },
       iran: {
         name: "Irán",
@@ -1611,9 +1088,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Fase de Grupos",
           "Participaciones": "6",
+          "Goleador histórico": "Sardar Azmoun",
+          "Partidos jugados": "18+",
           "Grupo 2026": "Por definir"
         },
-        description: "El equipo persa busca hacer historia y pasar por primera vez a octavos de final en el Mundial 2026."
+        description: "El equipo persa busca hacer historia y pasar por primera vez a octavos de final en el Mundial 2026.",
+        videos: [
+          {
+            title: "Irán vs Marruecos – Mundial 2018 Resumen",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿Cuántas veces ha clasificado Irán a Mundiales?",
+            options: ["4", "5", "6", "7"],
+            correct: 2
+          }
+        ]
       },
       japon: {
         name: "Japón",
@@ -1621,11 +1114,27 @@
         color: "#BC002D",
         stats: {
           "Copas del Mundo": "0",
-          "Mejor Resultado": "Octavos de Final (2002, 2010, 2018, 2022)",
+          "Mejor Resultado": "Octavos de Final",
           "Participaciones": "7",
+          "Goleador histórico": "Keisuke Honda",
+          "Partidos jugados": "25+",
           "Grupo 2026": "Por definir"
         },
-        description: "Los Samuráis Azules buscan superar por primera vez los octavos de final con su estilo técnico y disciplinado."
+        description: "Los Samuráis Azules buscan superar por primera vez los octavos de final con su estilo técnico y disciplinado.",
+        videos: [
+          {
+            title: "Japón vs Alemania – Mundial 2022",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿Cuántas veces ha llegado Japón a octavos de final?",
+            options: ["1", "2", "3", "4"],
+            correct: 3
+          }
+        ]
       },
       jordania: {
         name: "Jordania",
@@ -1635,9 +1144,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Nunca clasificó",
           "Participaciones": "0",
+          "Goleador histórico": "Hassan Abdel-Fattah",
+          "Partidos jugados": "0",
           "Grupo 2026": "Por definir"
         },
-        description: "Jordania busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026."
+        description: "Jordania busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026.",
+        videos: [
+          {
+            title: "Jordania – mejores momentos eliminatorias AFC",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año estuvo más cerca Jordania de clasificar?",
+            options: ["2010", "2014", "2018", "2022"],
+            correct: 1
+          }
+        ]
       },
       marruecos: {
         name: "Marruecos",
@@ -1647,9 +1172,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Semifinales (2022)",
           "Participaciones": "6",
+          "Goleador histórico": "Hakim Ziyech",
+          "Partidos jugados": "23+",
           "Grupo 2026": "Por definir"
         },
-        description: "Tras su histórica semifinal en 2022, los Leones del Atlas buscan repetir el éxito en 2026."
+        description: "Tras su histórica semifinal en 2022, los Leones del Atlas buscan repetir el éxito en 2026.",
+        videos: [
+          {
+            title: "Marruecos histórico semifinalista – Qatar 2022",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año debutó Marruecos en un Mundial?",
+            options: ["1970", "1986", "1994", "1998"],
+            correct: 0
+          }
+        ]
       },
       mexico: {
         name: "México",
@@ -1659,9 +1200,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Cuartos de Final",
           "Participaciones": "17",
+          "Goleador histórico": "Luis Hernández",
+          "Partidos jugados": "60+",
           "Grupo 2026": "Por definir"
         },
-        description: "La selección mexicana busca hacer historia en el Mundial 2026 como anfitrión conjuntamente con USA y Canadá."
+        description: "La selección mexicana busca hacer historia en el Mundial 2026 como anfitrión conjuntamente con USA y Canadá.",
+        videos: [
+          {
+            title: "México vs Alemania 2018 – Partido Histórico",
+            url: "https://youtu.be/6BSeFs40QOI",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿Cuántas veces ha sido México local del Mundial?",
+            options: ["1", "2", "3", "4"],
+            correct: 1
+          }
+        ]
       },
       "nueva-zelanda": {
         name: "Nueva Zelanda",
@@ -1671,9 +1228,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Fase de Grupos",
           "Participaciones": "2",
+          "Goleador histórico": "Shane Smeltz",
+          "Partidos jugados": "6+",
           "Grupo 2026": "Por definir"
         },
-        description: "Los All Whites buscan ganar su primer partido en una Copa del Mundo en la edición de 2026."
+        description: "Los All Whites buscan ganar su primer partido en una Copa del Mundo en la edición de 2026.",
+        videos: [
+          {
+            title: "Nueva Zelanda en Sudáfrica 2010 – Resumen",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿Cuántos Mundiales ha jugado Nueva Zelanda?",
+            options: ["1", "2", "3", "4"],
+            correct: 1
+          }
+        ]
       },
       paraguay: {
         name: "Paraguay",
@@ -1683,9 +1256,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Cuartos de Final (2010)",
           "Participaciones": "8",
+          "Goleador histórico": "Roque Santa Cruz",
+          "Partidos jugados": "30+",
           "Grupo 2026": "Por definir"
         },
-        description: "La albirroja paraguaya busca repetir su exitosa campaña de 2010 con un equipo sólido defensivamente."
+        description: "La albirroja paraguaya busca repetir su exitosa campaña de 2010 con un equipo sólido defensivamente.",
+        videos: [
+          {
+            title: "Paraguay en Sudáfrica 2010 – Mejores momentos",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año llegó Paraguay a cuartos de final?",
+            options: ["2006", "2010", "2014", "2018"],
+            correct: 1
+          }
+        ]
       },
       tunez: {
         name: "Túnez",
@@ -1695,9 +1284,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Fase de Grupos",
           "Participaciones": "6",
+          "Goleador histórico": "Wahbi Khazri",
+          "Partidos jugados": "18+",
           "Grupo 2026": "Por definir"
         },
-        description: "Las Águilas de Cartago buscan por primera vez pasar a octavos de final en un Mundial."
+        description: "Las Águilas de Cartago buscan por primera vez pasar a octavos de final en un Mundial.",
+        videos: [
+          {
+            title: "Túnez vs Francia – Mundial 2022 Resumen",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué año debutó Túnez en un Mundial?",
+            options: ["1978", "1998", "2002", "2006"],
+            correct: 0
+          }
+        ]
       },
       uruguay: {
         name: "Uruguay",
@@ -1707,9 +1312,25 @@
           "Copas del Mundo": "2 (1930, 1950)",
           "Mejor Resultado": "Campeón",
           "Participaciones": "14",
+          "Goleador histórico": "Luis Suárez",
+          "Partidos jugados": "59+",
           "Grupo 2026": "Por definir"
         },
-        description: "La celeste, primera campeona del mundo, busca su tercer título con su característica garra charrúa."
+        description: "La celeste, primera campeona del mundo, busca su tercer título con su característica garra charrúa.",
+        videos: [
+          {
+            title: "Uruguay – Historia en los Mundiales FIFA",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "history"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿Cuántas Copas del Mundo ganó Uruguay?",
+            options: ["1", "2", "3", "4"],
+            correct: 1
+          }
+        ]
       },
       usa: {
         name: "Estados Unidos",
@@ -1719,9 +1340,25 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Semifinales (1930)",
           "Participaciones": "11",
+          "Goleador histórico": "Landon Donovan",
+          "Partidos jugados": "37+",
           "Grupo 2026": "Por definir"
         },
-        description: "Como anfitrión del Mundial 2026, USA espera aprovechar su ventaja local para lograr un resultado histórico."
+        description: "Como anfitrión del Mundial 2026, USA espera aprovechar su ventaja local para lograr un resultado histórico.",
+        videos: [
+          {
+            title: "USA vs Portugal 2014 – Partido épico",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿En qué Mundial llegó USA a semifinales?",
+            options: ["1930", "1950", "1994", "2002"],
+            correct: 0
+          }
+        ]
       },
       uzbekistan: {
         name: "Uzbekistán",
@@ -1731,35 +1368,38 @@
           "Copas del Mundo": "0",
           "Mejor Resultado": "Nunca clasificó",
           "Participaciones": "0",
+          "Goleador histórico": "Maksim Shatskikh",
+          "Partidos jugados": "0",
           "Grupo 2026": "Por definir"
         },
-        description: "Uzbekistán busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026."
+        description: "Uzbekistán busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026.",
+        videos: [
+          {
+            title: "Uzbekistán mejores momentos – Eliminatorias AFC",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            category: "highlights"
+          }
+        ],
+        trivia: [
+          {
+            question: "¿Qué confederación representa Uzbekistán?",
+            options: ["AFC", "UEFA", "CONMEBOL", "CAF"],
+            correct: 0
+          }
+        ]
       }
     };
 
     let currentCountry = null;
-    let currentVideoUrl = null;
 
     // Inicialización cuando la escena cargue
     document.addEventListener('DOMContentLoaded', function() {
       const scene = document.querySelector('a-scene');
       
-      // Configurar botones AR
-      scene.addEventListener('loaded', function() {
-        document.querySelectorAll('.info-button').forEach(btn => {
-          btn.addEventListener('click', function() {
-            const country = this.getAttribute('data-country');
-            showCountryInfo(country);
-          });
-        });
-      });
-
-      // Eventos de detección - CORREGIDO
+      // Eventos de detección
       scene.addEventListener('targetFound', (event) => {
         const targetIndex = event.detail.targetIndex;
-        console.log("Target encontrado:", targetIndex); // Para debug
         
-        // Mapeo directo de índices a países
         const countryMap = {
           0: { name: 'Argentina', emoji: '🇦🇷', color: '#74ACDF', key: 'argentina' },
           1: { name: 'Australia', emoji: '🇦🇺', color: '#012169', key: 'australia' },
@@ -1786,85 +1426,110 @@
         
         if (detectedCountry) {
           currentCountry = detectedCountry.key;
-          
-          // Actualizar menú inferior con el país detectado
           updateBottomMenu(detectedCountry.key);
           
-          // Mostrar banner de detección
           const banner = document.getElementById('detectionBanner');
           document.getElementById('bannerTitle').textContent = `${detectedCountry.emoji} ${detectedCountry.name} Detectado`;
           document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
           banner.style.background = `linear-gradient(135deg, ${detectedCountry.color}, ${detectedCountry.color}CC)`;
           banner.style.display = 'block';
           
-          // Ocultar banner después de 3 segundos
           setTimeout(() => {
             banner.style.display = 'none';
           }, 3000);
         }
       });
 
-      scene.addEventListener('targetLost', () => {
-        // Mantener el país actual hasta que se detecte uno nuevo
-      });
-      
-      // Configurar menú inferior
       setupBottomMenu();
     });
 
-    // Actualizar menú inferior con datos del país
     function updateBottomMenu(countryKey) {
       const country = countries[countryKey];
+      if (!country) return;
+      
       document.getElementById('countryFlag').textContent = country.emoji;
       document.getElementById('countryName').textContent = country.name;
+      updateVideosSection(country);
+      updateTriviaSection(country);
+      updateStatsSection(country);
     }
 
-    // Configuración del menú inferior
-    function setupBottomMenu() {
-      // Tabs del menú
-      document.querySelectorAll('.menu-tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-          const tabId = this.getAttribute('data-tab');
-          
-          // Activar tab seleccionado
-          document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
-          this.classList.add('active');
-          
-          // Mostrar sección correspondiente
-          document.querySelectorAll('.menu-section').forEach(section => {
-            section.classList.remove('active');
-          });
-          document.getElementById(`${tabId}-section`).classList.add('active');
-        });
-      });
+    function updateVideosSection(country) {
+      const container = document.getElementById('videosContainer');
+      container.innerHTML = '';
       
-      // Filtros de videos
-      document.querySelectorAll('.video-filter').forEach(filter => {
-        filter.addEventListener('click', function() {
-          const filterValue = this.getAttribute('data-filter');
-          
-          // Activar filtro seleccionado
-          document.querySelectorAll('.video-filter').forEach(f => f.classList.remove('active'));
-          this.classList.add('active');
-          
-          // Filtrar videos
-          document.querySelectorAll('.video-item').forEach(video => {
-            if (filterValue === 'all' || video.getAttribute('data-category') === filterValue) {
-              video.style.display = 'block';
-            } else {
-              video.style.display = 'none';
-            }
-          });
+      if (country.videos && country.videos.length > 0) {
+        country.videos.forEach(video => {
+          const videoItem = document.createElement('div');
+          videoItem.className = 'video-item';
+          videoItem.setAttribute('data-category', video.category);
+          videoItem.innerHTML = `
+            <div class="video-thumbnail" onclick="playVideo('${video.url}', '${video.title}')">
+            </div>
+            <div class="video-title">${video.title}</div>
+          `;
+          container.appendChild(videoItem);
         });
-      });
+      } else {
+        container.innerHTML = '<p>No hay videos disponibles para este país.</p>';
+      }
+    }
+
+    function updateTriviaSection(country) {
+      const container = document.getElementById('triviaContainer');
+      container.innerHTML = '';
       
-      // Configurar trivia interactiva
+      if (country.trivia && country.trivia.length > 0) {
+        country.trivia.forEach((trivia, index) => {
+          const triviaItem = document.createElement('div');
+          triviaItem.className = 'trivia-item';
+          triviaItem.innerHTML = `
+            <div class="trivia-question">${trivia.question}</div>
+            <div class="trivia-options">
+              ${trivia.options.map((option, optIndex) => 
+                `<div class="trivia-option" data-correct="${optIndex === trivia.correct}">${option}</div>`
+              ).join('')}
+            </div>
+          `;
+          container.appendChild(triviaItem);
+        });
+        
+        setupTriviaEvents();
+      } else {
+        container.innerHTML = '<p>No hay trivia disponible para este país.</p>';
+      }
+    }
+
+    function updateStatsSection(country) {
+      const container = document.getElementById('statsContainer');
+      container.innerHTML = '';
+      
+      if (country.stats) {
+        const statsGrid = document.createElement('div');
+        statsGrid.className = 'stats-grid';
+        
+        Object.entries(country.stats).forEach(([key, value]) => {
+          const statsItem = document.createElement('div');
+          statsItem.className = 'stats-item';
+          statsItem.innerHTML = `
+            <span class="stats-value">${value}</span>
+            <span class="stats-label">${key}</span>
+          `;
+          statsGrid.appendChild(statsItem);
+        });
+        
+        container.appendChild(statsGrid);
+      } else {
+        container.innerHTML = '<p>No hay estadísticas disponibles para este país.</p>';
+      }
+    }
+
+    function setupTriviaEvents() {
       document.querySelectorAll('.trivia-option').forEach(option => {
         option.addEventListener('click', function() {
           const isCorrect = this.getAttribute('data-correct') === 'true';
           const options = this.parentElement.querySelectorAll('.trivia-option');
           
-          // Mostrar respuestas correctas/incorrectas
           options.forEach(opt => {
             if (opt.getAttribute('data-correct') === 'true') {
               opt.classList.add('correct');
@@ -1874,7 +1539,6 @@
             opt.style.pointerEvents = 'none';
           });
           
-          // Mostrar mensaje de resultado
           if (isCorrect) {
             showTemporaryMessage('¡Correcto! 🎉', 'green');
           } else {
@@ -1883,49 +1547,65 @@
         });
       });
     }
-    
-    // Mostrar mensaje temporal
-    function showTemporaryMessage(message, color) {
-      const banner = document.getElementById('detectionBanner');
-      document.getElementById('bannerTitle').textContent = message;
-      document.getElementById('bannerSubtitle').textContent = '';
-      banner.style.background = color === 'green' 
-        ? 'linear-gradient(135deg, #00b09b, #96c93d)' 
-        : 'linear-gradient(135deg, #ff416c, #ff4b2b)';
-      banner.style.display = 'block';
+
+    function setupBottomMenu() {
+      document.querySelectorAll('.menu-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabId = this.getAttribute('data-tab');
+          
+          document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          document.querySelectorAll('.menu-section').forEach(section => {
+            section.classList.remove('active');
+          });
+          document.getElementById(`${tabId}-section`).classList.add('active');
+        });
+      });
       
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 2000);
-    }
-    
-    // Abrir/cerrar menú inferior
-    function toggleBottomMenu() {
-      const menu = document.getElementById('bottomMenu');
-      const btn = document.getElementById('toggleMenuBtn');
-      
-      if (menu.classList.contains('active')) {
-        menu.classList.remove('active');
-        btn.textContent = '📊';
-      } else {
-        menu.classList.add('active');
-        btn.textContent = '✕';
-      }
-    }
-    
-    // Reproducir video
-    function playVideo(url) {
-      document.getElementById('videoFrame').src = url;
-      document.getElementById('videoModal').classList.add('active');
-    }
-    
-    // Cerrar video
-    function closeVideo() {
-      document.getElementById('videoModal').classList.remove('active');
-      document.getElementById('videoFrame').src = '';
+      document.querySelectorAll('.video-filter').forEach(filter => {
+        filter.addEventListener('click', function() {
+          const filterValue = this.getAttribute('data-filter');
+          
+          document.querySelectorAll('.video-filter').forEach(f => f.classList.remove('active'));
+          this.classList.add('active');
+          
+          document.querySelectorAll('.video-item').forEach(video => {
+            if (filterValue === 'all' || video.getAttribute('data-category') === filterValue) {
+              video.style.display = 'block';
+            } else {
+              video.style.display = 'none';
+            }
+          });
+        });
+      });
     }
 
-    // Funciones de la interfaz (permanecen igual)
+    function applyVideoFilter(filter) {
+      const videoPlayer = document.getElementById('videoPlayer');
+      const filters = document.querySelectorAll('.video-modal .video-filter');
+      
+      videoPlayer.classList.remove('normal', 'warm', 'cold', 'vintage');
+      videoPlayer.classList.add(filter);
+      
+      filters.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function playVideo(url, title) {
+      const videoPlayer = document.getElementById('videoPlayer');
+      videoPlayer.src = url;
+      videoPlayer.load();
+      document.getElementById('videoModal').classList.add('active');
+    }
+
+    function closeVideo() {
+      const videoPlayer = document.getElementById('videoPlayer');
+      videoPlayer.pause();
+      videoPlayer.src = '';
+      document.getElementById('videoModal').classList.remove('active');
+    }
+
     function showCountryInfo(countryKey) {
       const country = countries[countryKey];
       const infoDiv = document.getElementById('countryInfo');
@@ -1933,7 +1613,6 @@
       document.getElementById('infoTitle').textContent = `${country.emoji} ${country.name}`;
       document.getElementById('infoTitle').style.color = country.color;
       
-      // Llenar estadísticas
       const statsDiv = document.getElementById('infoStats');
       statsDiv.innerHTML = '';
       
@@ -1955,6 +1634,33 @@
       document.getElementById('countryInfo').classList.remove('active');
     }
 
+    function toggleBottomMenu() {
+      const menu = document.getElementById('bottomMenu');
+      const btn = document.getElementById('toggleMenuBtn');
+      
+      if (menu.classList.contains('active')) {
+        menu.classList.remove('active');
+        btn.textContent = '📊';
+      } else {
+        menu.classList.add('active');
+        btn.textContent = '✕';
+      }
+    }
+
+    function showTemporaryMessage(message, color) {
+      const banner = document.getElementById('detectionBanner');
+      document.getElementById('bannerTitle').textContent = message;
+      document.getElementById('bannerSubtitle').textContent = '';
+      banner.style.background = color === 'green' 
+        ? 'linear-gradient(135deg, #00b09b, #96c93d)' 
+        : 'linear-gradient(135deg, #ff416c, #ff4b2b)';
+      banner.style.display = 'block';
+      
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 2000);
+    }
+
     function showAllInfo() {
       let allInfo = "🌍 INFORMACIÓN DEL MUNDIAL 2026\n\n";
       Object.values(countries).forEach(country => {
@@ -1968,12 +1674,10 @@
     }
 
     function resetAR() {
-      // Reiniciar todas las animaciones
       document.querySelectorAll('a-gltf-model').forEach(model => {
         model.emit('animationrestart');
       });
       
-      // Mostrar mensaje
       const banner = document.getElementById('detectionBanner');
       document.getElementById('bannerTitle').textContent = '🔄 Experiencia Reiniciada';
       document.getElementById('bannerSubtitle').textContent = 'Todas las animaciones reiniciadas';
@@ -1997,7 +1701,6 @@
         }
       });
       
-      // Mostrar estado
       const banner = document.getElementById('detectionBanner');
       document.getElementById('bannerTitle').textContent = isPaused ? '▶️ Animaciones Reanudadas' : '⏸️ Animaciones Pausadas';
       document.getElementById('bannerSubtitle').textContent = isPaused ? 'Todas las animaciones activadas' : 'Animaciones en pausa';
@@ -2009,14 +1712,12 @@
       }, 2000);
     }
 
-    // Cerrar modal al hacer clic fuera
     document.getElementById('countryInfo').addEventListener('click', function(e) {
       if (e.target === this) {
         closeCountryInfo();
       }
     });
     
-    // Cerrar modal de video al hacer clic fuera
     document.getElementById('videoModal').addEventListener('click', function(e) {
       if (e.target === this) {
         closeVideo();
