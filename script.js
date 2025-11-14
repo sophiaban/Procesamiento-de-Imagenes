@@ -858,7 +858,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (detectedCountry) {
       currentCountry = detectedCountry.key;
-      console.log("País detectado:", detectedCountry.name, "Key:", currentCountry);
       
       // Mostrar banner de detección
       const banner = document.getElementById('detectionBanner');
@@ -873,14 +872,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
       }
       
-      // Mostrar menú flotante - FORZAR VISIBILIDAD
+      // Activar menú flotante (siempre visible, pero se resalta cuando hay país)
       const floatingMenu = document.getElementById('floatingMenu');
+      const menuHeader = document.getElementById('menuHeader');
       if (floatingMenu) {
-        floatingMenu.classList.add('active');
-        floatingMenu.style.display = 'flex';
-        console.log("Menú flotante activado y mostrado");
-      } else {
-        console.error("No se encontró el elemento floatingMenu");
+        floatingMenu.classList.add('active', 'has-country');
+        // Actualizar header del menú
+        if (menuHeader) {
+          menuHeader.querySelector('.menu-header-text').textContent = `${detectedCountry.emoji} ${detectedCountry.name}`;
+        }
       }
     }
   }
@@ -908,11 +908,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Escuchar evento targetLost
         target.addEventListener('targetLost', function() {
-          console.log("Target perdido:", targetIndex);
           const floatingMenu = document.getElementById('floatingMenu');
+          const menuHeader = document.getElementById('menuHeader');
           if (floatingMenu) {
-            floatingMenu.classList.remove('active');
-            floatingMenu.style.display = 'none';
+            floatingMenu.classList.remove('has-country');
+            // Actualizar header pero mantener el país actual para que el menú siga funcionando
+            if (menuHeader && currentCountry) {
+              const country = countries[currentCountry];
+              if (country) {
+                menuHeader.querySelector('.menu-header-text').textContent = `${country.emoji} ${country.name} (sin señal)`;
+              }
+            }
           }
         });
       });
@@ -1013,7 +1019,21 @@ document.getElementById('countryInfo').addEventListener('click', function(e) {
 
 // Funciones del menú flotante
 function openMenu(type) {
-  if (!currentCountry) return;
+  if (!currentCountry) {
+    // Mostrar mensaje si no hay país detectado
+    const banner = document.getElementById('detectionBanner');
+    if (banner) {
+      document.getElementById('bannerTitle').textContent = '⚠️ No hay país detectado';
+      document.getElementById('bannerSubtitle').textContent = 'Escanea una bandera primero';
+      banner.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a6f)';
+      banner.style.display = 'block';
+      
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 3000);
+    }
+    return;
+  }
   
   const country = countries[currentCountry];
   
