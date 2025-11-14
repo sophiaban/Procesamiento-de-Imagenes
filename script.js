@@ -238,419 +238,514 @@ const triviaData = {
   argentina: [
     {
       question: "¿En qué año ganó Argentina su primera Copa del Mundo?",
-      options: ["1978", "1986", "1930", "2022"]
+      options: ["1978", "1986", "1930", "2022"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué jugador argentino es el máximo goleador histórico de los Mundiales?",
-      options: ["Lionel Messi", "Gabriel Batistuta", "Diego Maradona", "Hernán Crespo"]
+      options: ["Lionel Messi", "Gabriel Batistuta", "Diego Maradona", "Hernán Crespo"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuántas finales ha jugado Argentina?",
-      options: ["4", "5", "6", "7"]
+      options: ["4", "5", "6", "7"],
+      correctAnswer: 2
     },
     {
       question: "¿Qué entrenador ganó el Mundial 1986?",
-      options: ["Carlos Bilardo", "César Luis Menotti", "Marcelo Bielsa", "Alejandro Sabella"]
+      options: ["Carlos Bilardo", "César Luis Menotti", "Marcelo Bielsa", "Alejandro Sabella"],
+      correctAnswer: 0
     },
     {
       question: "¿Contra qué país ganó Argentina la final de 2022?",
-      options: ["Francia", "Brasil", "Alemania", "España"]
+      options: ["Francia", "Brasil", "Alemania", "España"],
+      correctAnswer: 0
     }
   ],
   australia: [
     {
       question: "¿En qué año Australia clasificó por primera vez a un Mundial?",
-      options: ["1974", "1986", "2006", "2010"]
+      options: ["1974", "1986", "2006", "2010"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué confederación representa desde 2006?",
-      options: ["AFC", "OFC", "UEFA", "CONMEBOL"]
+      options: ["AFC", "OFC", "UEFA", "CONMEBOL"],
+      correctAnswer: 0
     },
     {
       question: "¿En qué Mundial llegó por primera vez a octavos?",
-      options: ["2006", "2010", "2014", "2022"]
+      options: ["2006", "2010", "2014", "2022"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué selección eliminó a Australia en 2022?",
-      options: ["Argentina", "Francia", "Brasil", "España"]
+      options: ["Argentina", "Francia", "Brasil", "España"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su apodo futbolístico?",
-      options: ["Socceroos", "Kangaroos", "Aussies", "Wallabies"]
+      options: ["Socceroos", "Kangaroos", "Aussies", "Wallabies"],
+      correctAnswer: 0
     }
   ],
   brasil: [
     {
       question: "¿Cuántas Copas del Mundo ha ganado Brasil?",
-      options: ["4", "5", "6", "7"]
+      options: ["4", "5", "6", "7"],
+      correctAnswer: 1
     },
     {
       question: "¿Quién es su máximo goleador en Mundiales?",
-      options: ["Pelé", "Ronaldo Nazário", "Neymar", "Rivaldo"]
+      options: ["Pelé", "Ronaldo Nazário", "Neymar", "Rivaldo"],
+      correctAnswer: 1
     },
     {
       question: "¿Qué país le ganó 7-1 en 2014?",
-      options: ["Alemania", "Argentina", "Francia", "España"]
+      options: ["Alemania", "Argentina", "Francia", "España"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué selección enfrentó Brasil en la final de 2002?",
-      options: ["Alemania", "Francia", "Italia", "España"]
+      options: ["Alemania", "Francia", "Italia", "España"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué jugador brasileño ganó el Mundial a los 17 años?",
-      options: ["Pelé", "Ronaldo", "Neymar", "Ronaldinho"]
+      options: ["Pelé", "Ronaldo", "Neymar", "Ronaldinho"],
+      correctAnswer: 0
     }
   ],
   canada: [
     {
       question: "¿En qué año debutó Canadá en un Mundial?",
-      options: ["1986", "2002", "2010", "2022"]
+      options: ["1986", "2002", "2010", "2022"],
+      correctAnswer: 0
     },
     {
       question: "¿En qué Mundial anotó su primer gol?",
-      options: ["2022", "1986", "2010", "Nunca anotó"]
+      options: ["2022", "1986", "2010", "Nunca anotó"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué confederación representa?",
-      options: ["CONCACAF", "CONMEBOL", "UEFA", "AFC"]
+      options: ["CONCACAF", "CONMEBOL", "UEFA", "AFC"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es el apodo del equipo?",
-      options: ["Canucks", "Maple Leafs", "Canadiens", "No tiene apodo oficial"]
+      options: ["Canucks", "Maple Leafs", "Canadiens", "No tiene apodo oficial"],
+      correctAnswer: 3
     },
     {
       question: "¿Qué jugador es su mayor figura reciente?",
-      options: ["Alphonso Davies", "Cyle Larin", "Jonathan David", "Atiba Hutchinson"]
+      options: ["Alphonso Davies", "Cyle Larin", "Jonathan David", "Atiba Hutchinson"],
+      correctAnswer: 0
     }
   ],
   colombia: [
     {
       question: "¿En qué año debutó Colombia en un Mundial?",
-      options: ["1962", "1990", "1994", "1998"]
+      options: ["1962", "1990", "1994", "1998"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál ha sido su mejor participación?",
-      options: ["Cuartos 2014", "Octavos 1990", "Fase de grupos 1998", "Octavos 2018"]
+      options: ["Cuartos 2014", "Octavos 1990", "Fase de grupos 1998", "Octavos 2018"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué jugador marcó el famoso gol olímpico en 2014?",
-      options: ["James Rodríguez", "Juan Cuadrado", "Carlos Bacca", "Radamel Falcao"]
+      options: ["James Rodríguez", "Juan Cuadrado", "Carlos Bacca", "Radamel Falcao"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué país eliminó a Colombia en octavos 2014?",
-      options: ["Brasil", "Argentina", "Alemania", "Francia"]
+      options: ["Brasil", "Argentina", "Alemania", "Francia"],
+      correctAnswer: 0
     },
     {
       question: "¿Quién es su goleador mundialista?",
-      options: ["James Rodríguez", "Radamel Falcao", "Carlos Valderrama", "Juan Pablo Ángel"]
+      options: ["James Rodríguez", "Radamel Falcao", "Carlos Valderrama", "Juan Pablo Ángel"],
+      correctAnswer: 0
     }
   ],
   "corea-del-sur": [
     {
       question: "¿En qué año fue semifinalista?",
-      options: ["2002", "2010", "2018", "2022"]
+      options: ["2002", "2010", "2018", "2022"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué selección coorganizó el Mundial 2002 con Corea?",
-      options: ["Japón", "China", "Australia", "Tailandia"]
+      options: ["Japón", "China", "Australia", "Tailandia"],
+      correctAnswer: 0
     },
     {
       question: "¿A qué potencia eliminó Corea del Sur en 2018?",
-      options: ["Alemania", "Brasil", "Argentina", "España"]
+      options: ["Alemania", "Brasil", "Argentina", "España"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuántas participaciones tiene?",
-      options: ["10", "11", "12", "13"]
+      options: ["10", "11", "12", "13"],
+      correctAnswer: 1
     },
     {
       question: "¿Qué jugador ha ido a cuatro Mundiales recientes (2010–2022)?",
-      options: ["Son Heung-min", "Park Ji-sung", "Lee Young-pyo", "Ki Sung-yueng"]
+      options: ["Son Heung-min", "Park Ji-sung", "Lee Young-pyo", "Ki Sung-yueng"],
+      correctAnswer: 0
     }
   ],
   ecuador: [
     {
       question: "¿En qué año debutó Ecuador en un Mundial?",
-      options: ["2002", "2006", "2014", "2018"]
+      options: ["2002", "2006", "2014", "2018"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál fue su mejor participación?",
-      options: ["Octavos 2006", "Fase de grupos 2002", "Fase de grupos 2014", "Fase de grupos 2022"]
+      options: ["Octavos 2006", "Fase de grupos 2002", "Fase de grupos 2014", "Fase de grupos 2022"],
+      correctAnswer: 0
     },
     {
       question: "¿Quién anotó el primer gol en Qatar 2022?",
-      options: ["Enner Valencia", "Michael Estrada", "Gonzalo Plata", "Moises Caicedo"]
+      options: ["Enner Valencia", "Michael Estrada", "Gonzalo Plata", "Moises Caicedo"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué país eliminó a Ecuador en 2006?",
-      options: ["Inglaterra", "Alemania", "Argentina", "Brasil"]
+      options: ["Inglaterra", "Alemania", "Argentina", "Brasil"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su apodo?",
-      options: ["La Tricolor", "Los Amarillos", "Los Incas", "La Sele"]
+      options: ["La Tricolor", "Los Amarillos", "Los Incas", "La Sele"],
+      correctAnswer: 0
     }
   ],
   espana: [
     {
       question: "¿En qué año ganó su único Mundial?",
-      options: ["2010", "2006", "2014", "2018"]
+      options: ["2010", "2006", "2014", "2018"],
+      correctAnswer: 0
     },
     {
       question: "¿A quién venció en la final?",
-      options: ["Holanda", "Alemania", "Brasil", "Argentina"]
+      options: ["Holanda", "Alemania", "Brasil", "Argentina"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué estilo de juego la caracterizó en 2010?",
-      options: ["Tiki-taka", "Contraataque", "Juego directo", "Defensivo"]
+      options: ["Tiki-taka", "Contraataque", "Juego directo", "Defensivo"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué jugador marcó el gol del título?",
-      options: ["Andrés Iniesta", "David Villa", "Fernando Torres", "Xavi Hernández"]
+      options: ["Andrés Iniesta", "David Villa", "Fernando Torres", "Xavi Hernández"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuántas participaciones tiene España?",
-      options: ["15", "16", "17", "18"]
+      options: ["15", "16", "17", "18"],
+      correctAnswer: 1
     }
   ],
   iran: [
     {
       question: "¿Cuántas veces ha clasificado Irán?",
-      options: ["5", "6", "7", "8"]
+      options: ["5", "6", "7", "8"],
+      correctAnswer: 1
     },
     {
       question: "¿En qué Mundial consiguió su primera victoria?",
-      options: ["1998", "2006", "2014", "2018"]
+      options: ["1998", "2006", "2014", "2018"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué rival venció Irán en 1998?",
-      options: ["Estados Unidos", "Alemania", "Yugoslavia", "Marruecos"]
+      options: ["Estados Unidos", "Alemania", "Yugoslavia", "Marruecos"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su apodo?",
-      options: ["Team Melli", "Leones Persas", "Águilas", "Guerreros"]
+      options: ["Team Melli", "Leones Persas", "Águilas", "Guerreros"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué jugador moderno ha sido su estrella reciente?",
-      options: ["Sardar Azmoun", "Ali Daei", "Mehdi Taremi", "Javad Nekounam"]
+      options: ["Sardar Azmoun", "Ali Daei", "Mehdi Taremi", "Javad Nekounam"],
+      correctAnswer: 0
     }
   ],
   japon: [
     {
       question: "¿Cuántas veces ha llegado a octavos?",
-      options: ["4", "3", "2", "1"]
+      options: ["4", "3", "2", "1"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué selección remontó Japón en 2022?",
-      options: ["España", "Alemania", "Costa Rica", "Croacia"]
+      options: ["España", "Alemania", "Costa Rica", "Croacia"],
+      correctAnswer: 2
     },
     {
       question: "¿Cuál es su confederación?",
-      options: ["AFC", "UEFA", "CAF", "OFC"]
+      options: ["AFC", "UEFA", "CAF", "OFC"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su apodo?",
-      options: ["Samuráis Azules", "Dragones Azules", "Guerreros del Sol", "Tigres"]
+      options: ["Samuráis Azules", "Dragones Azules", "Guerreros del Sol", "Tigres"],
+      correctAnswer: 0
     },
     {
       question: "¿En qué año coorganizó el Mundial?",
-      options: ["2002", "2010", "2018", "2022"]
+      options: ["2002", "2010", "2018", "2022"],
+      correctAnswer: 0
     }
   ],
   jordania: [
     {
       question: "¿En qué año estuvo más cerca de clasificar?",
-      options: ["2014", "2010", "2018", "2022"]
+      options: ["2014", "2010", "2018", "2022"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué confederación representa?",
-      options: ["AFC", "UEFA", "CAF", "OFC"]
+      options: ["AFC", "UEFA", "CAF", "OFC"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su apodo?",
-      options: ["Los Chivalry", "Las Águilas", "Los Guerreros", "Los Leones"]
+      options: ["Los Chivalry", "Las Águilas", "Los Guerreros", "Los Leones"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su mejor jugador histórico?",
-      options: ["Hassan Abdel-Fattah", "Amer Deeb", "Baha' Abdel-Rahman", "Ahmad Hayel"]
+      options: ["Hassan Abdel-Fattah", "Amer Deeb", "Baha' Abdel-Rahman", "Ahmad Hayel"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué selección eliminó a Jordania en repechaje 2014?",
-      options: ["Uruguay", "México", "Australia", "Nueva Zelanda"]
+      options: ["Uruguay", "México", "Australia", "Nueva Zelanda"],
+      correctAnswer: 0
     }
   ],
   marruecos: [
     {
       question: "¿En qué año debutó Marruecos en un Mundial?",
-      options: ["1970", "1986", "1994", "1998"]
+      options: ["1970", "1986", "1994", "1998"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué selección eliminó para llegar a semis 2022?",
-      options: ["España y Portugal", "Brasil y Argentina", "Francia y Alemania", "Inglaterra e Italia"]
+      options: ["España y Portugal", "Brasil y Argentina", "Francia y Alemania", "Inglaterra e Italia"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su apodo?",
-      options: ["Leones del Atlas", "Leones Rojos", "Águilas", "Guerreros"]
+      options: ["Leones del Atlas", "Leones Rojos", "Águilas", "Guerreros"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuántas participaciones tiene?",
-      options: ["5", "6", "7", "8"]
+      options: ["5", "6", "7", "8"],
+      correctAnswer: 1
     },
     {
       question: "¿Quién es su portero icónico de 2022?",
-      options: ["Bono", "Munir", "Tagnaouti", "Benoun"]
+      options: ["Bono", "Munir", "Tagnaouti", "Benoun"],
+      correctAnswer: 0
     }
   ],
   mexico: [
     {
       question: "¿Cuántas veces ha sido local?",
-      options: ["2", "1", "3", "0"]
+      options: ["2", "1", "3", "0"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su apodo?",
-      options: ["El Tri", "Los Aztecas", "La Verde", "Todas las anteriores"]
+      options: ["El Tri", "Los Aztecas", "La Verde", "Todas las anteriores"],
+      correctAnswer: 3
     },
     {
       question: "¿A cuántos mundiales consecutivos ha asistido?",
-      options: ["7", "8", "9", "10"]
+      options: ["7", "8", "9", "10"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su mayor logro (últimas décadas)?",
-      options: ["Cuartos 1986", "Octavos 1994", "Octavos 2010", "Octavos 2018"]
+      options: ["Cuartos 1986", "Octavos 1994", "Octavos 2010", "Octavos 2018"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué jugador marcó el gol \"de la tijera\" en 2018?",
-      options: ["Javier Hernández", "Carlos Vela", "Hirving Lozano", "Andrés Guardado"]
+      options: ["Javier Hernández", "Carlos Vela", "Hirving Lozano", "Andrés Guardado"],
+      correctAnswer: 1
     }
   ],
   "nueva-zelanda": [
     {
       question: "¿Cuántos Mundiales ha jugado?",
-      options: ["2", "3", "4", "5"]
+      options: ["2", "3", "4", "5"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué año se fue invicto del Mundial?",
-      options: ["2010", "1982", "2006", "2022"]
+      options: ["2010", "1982", "2006", "2022"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su confederación?",
-      options: ["OFC", "AFC", "UEFA", "CONCACAF"]
+      options: ["OFC", "AFC", "UEFA", "CONCACAF"],
+      correctAnswer: 0
     },
     {
       question: "¿Contra qué gigante empató en 2010?",
-      options: ["Italia", "Brasil", "Argentina", "España"]
+      options: ["Italia", "Brasil", "Argentina", "España"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su apodo?",
-      options: ["All Whites", "Kiwis", "Silver Ferns", "Black Caps"]
+      options: ["All Whites", "Kiwis", "Silver Ferns", "Black Caps"],
+      correctAnswer: 0
     }
   ],
   paraguay: [
     {
       question: "¿En qué año llegó Paraguay a cuartos?",
-      options: ["2010", "2006", "1998", "2014"]
+      options: ["2010", "2006", "1998", "2014"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué selección lo eliminó en 2010?",
-      options: ["España", "Alemania", "Holanda", "Brasil"]
+      options: ["España", "Alemania", "Holanda", "Brasil"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su confederación?",
-      options: ["CONMEBOL", "CONCACAF", "UEFA", "AFC"]
+      options: ["CONMEBOL", "CONCACAF", "UEFA", "AFC"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué portero paraguayo fue figura en 2010?",
-      options: ["Justo Villar", "Roberto Fernández", "Diego Barreto", "Antony Silva"]
+      options: ["Justo Villar", "Roberto Fernández", "Diego Barreto", "Antony Silva"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué jugador es su goleador mundialista?",
-      options: ["Roque Santa Cruz", "José Cardozo", "Nelson Valdez", "Lucas Barrios"]
+      options: ["Roque Santa Cruz", "José Cardozo", "Nelson Valdez", "Lucas Barrios"],
+      correctAnswer: 1
     }
   ],
   tunez: [
     {
       question: "¿En qué año debutó Túnez?",
-      options: ["1978", "1986", "1998", "2002"]
+      options: ["1978", "1986", "1998", "2002"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué selección venció Túnez en 1978?",
-      options: ["México", "Alemania", "Polonia", "Argentina"]
+      options: ["México", "Alemania", "Polonia", "Argentina"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su confederación?",
-      options: ["CAF", "UEFA", "AFC", "CONCACAF"]
+      options: ["CAF", "UEFA", "AFC", "CONCACAF"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su apodo?",
-      options: ["Águilas de Cartago", "Leones del Desierto", "Guerreros", "Halcones"]
+      options: ["Águilas de Cartago", "Leones del Desierto", "Guerreros", "Halcones"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuántas participaciones tiene?",
-      options: ["5", "6", "7", "8"]
+      options: ["5", "6", "7", "8"],
+      correctAnswer: 1
     }
   ],
   uruguay: [
     {
       question: "¿Cuántas Copas del Mundo ganó Uruguay?",
-      options: ["2", "3", "4", "5"]
+      options: ["2", "3", "4", "5"],
+      correctAnswer: 0
     },
     {
       question: "¿En qué estadio fue el primer Mundial?",
-      options: ["Estadio Centenario", "Maracaná", "Wembley", "San Siro"]
+      options: ["Estadio Centenario", "Maracaná", "Wembley", "San Siro"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué jugador marcó el \"gol del siglo\" en 2010?",
-      options: ["Diego Forlán", "Luis Suárez", "Edinson Cavani", "Álvaro Recoba"]
+      options: ["Diego Forlán", "Luis Suárez", "Edinson Cavani", "Álvaro Recoba"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuántas participaciones tiene Uruguay?",
-      options: ["13", "14", "15", "16"]
+      options: ["13", "14", "15", "16"],
+      correctAnswer: 1
     },
     {
       question: "¿Contra quién fue su final de 1950?",
-      options: ["Brasil", "Argentina", "España", "Suecia"]
+      options: ["Brasil", "Argentina", "España", "Suecia"],
+      correctAnswer: 0
     }
   ],
   usa: [
     {
       question: "¿En qué Mundial llegó a semifinales?",
-      options: ["1930", "1950", "1994", "2002"]
+      options: ["1930", "1950", "1994", "2002"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su confederación?",
-      options: ["CONCACAF", "CONMEBOL", "UEFA", "AFC"]
+      options: ["CONCACAF", "CONMEBOL", "UEFA", "AFC"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué selección eliminó a EE.UU. en 2014?",
-      options: ["Bélgica", "Alemania", "Argentina", "Holanda"]
+      options: ["Bélgica", "Alemania", "Argentina", "Holanda"],
+      correctAnswer: 0
     },
     {
       question: "¿Cómo se llama su liga profesional?",
-      options: ["MLS", "USL", "NASL", "USSF"]
+      options: ["MLS", "USL", "NASL", "USSF"],
+      correctAnswer: 0
     },
     {
       question: "¿Quién es su mayor figura actual?",
-      options: ["Christian Pulisic", "Clint Dempsey", "Landon Donovan", "Tim Howard"]
+      options: ["Christian Pulisic", "Clint Dempsey", "Landon Donovan", "Tim Howard"],
+      correctAnswer: 0
     }
   ],
   uzbekistan: [
     {
       question: "¿Qué confederación representa?",
-      options: ["AFC", "UEFA", "CAF", "OFC"]
+      options: ["AFC", "UEFA", "CAF", "OFC"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su mejor ranking en Asia?",
-      options: ["Top 5", "Top 10", "Top 15", "Top 20"]
+      options: ["Top 5", "Top 10", "Top 15", "Top 20"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué generaciones fueron más fuertes?",
-      options: ["2000s y 2010s", "1990s y 2000s", "2010s y 2020s", "1980s y 1990s"]
+      options: ["2000s y 2010s", "1990s y 2000s", "2010s y 2020s", "1980s y 1990s"],
+      correctAnswer: 0
     },
     {
       question: "¿Qué selección lo eliminó en repechaje 2014?",
-      options: ["Jordania", "Australia", "Irán", "Corea del Sur"]
+      options: ["Jordania", "Australia", "Irán", "Corea del Sur"],
+      correctAnswer: 0
     },
     {
       question: "¿Cuál es su apodo?",
-      options: ["Los Leones Blancos", "Los Lobos", "Los Tigres", "Los Guerreros"]
+      options: ["Los Leones Blancos", "Los Lobos", "Los Tigres", "Los Guerreros"],
+      correctAnswer: 0
     }
   ]
 };
@@ -1100,6 +1195,10 @@ function closeModal(modalId) {
   document.getElementById(modalId).classList.remove('active');
 }
 
+// Variable global para la pregunta actual de trivia
+let currentTriviaQuestion = null;
+let triviaAnswered = false;
+
 // Función para abrir modal de Trivia
 function openTriviaModal() {
   if (!currentCountry || !triviaData[currentCountry]) return;
@@ -1108,26 +1207,34 @@ function openTriviaModal() {
   const trivia = triviaData[currentCountry];
   
   // Seleccionar pregunta aleatoria
-  const randomTrivia = trivia[Math.floor(Math.random() * trivia.length)];
+  const randomIndex = Math.floor(Math.random() * trivia.length);
+  currentTriviaQuestion = trivia[randomIndex];
+  triviaAnswered = false;
   
   document.getElementById('triviaTitle').textContent = `Trivia - ${country.emoji} ${country.name}`;
   
   const container = document.getElementById('triviaContainer');
   container.innerHTML = `
-    <div class="trivia-question">${randomTrivia.question}</div>
+    <div class="trivia-question">${currentTriviaQuestion.question}</div>
     <div class="trivia-options">
-      ${randomTrivia.options.map((option, index) => `
-        <div class="trivia-option" onclick="selectTriviaOption(this)">
+      ${currentTriviaQuestion.options.map((option, index) => `
+        <div class="trivia-option" data-index="${index}" onclick="selectTriviaOption(this, ${index})">
           ${option}
         </div>
       `).join('')}
     </div>
+    <div class="trivia-feedback" id="triviaFeedback" style="display: none;"></div>
+    <button class="trivia-next-btn" id="triviaNextBtn" onclick="nextTriviaQuestion()" style="display: none;">
+      Siguiente Pregunta
+    </button>
   `;
   
   document.getElementById('triviaModal').classList.add('active');
 }
 
-function selectTriviaOption(element) {
+function selectTriviaOption(element, selectedIndex) {
+  if (triviaAnswered) return; // No permitir cambiar respuesta después de responder
+  
   // Remover selección anterior
   document.querySelectorAll('.trivia-option').forEach(opt => {
     opt.classList.remove('selected');
@@ -1135,6 +1242,66 @@ function selectTriviaOption(element) {
   
   // Seleccionar nueva opción
   element.classList.add('selected');
+  
+  // Verificar respuesta
+  const correctIndex = currentTriviaQuestion.correctAnswer;
+  const isCorrect = selectedIndex === correctIndex;
+  triviaAnswered = true;
+  
+  // Mostrar todas las opciones con su estado
+  document.querySelectorAll('.trivia-option').forEach((opt, index) => {
+    opt.style.pointerEvents = 'none'; // Deshabilitar clics
+    if (index === correctIndex) {
+      opt.classList.add('correct');
+    } else if (index === selectedIndex && !isCorrect) {
+      opt.classList.add('incorrect');
+    }
+  });
+  
+  // Mostrar feedback
+  const feedbackDiv = document.getElementById('triviaFeedback');
+  const nextBtn = document.getElementById('triviaNextBtn');
+  
+  if (isCorrect) {
+    feedbackDiv.innerHTML = '<div class="feedback-correct">✅ ¡Correcto!</div>';
+    feedbackDiv.style.display = 'block';
+  } else {
+    feedbackDiv.innerHTML = `<div class="feedback-incorrect">❌ Incorrecto. La respuesta correcta es: <strong>${currentTriviaQuestion.options[correctIndex]}</strong></div>`;
+    feedbackDiv.style.display = 'block';
+  }
+  
+  nextBtn.style.display = 'block';
+}
+
+function nextTriviaQuestion() {
+  if (!currentCountry || !triviaData[currentCountry]) return;
+  
+  const trivia = triviaData[currentCountry];
+  
+  // Seleccionar una pregunta diferente aleatoria
+  let randomIndex;
+  do {
+    randomIndex = Math.floor(Math.random() * trivia.length);
+  } while (trivia[randomIndex] === currentTriviaQuestion && trivia.length > 1);
+  
+  currentTriviaQuestion = trivia[randomIndex];
+  triviaAnswered = false;
+  
+  const container = document.getElementById('triviaContainer');
+  container.innerHTML = `
+    <div class="trivia-question">${currentTriviaQuestion.question}</div>
+    <div class="trivia-options">
+      ${currentTriviaQuestion.options.map((option, index) => `
+        <div class="trivia-option" data-index="${index}" onclick="selectTriviaOption(this, ${index})">
+          ${option}
+        </div>
+      `).join('')}
+    </div>
+    <div class="trivia-feedback" id="triviaFeedback" style="display: none;"></div>
+    <button class="trivia-next-btn" id="triviaNextBtn" onclick="nextTriviaQuestion()" style="display: none;">
+      Siguiente Pregunta
+    </button>
+  `;
 }
 
 // Función para abrir modal de Video
