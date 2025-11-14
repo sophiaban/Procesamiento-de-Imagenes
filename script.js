@@ -893,8 +893,15 @@ document.addEventListener('DOMContentLoaded', function() {
     for (let i = 0; i < targets.length; i++) {
       const target = targets[i];
       const targetAttr = target.getAttribute('mindar-image-target');
-      const targetIndexMatch = targetAttr.match(/targetIndex:\s*(\d+)/);
-      const targetIndex = targetIndexMatch ? parseInt(targetIndexMatch[1]) : i;
+      let targetIndex = i;
+      
+      // Verificar que targetAttr sea una cadena antes de hacer match
+      if (targetAttr && typeof targetAttr === 'string') {
+        const targetIndexMatch = targetAttr.match(/targetIndex:\s*(\d+)/);
+        if (targetIndexMatch) {
+          targetIndex = parseInt(targetIndexMatch[1]);
+        }
+      }
       
       // Verificar si el modelo dentro del target está visible
       const model = target.querySelector('a-gltf-model');
@@ -927,8 +934,15 @@ document.addEventListener('DOMContentLoaded', function() {
       targets.forEach((target, index) => {
         // Obtener el targetIndex del atributo
         const targetAttr = target.getAttribute('mindar-image-target');
-        const targetIndexMatch = targetAttr.match(/targetIndex:\s*(\d+)/);
-        const targetIndex = targetIndexMatch ? parseInt(targetIndexMatch[1]) : index;
+        let targetIndex = index;
+        
+        // Verificar que targetAttr sea una cadena antes de hacer match
+        if (targetAttr && typeof targetAttr === 'string') {
+          const targetIndexMatch = targetAttr.match(/targetIndex:\s*(\d+)/);
+          if (targetIndexMatch) {
+            targetIndex = parseInt(targetIndexMatch[1]);
+          }
+        }
         
         // Escuchar evento targetFound
         target.addEventListener('targetFound', function() {
