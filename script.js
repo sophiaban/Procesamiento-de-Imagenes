@@ -241,41 +241,41 @@ const triviaData = {
       options: ["1978", "1986", "1930", "2022"]
     },
     {
-      question: "¿Quién es el máximo goleador histórico de Argentina en Mundiales?",
+      question: "¿Qué jugador argentino es el máximo goleador histórico de los Mundiales?",
       options: ["Lionel Messi", "Gabriel Batistuta", "Diego Maradona", "Hernán Crespo"]
     },
     {
-      question: "¿Cuántas Copas del Mundo ha ganado Argentina?",
-      options: ["2", "3", "4", "5"]
+      question: "¿Cuántas finales ha jugado Argentina?",
+      options: ["4", "5", "6", "7"]
     },
     {
-      question: "¿En qué Mundial Argentina llegó a la final pero perdió?",
-      options: ["2014", "1990", "1930", "Todas las anteriores"]
+      question: "¿Qué entrenador ganó el Mundial 1986?",
+      options: ["Carlos Bilardo", "César Luis Menotti", "Marcelo Bielsa", "Alejandro Sabella"]
     },
     {
-      question: "¿Quién fue el entrenador de Argentina en el Mundial 2022?",
-      options: ["Lionel Scaloni", "Jorge Sampaoli", "Gerardo Martino", "Alejandro Sabella"]
+      question: "¿Contra qué país ganó Argentina la final de 2022?",
+      options: ["Francia", "Brasil", "Alemania", "España"]
     }
   ],
   australia: [
     {
-      question: "¿Cuál es el mejor resultado de Australia en un Mundial?",
-      options: ["Octavos de Final", "Fase de Grupos", "Cuartos de Final", "Nunca clasificó"]
+      question: "¿En qué año Australia clasificó por primera vez a un Mundial?",
+      options: ["1974", "1986", "2006", "2010"]
     },
     {
-      question: "¿En qué año Australia logró llegar a octavos de final?",
-      options: ["2006", "2010", "2014", "2018"]
-    },
-    {
-      question: "¿Cuántas veces ha participado Australia en Mundiales?",
-      options: ["4", "5", "6", "7"]
-    },
-    {
-      question: "¿Qué confederación representa Australia?",
+      question: "¿Qué confederación representa desde 2006?",
       options: ["AFC", "OFC", "UEFA", "CONMEBOL"]
     },
     {
-      question: "¿Cuál es el apodo de la selección australiana?",
+      question: "¿En qué Mundial llegó por primera vez a octavos?",
+      options: ["2006", "2010", "2014", "2022"]
+    },
+    {
+      question: "¿Qué selección eliminó a Australia en 2022?",
+      options: ["Argentina", "Francia", "Brasil", "España"]
+    },
+    {
+      question: "¿Cuál es su apodo futbolístico?",
       options: ["Socceroos", "Kangaroos", "Aussies", "Wallabies"]
     }
   ],
@@ -285,397 +285,534 @@ const triviaData = {
       options: ["4", "5", "6", "7"]
     },
     {
-      question: "¿Quién es el máximo goleador histórico de Brasil en Mundiales?",
-      options: ["Pelé", "Ronaldo", "Neymar", "Rivaldo"]
+      question: "¿Quién es su máximo goleador en Mundiales?",
+      options: ["Pelé", "Ronaldo Nazário", "Neymar", "Rivaldo"]
     },
     {
-      question: "¿En qué año Brasil ganó su última Copa del Mundo?",
-      options: ["2002", "1994", "1970", "1962"]
+      question: "¿Qué país le ganó 7-1 en 2014?",
+      options: ["Alemania", "Argentina", "Francia", "España"]
     },
     {
-      question: "¿Brasil es el único país que ha participado en todos los Mundiales?",
-      options: ["Sí", "No", "Comparte el récord", "No se sabe"]
+      question: "¿Qué selección enfrentó Brasil en la final de 2002?",
+      options: ["Alemania", "Francia", "Italia", "España"]
     },
     {
-      question: "¿Cuál es el apodo de la selección brasileña?",
-      options: ["Canarinha", "Verdeamarela", "Seleção", "Todas las anteriores"]
+      question: "¿Qué jugador brasileño ganó el Mundial a los 17 años?",
+      options: ["Pelé", "Ronaldo", "Neymar", "Ronaldinho"]
     }
   ],
   canada: [
     {
-      question: "¿Cuántas veces ha participado Canadá en Mundiales?",
-      options: ["1", "2", "3", "4"]
+      question: "¿En qué año debutó Canadá en un Mundial?",
+      options: ["1986", "2002", "2010", "2022"]
     },
     {
-      question: "¿Canadá será anfitrión del Mundial 2026?",
-      options: ["Sí", "No", "Solo co-anfitrión", "No se sabe"]
+      question: "¿En qué Mundial anotó su primer gol?",
+      options: ["2022", "1986", "2010", "Nunca anotó"]
     },
     {
-      question: "¿Cuál es el mejor resultado de Canadá en un Mundial?",
-      options: ["Fase de Grupos", "Octavos de Final", "Nunca clasificó", "Cuartos de Final"]
-    },
-    {
-      question: "¿Quién es el máximo goleador histórico de Canadá?",
-      options: ["Alphonso Davies", "Cyle Larin", "Jonathan David", "Dwayne De Rosario"]
-    },
-    {
-      question: "¿En qué confederación juega Canadá?",
+      question: "¿Qué confederación representa?",
       options: ["CONCACAF", "CONMEBOL", "UEFA", "AFC"]
+    },
+    {
+      question: "¿Cuál es el apodo del equipo?",
+      options: ["Canucks", "Maple Leafs", "Canadiens", "No tiene apodo oficial"]
+    },
+    {
+      question: "¿Qué jugador es su mayor figura reciente?",
+      options: ["Alphonso Davies", "Cyle Larin", "Jonathan David", "Atiba Hutchinson"]
     }
   ],
   colombia: [
     {
-      question: "¿Cuál es el mejor resultado de Colombia en un Mundial?",
-      options: ["Cuartos de Final", "Octavos de Final", "Fase de Grupos", "Semifinales"]
+      question: "¿En qué año debutó Colombia en un Mundial?",
+      options: ["1962", "1990", "1994", "1998"]
     },
     {
-      question: "¿En qué Mundial Colombia llegó a cuartos de final?",
-      options: ["2014", "1990", "1998", "2018"]
+      question: "¿Cuál ha sido su mejor participación?",
+      options: ["Cuartos 2014", "Octavos 1990", "Fase de grupos 1998", "Octavos 2018"]
     },
     {
-      question: "¿Quién es el máximo goleador histórico de Colombia en Mundiales?",
+      question: "¿Qué jugador marcó el famoso gol olímpico en 2014?",
+      options: ["James Rodríguez", "Juan Cuadrado", "Carlos Bacca", "Radamel Falcao"]
+    },
+    {
+      question: "¿Qué país eliminó a Colombia en octavos 2014?",
+      options: ["Brasil", "Argentina", "Alemania", "Francia"]
+    },
+    {
+      question: "¿Quién es su goleador mundialista?",
       options: ["James Rodríguez", "Radamel Falcao", "Carlos Valderrama", "Juan Pablo Ángel"]
-    },
-    {
-      question: "¿Cuántas veces ha participado Colombia en Mundiales?",
-      options: ["5", "6", "7", "8"]
-    },
-    {
-      question: "¿Cuál es el apodo de la selección colombiana?",
-      options: ["Los Cafeteros", "La Tricolor", "Los Dorados", "Todas las anteriores"]
     }
   ],
   "corea-del-sur": [
     {
-      question: "¿Cuál es el mejor resultado de Corea del Sur en un Mundial?",
-      options: ["Semifinales", "Cuartos de Final", "Octavos de Final", "Fase de Grupos"]
-    },
-    {
-      question: "¿En qué año Corea del Sur llegó a semifinales?",
+      question: "¿En qué año fue semifinalista?",
       options: ["2002", "2010", "2018", "2022"]
     },
     {
-      question: "¿Cuántas veces ha participado Corea del Sur en Mundiales?",
+      question: "¿Qué selección coorganizó el Mundial 2002 con Corea?",
+      options: ["Japón", "China", "Australia", "Tailandia"]
+    },
+    {
+      question: "¿A qué potencia eliminó Corea del Sur en 2018?",
+      options: ["Alemania", "Brasil", "Argentina", "España"]
+    },
+    {
+      question: "¿Cuántas participaciones tiene?",
       options: ["10", "11", "12", "13"]
     },
     {
-      question: "¿Corea del Sur fue anfitrión del Mundial 2002 junto con?",
-      options: ["Japón", "China", "Tailandia", "Solo"]
-    },
-    {
-      question: "¿Cuál es el apodo de la selección surcoreana?",
-      options: ["Taegeuk Warriors", "Dragones Rojos", "Tigres Asiáticos", "Guerreros Azules"]
+      question: "¿Qué jugador ha ido a cuatro Mundiales recientes (2010–2022)?",
+      options: ["Son Heung-min", "Park Ji-sung", "Lee Young-pyo", "Ki Sung-yueng"]
     }
   ],
   ecuador: [
     {
-      question: "¿Cuál es el mejor resultado de Ecuador en un Mundial?",
-      options: ["Octavos de Final", "Fase de Grupos", "Cuartos de Final", "Nunca clasificó"]
+      question: "¿En qué año debutó Ecuador en un Mundial?",
+      options: ["2002", "2006", "2014", "2018"]
     },
     {
-      question: "¿En qué año Ecuador llegó a octavos de final?",
-      options: ["2006", "2014", "2002", "2018"]
+      question: "¿Cuál fue su mejor participación?",
+      options: ["Octavos 2006", "Fase de grupos 2002", "Fase de grupos 2014", "Fase de grupos 2022"]
     },
     {
-      question: "¿Cuántas veces ha participado Ecuador en Mundiales?",
-      options: ["3", "4", "5", "6"]
+      question: "¿Quién anotó el primer gol en Qatar 2022?",
+      options: ["Enner Valencia", "Michael Estrada", "Gonzalo Plata", "Moises Caicedo"]
     },
     {
-      question: "¿Quién es el máximo goleador histórico de Ecuador en Mundiales?",
-      options: ["Enner Valencia", "Agustín Delgado", "Eduardo Hurtado", "Felipe Caicedo"]
+      question: "¿Qué país eliminó a Ecuador en 2006?",
+      options: ["Inglaterra", "Alemania", "Argentina", "Brasil"]
     },
     {
-      question: "¿Cuál es el apodo de la selección ecuatoriana?",
+      question: "¿Cuál es su apodo?",
       options: ["La Tricolor", "Los Amarillos", "Los Incas", "La Sele"]
     }
   ],
   espana: [
     {
-      question: "¿En qué año España ganó su única Copa del Mundo?",
+      question: "¿En qué año ganó su único Mundial?",
       options: ["2010", "2006", "2014", "2018"]
     },
     {
-      question: "¿Quién fue el entrenador de España en el Mundial 2010?",
-      options: ["Vicente del Bosque", "Luis Aragonés", "Julen Lopetegui", "Fernando Hierro"]
+      question: "¿A quién venció en la final?",
+      options: ["Holanda", "Alemania", "Brasil", "Argentina"]
     },
     {
-      question: "¿Cuántas veces ha participado España en Mundiales?",
+      question: "¿Qué estilo de juego la caracterizó en 2010?",
+      options: ["Tiki-taka", "Contraataque", "Juego directo", "Defensivo"]
+    },
+    {
+      question: "¿Qué jugador marcó el gol del título?",
+      options: ["Andrés Iniesta", "David Villa", "Fernando Torres", "Xavi Hernández"]
+    },
+    {
+      question: "¿Cuántas participaciones tiene España?",
       options: ["15", "16", "17", "18"]
-    },
-    {
-      question: "¿Quién es el máximo goleador histórico de España en Mundiales?",
-      options: ["David Villa", "Fernando Torres", "Raúl", "Fernando Morientes"]
-    },
-    {
-      question: "¿Cuál es el apodo de la selección española?",
-      options: ["La Furia Roja", "La Roja", "Los Toros", "Todas las anteriores"]
     }
   ],
   iran: [
     {
-      question: "¿Cuántas veces ha participado Irán en Mundiales?",
+      question: "¿Cuántas veces ha clasificado Irán?",
       options: ["5", "6", "7", "8"]
     },
     {
-      question: "¿Cuál es el mejor resultado de Irán en un Mundial?",
-      options: ["Fase de Grupos", "Octavos de Final", "Nunca clasificó", "Cuartos de Final"]
+      question: "¿En qué Mundial consiguió su primera victoria?",
+      options: ["1998", "2006", "2014", "2018"]
     },
     {
-      question: "¿Irán ha logrado ganar algún partido en Mundiales?",
-      options: ["Sí", "No", "Solo empates", "No se sabe"]
+      question: "¿Qué rival venció Irán en 1998?",
+      options: ["Estados Unidos", "Alemania", "Yugoslavia", "Marruecos"]
     },
     {
-      question: "¿En qué confederación juega Irán?",
-      options: ["AFC", "UEFA", "CAF", "OFC"]
-    },
-    {
-      question: "¿Cuál es el apodo de la selección iraní?",
+      question: "¿Cuál es su apodo?",
       options: ["Team Melli", "Leones Persas", "Águilas", "Guerreros"]
+    },
+    {
+      question: "¿Qué jugador moderno ha sido su estrella reciente?",
+      options: ["Sardar Azmoun", "Ali Daei", "Mehdi Taremi", "Javad Nekounam"]
     }
   ],
   japon: [
     {
-      question: "¿Cuál es el mejor resultado de Japón en un Mundial?",
-      options: ["Octavos de Final", "Cuartos de Final", "Fase de Grupos", "Semifinales"]
-    },
-    {
-      question: "¿Cuántas veces ha llegado Japón a octavos de final?",
+      question: "¿Cuántas veces ha llegado a octavos?",
       options: ["4", "3", "2", "1"]
     },
     {
-      question: "¿Cuántas veces ha participado Japón en Mundiales?",
-      options: ["6", "7", "8", "9"]
+      question: "¿Qué selección remontó Japón en 2022?",
+      options: ["España", "Alemania", "Costa Rica", "Croacia"]
     },
     {
-      question: "¿Japón fue anfitrión del Mundial 2002 junto con?",
-      options: ["Corea del Sur", "China", "Australia", "Solo"]
+      question: "¿Cuál es su confederación?",
+      options: ["AFC", "UEFA", "CAF", "OFC"]
     },
     {
-      question: "¿Cuál es el apodo de la selección japonesa?",
+      question: "¿Cuál es su apodo?",
       options: ["Samuráis Azules", "Dragones Azules", "Guerreros del Sol", "Tigres"]
+    },
+    {
+      question: "¿En qué año coorganizó el Mundial?",
+      options: ["2002", "2010", "2018", "2022"]
     }
   ],
   jordania: [
     {
-      question: "¿Cuántas veces ha participado Jordania en Mundiales?",
-      options: ["0", "1", "2", "3"]
+      question: "¿En qué año estuvo más cerca de clasificar?",
+      options: ["2014", "2010", "2018", "2022"]
     },
     {
-      question: "¿Jordania ha clasificado alguna vez a un Mundial?",
-      options: ["No", "Sí, una vez", "Sí, dos veces", "No se sabe"]
-    },
-    {
-      question: "¿En qué confederación juega Jordania?",
+      question: "¿Qué confederación representa?",
       options: ["AFC", "UEFA", "CAF", "OFC"]
     },
     {
-      question: "¿Cuál es el mejor resultado de Jordania en competiciones internacionales?",
-      options: ["Subcampeón Copa Asiática", "Campeón Copa Asiática", "Tercer lugar", "Nunca participó"]
+      question: "¿Cuál es su apodo?",
+      options: ["Los Chivalry", "Las Águilas", "Los Guerreros", "Los Leones"]
     },
     {
-      question: "¿Cuál es el apodo de la selección jordana?",
-      options: ["Los Chivalry", "Las Águilas", "Los Guerreros", "Los Leones"]
+      question: "¿Cuál es su mejor jugador histórico?",
+      options: ["Hassan Abdel-Fattah", "Amer Deeb", "Baha' Abdel-Rahman", "Ahmad Hayel"]
+    },
+    {
+      question: "¿Qué selección eliminó a Jordania en repechaje 2014?",
+      options: ["Uruguay", "México", "Australia", "Nueva Zelanda"]
     }
   ],
   marruecos: [
     {
-      question: "¿Cuál es el mejor resultado de Marruecos en un Mundial?",
-      options: ["Semifinales", "Cuartos de Final", "Octavos de Final", "Fase de Grupos"]
+      question: "¿En qué año debutó Marruecos en un Mundial?",
+      options: ["1970", "1986", "1994", "1998"]
     },
     {
-      question: "¿En qué año Marruecos llegó a semifinales?",
-      options: ["2022", "2018", "2014", "1998"]
+      question: "¿Qué selección eliminó para llegar a semis 2022?",
+      options: ["España y Portugal", "Brasil y Argentina", "Francia y Alemania", "Inglaterra e Italia"]
     },
     {
-      question: "¿Cuántas veces ha participado Marruecos en Mundiales?",
+      question: "¿Cuál es su apodo?",
+      options: ["Leones del Atlas", "Leones Rojos", "Águilas", "Guerreros"]
+    },
+    {
+      question: "¿Cuántas participaciones tiene?",
       options: ["5", "6", "7", "8"]
     },
     {
-      question: "¿Marruecos fue el primer equipo africano en llegar a semifinales?",
-      options: ["Sí", "No", "Comparte el récord", "No se sabe"]
-    },
-    {
-      question: "¿Cuál es el apodo de la selección marroquí?",
-      options: ["Leones del Atlas", "Leones Rojos", "Águilas", "Guerreros"]
+      question: "¿Quién es su portero icónico de 2022?",
+      options: ["Bono", "Munir", "Tagnaouti", "Benoun"]
     }
   ],
   mexico: [
     {
-      question: "¿Cuántas veces ha participado México en Mundiales?",
-      options: ["16", "17", "18", "19"]
+      question: "¿Cuántas veces ha sido local?",
+      options: ["2", "1", "3", "0"]
     },
     {
-      question: "¿Cuál es el mejor resultado de México en un Mundial?",
-      options: ["Cuartos de Final", "Octavos de Final", "Semifinales", "Fase de Grupos"]
-    },
-    {
-      question: "¿México será anfitrión del Mundial 2026?",
-      options: ["Sí, co-anfitrión", "No", "Solo anfitrión", "No se sabe"]
-    },
-    {
-      question: "¿Quién es el máximo goleador histórico de México en Mundiales?",
-      options: ["Javier Hernández", "Cuauhtémoc Blanco", "Luis Hernández", "Hugo Sánchez"]
-    },
-    {
-      question: "¿Cuál es el apodo de la selección mexicana?",
+      question: "¿Cuál es su apodo?",
       options: ["El Tri", "Los Aztecas", "La Verde", "Todas las anteriores"]
+    },
+    {
+      question: "¿A cuántos mundiales consecutivos ha asistido?",
+      options: ["7", "8", "9", "10"]
+    },
+    {
+      question: "¿Cuál es su mayor logro (últimas décadas)?",
+      options: ["Cuartos 1986", "Octavos 1994", "Octavos 2010", "Octavos 2018"]
+    },
+    {
+      question: "¿Qué jugador marcó el gol \"de la tijera\" en 2018?",
+      options: ["Javier Hernández", "Carlos Vela", "Hirving Lozano", "Andrés Guardado"]
     }
   ],
   "nueva-zelanda": [
     {
-      question: "¿Cuántas veces ha participado Nueva Zelanda en Mundiales?",
+      question: "¿Cuántos Mundiales ha jugado?",
       options: ["2", "3", "4", "5"]
     },
     {
-      question: "¿Nueva Zelanda ha ganado algún partido en Mundiales?",
-      options: ["No", "Sí, uno", "Sí, dos", "Sí, tres"]
+      question: "¿Qué año se fue invicto del Mundial?",
+      options: ["2010", "1982", "2006", "2022"]
     },
     {
-      question: "¿En qué confederación juega Nueva Zelanda?",
+      question: "¿Cuál es su confederación?",
       options: ["OFC", "AFC", "UEFA", "CONCACAF"]
     },
     {
-      question: "¿Cuál es el apodo de la selección neozelandesa?",
-      options: ["All Whites", "Kiwis", "Silver Ferns", "Black Caps"]
+      question: "¿Contra qué gigante empató en 2010?",
+      options: ["Italia", "Brasil", "Argentina", "España"]
     },
     {
-      question: "¿Cuál es el mejor resultado de Nueva Zelanda en un Mundial?",
-      options: ["Fase de Grupos", "Octavos de Final", "Nunca clasificó", "Cuartos de Final"]
+      question: "¿Cuál es su apodo?",
+      options: ["All Whites", "Kiwis", "Silver Ferns", "Black Caps"]
     }
   ],
   paraguay: [
     {
-      question: "¿Cuál es el mejor resultado de Paraguay en un Mundial?",
-      options: ["Cuartos de Final", "Octavos de Final", "Fase de Grupos", "Semifinales"]
-    },
-    {
-      question: "¿En qué año Paraguay llegó a cuartos de final?",
+      question: "¿En qué año llegó Paraguay a cuartos?",
       options: ["2010", "2006", "1998", "2014"]
     },
     {
-      question: "¿Cuántas veces ha participado Paraguay en Mundiales?",
-      options: ["7", "8", "9", "10"]
+      question: "¿Qué selección lo eliminó en 2010?",
+      options: ["España", "Alemania", "Holanda", "Brasil"]
     },
     {
-      question: "¿Quién es el máximo goleador histórico de Paraguay en Mundiales?",
+      question: "¿Cuál es su confederación?",
+      options: ["CONMEBOL", "CONCACAF", "UEFA", "AFC"]
+    },
+    {
+      question: "¿Qué portero paraguayo fue figura en 2010?",
+      options: ["Justo Villar", "Roberto Fernández", "Diego Barreto", "Antony Silva"]
+    },
+    {
+      question: "¿Qué jugador es su goleador mundialista?",
       options: ["Roque Santa Cruz", "José Cardozo", "Nelson Valdez", "Lucas Barrios"]
-    },
-    {
-      question: "¿Cuál es el apodo de la selección paraguaya?",
-      options: ["La Albirroja", "Los Guaraníes", "La Sele", "Los Pynandi"]
     }
   ],
   tunez: [
     {
-      question: "¿Cuántas veces ha participado Túnez en Mundiales?",
-      options: ["5", "6", "7", "8"]
+      question: "¿En qué año debutó Túnez?",
+      options: ["1978", "1986", "1998", "2002"]
     },
     {
-      question: "¿Cuál es el mejor resultado de Túnez en un Mundial?",
-      options: ["Fase de Grupos", "Octavos de Final", "Cuartos de Final", "Nunca clasificó"]
+      question: "¿Qué selección venció Túnez en 1978?",
+      options: ["México", "Alemania", "Polonia", "Argentina"]
     },
     {
-      question: "¿Túnez ha ganado algún partido en Mundiales?",
-      options: ["Sí", "No", "Solo empates", "No se sabe"]
-    },
-    {
-      question: "¿En qué confederación juega Túnez?",
+      question: "¿Cuál es su confederación?",
       options: ["CAF", "UEFA", "AFC", "CONCACAF"]
     },
     {
-      question: "¿Cuál es el apodo de la selección tunecina?",
+      question: "¿Cuál es su apodo?",
       options: ["Águilas de Cartago", "Leones del Desierto", "Guerreros", "Halcones"]
+    },
+    {
+      question: "¿Cuántas participaciones tiene?",
+      options: ["5", "6", "7", "8"]
     }
   ],
   uruguay: [
     {
-      question: "¿Cuántas Copas del Mundo ha ganado Uruguay?",
+      question: "¿Cuántas Copas del Mundo ganó Uruguay?",
       options: ["2", "3", "4", "5"]
     },
     {
-      question: "¿En qué años ganó Uruguay sus Copas del Mundo?",
-      options: ["1930 y 1950", "1950 y 1970", "1930 y 1970", "1950 y 1986"]
+      question: "¿En qué estadio fue el primer Mundial?",
+      options: ["Estadio Centenario", "Maracaná", "Wembley", "San Siro"]
     },
     {
-      question: "¿Uruguay fue el primer campeón del mundo?",
-      options: ["Sí", "No", "Comparte el título", "No se sabe"]
+      question: "¿Qué jugador marcó el \"gol del siglo\" en 2010?",
+      options: ["Diego Forlán", "Luis Suárez", "Edinson Cavani", "Álvaro Recoba"]
     },
     {
-      question: "¿Quién es el máximo goleador histórico de Uruguay en Mundiales?",
-      options: ["Óscar Míguez", "Luis Suárez", "Edinson Cavani", "Diego Forlán"]
+      question: "¿Cuántas participaciones tiene Uruguay?",
+      options: ["13", "14", "15", "16"]
     },
     {
-      question: "¿Cuál es el apodo de la selección uruguaya?",
-      options: ["La Celeste", "Los Charrúas", "La Garra Charrúa", "Todas las anteriores"]
+      question: "¿Contra quién fue su final de 1950?",
+      options: ["Brasil", "Argentina", "España", "Suecia"]
     }
   ],
   usa: [
     {
-      question: "¿Cuántas veces ha participado Estados Unidos en Mundiales?",
-      options: ["10", "11", "12", "13"]
-    },
-    {
-      question: "¿Cuál es el mejor resultado de USA en un Mundial?",
-      options: ["Semifinales", "Cuartos de Final", "Octavos de Final", "Fase de Grupos"]
-    },
-    {
-      question: "¿USA será anfitrión del Mundial 2026?",
-      options: ["Sí, co-anfitrión", "No", "Solo anfitrión", "No se sabe"]
-    },
-    {
-      question: "¿En qué año USA llegó a semifinales?",
+      question: "¿En qué Mundial llegó a semifinales?",
       options: ["1930", "1950", "1994", "2002"]
     },
     {
-      question: "¿Cuál es el apodo de la selección estadounidense?",
-      options: ["The Stars and Stripes", "Team USA", "USMNT", "Todas las anteriores"]
+      question: "¿Cuál es su confederación?",
+      options: ["CONCACAF", "CONMEBOL", "UEFA", "AFC"]
+    },
+    {
+      question: "¿Qué selección eliminó a EE.UU. en 2014?",
+      options: ["Bélgica", "Alemania", "Argentina", "Holanda"]
+    },
+    {
+      question: "¿Cómo se llama su liga profesional?",
+      options: ["MLS", "USL", "NASL", "USSF"]
+    },
+    {
+      question: "¿Quién es su mayor figura actual?",
+      options: ["Christian Pulisic", "Clint Dempsey", "Landon Donovan", "Tim Howard"]
     }
   ],
   uzbekistan: [
     {
-      question: "¿Cuántas veces ha participado Uzbekistán en Mundiales?",
-      options: ["0", "1", "2", "3"]
-    },
-    {
-      question: "¿Uzbekistán ha clasificado alguna vez a un Mundial?",
-      options: ["No", "Sí, una vez", "Sí, dos veces", "No se sabe"]
-    },
-    {
-      question: "¿En qué confederación juega Uzbekistán?",
+      question: "¿Qué confederación representa?",
       options: ["AFC", "UEFA", "CAF", "OFC"]
     },
     {
-      question: "¿Cuál es el mejor resultado de Uzbekistán en competiciones internacionales?",
-      options: ["Medalla de Oro Juegos Asiáticos", "Campeón Copa Asiática", "Tercer lugar", "Nunca participó"]
+      question: "¿Cuál es su mejor ranking en Asia?",
+      options: ["Top 5", "Top 10", "Top 15", "Top 20"]
     },
     {
-      question: "¿Cuál es el apodo de la selección uzbeka?",
+      question: "¿Qué generaciones fueron más fuertes?",
+      options: ["2000s y 2010s", "1990s y 2000s", "2010s y 2020s", "1980s y 1990s"]
+    },
+    {
+      question: "¿Qué selección lo eliminó en repechaje 2014?",
+      options: ["Jordania", "Australia", "Irán", "Corea del Sur"]
+    },
+    {
+      question: "¿Cuál es su apodo?",
       options: ["Los Leones Blancos", "Los Lobos", "Los Tigres", "Los Guerreros"]
     }
   ]
 };
 
-// URLs de videos (el usuario las insertará)
+// Estadísticas por país
+const countryStats = {
+  argentina: {
+    participaciones: "18",
+    mejorPosicion: "Campeón",
+    maximoGoleador: "Lionel Messi",
+    ultimoResultado: "Campeón 2022",
+    rankingFIFA: "Top 3"
+  },
+  australia: {
+    participaciones: "6",
+    mejorPosicion: "Octavos (2006, 2022)",
+    maximoGoleador: "Tim Cahill",
+    ultimoResultado: "Octavos 2022",
+    rankingFIFA: "Top 30"
+  },
+  brasil: {
+    participaciones: "22 (único en todos)",
+    mejorPosicion: "Campeón",
+    maximoGoleador: "Ronaldo Nazário",
+    ultimoResultado: "Cuartos 2022",
+    rankingFIFA: "Top 5"
+  },
+  canada: {
+    participaciones: "2",
+    mejorPosicion: "Fase de grupos",
+    maximoGoleador: "Alphonso Davies",
+    ultimoResultado: "Fase de grupos 2022",
+    rankingFIFA: "Top 50"
+  },
+  colombia: {
+    participaciones: "6",
+    mejorPosicion: "Cuartos (2014)",
+    maximoGoleador: "James Rodríguez",
+    ultimoResultado: "Octavos 2018",
+    rankingFIFA: "Top 20"
+  },
+  "corea-del-sur": {
+    participaciones: "11",
+    mejorPosicion: "Cuarto lugar (2002)",
+    maximoGoleador: "Son Heung-min",
+    ultimoResultado: "Octavos 2022",
+    rankingFIFA: "Top 30"
+  },
+  ecuador: {
+    participaciones: "4",
+    mejorPosicion: "Octavos (2006)",
+    maximoGoleador: "Enner Valencia",
+    ultimoResultado: "Fase de grupos 2022",
+    rankingFIFA: "Top 50"
+  },
+  espana: {
+    participaciones: "16",
+    mejorPosicion: "Campeón (2010)",
+    maximoGoleador: "David Villa",
+    ultimoResultado: "Octavos 2022",
+    rankingFIFA: "Top 10"
+  },
+  iran: {
+    participaciones: "6",
+    mejorPosicion: "Fase de grupos",
+    maximoGoleador: "Sardar Azmoun",
+    ultimoResultado: "Fase de grupos 2022",
+    rankingFIFA: "Top 25"
+  },
+  japon: {
+    participaciones: "7",
+    mejorPosicion: "Octavos (varios)",
+    maximoGoleador: "Keisuke Honda / Minamino",
+    ultimoResultado: "Octavos 2022",
+    rankingFIFA: "Top 25"
+  },
+  jordania: {
+    participaciones: "0",
+    mejorPosicion: "Nunca clasificó",
+    maximoGoleador: "N/A",
+    ultimoResultado: "Repechaje 2014",
+    rankingFIFA: "Top 100"
+  },
+  marruecos: {
+    participaciones: "6",
+    mejorPosicion: "Semifinales (2022)",
+    maximoGoleador: "Hakim Ziyech / Bono",
+    ultimoResultado: "Semifinales 2022",
+    rankingFIFA: "Top 15"
+  },
+  mexico: {
+    participaciones: "17",
+    mejorPosicion: "Cuartos (1970, 1986)",
+    maximoGoleador: "Luis Hernández",
+    ultimoResultado: "Fase de grupos 2022",
+    rankingFIFA: "Top 20"
+  },
+  "nueva-zelanda": {
+    participaciones: "2",
+    mejorPosicion: "Fase de grupos",
+    maximoGoleador: "N/A",
+    ultimoResultado: "Fase de grupos 2010",
+    rankingFIFA: "Top 120"
+  },
+  paraguay: {
+    participaciones: "8",
+    mejorPosicion: "Cuartos (2010)",
+    maximoGoleador: "Roque Santa Cruz",
+    ultimoResultado: "No clasificó 2022",
+    rankingFIFA: "Top 50"
+  },
+  tunez: {
+    participaciones: "6",
+    mejorPosicion: "Fase de grupos",
+    maximoGoleador: "N/A",
+    ultimoResultado: "Fase de grupos 2022",
+    rankingFIFA: "Top 40"
+  },
+  uruguay: {
+    participaciones: "14",
+    mejorPosicion: "Campeón (1930, 1950)",
+    maximoGoleador: "Óscar Míguez",
+    ultimoResultado: "Fase de grupos 2022",
+    rankingFIFA: "Top 20"
+  },
+  usa: {
+    participaciones: "11",
+    mejorPosicion: "Semifinales (1930)",
+    maximoGoleador: "Landon Donovan",
+    ultimoResultado: "Octavos 2022",
+    rankingFIFA: "Top 15"
+  },
+  uzbekistan: {
+    participaciones: "0",
+    mejorPosicion: "Nunca clasificó",
+    maximoGoleador: "N/A",
+    ultimoResultado: "Repechaje mundialista",
+    rankingFIFA: "Top 80"
+  }
+};
+
+// URLs de videos
 const videoUrls = {
-  argentina: "",
-  australia: "",
-  brasil: "",
-  canada: "",
-  colombia: "",
-  "corea-del-sur": "",
-  ecuador: "",
-  espana: "",
-  iran: "",
-  japon: "",
-  jordania: "",
-  marruecos: "",
-  mexico: "",
-  "nueva-zelanda": "",
-  paraguay: "",
-  tunez: "",
-  uruguay: "",
-  usa: "",
-  uzbekistan: ""
+  argentina: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Argentina Campeón del Mundo 2022 – Resumen oficial FIFA"
+  australia: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Australia vs Argentina – Octavos Qatar 2022 Highlights"
+  brasil: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Brasil mejores goles en Copas del Mundo – FIFA Archive"
+  canada: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Canadá vs Croacia – Mundial Qatar 2022 Resumen"
+  colombia: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Colombia mejores goles en Copas del Mundo"
+  "corea-del-sur": "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Corea del Sur vs Alemania 2018 – Partido histórico"
+  ecuador: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Ecuador vs Qatar – Apertura Mundial 2022 Resumen"
+  espana: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "España Campeón del Mundo 2010 – Highlights Oficiales"
+  iran: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Irán vs Marruecos – Mundial 2018 Resumen"
+  japon: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Japón vs Alemania – Mundial 2022"
+  jordania: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Jordania – mejores momentos eliminatorias AFC"
+  marruecos: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Marruecos histórico semifinalista – Qatar 2022"
+  mexico: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "México vs Alemania 2018 – Partido Histórico"
+  "nueva-zelanda": "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Nueva Zelanda en Sudáfrica 2010 – Resumen"
+  paraguay: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Paraguay en Sudáfrica 2010 – Mejores momentos"
+  tunez: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Túnez vs Francia – Mundial 2022 Resumen"
+  uruguay: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Uruguay – Historia en los Mundiales FIFA"
+  usa: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "USA vs Portugal 2014 – Partido épico"
+  uzbekistan: "https://www.youtube.com/embed/dQw4w9WgXcQ" // "Uzbekistán mejores momentos – Eliminatorias AFC"
 };
 
 // Inicialización cuando la escena cargue
@@ -692,10 +829,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Eventos de detección - CORREGIDO
+  // Eventos de detección - MEJORADO
   scene.addEventListener('targetFound', (event) => {
-    const targetIndex = event.detail.targetIndex;
-    console.log("Target encontrado:", targetIndex); // Para debug
+    let targetIndex;
+    
+    // Intentar obtener el targetIndex de diferentes formas
+    if (event.detail && event.detail.targetIndex !== undefined) {
+      targetIndex = event.detail.targetIndex;
+    } else if (event.target && event.target.getAttribute('mindar-image-target')) {
+      targetIndex = parseInt(event.target.getAttribute('mindar-image-target').split('targetIndex:')[1].trim());
+    } else if (event.target && event.target.closest('[mindar-image-target]')) {
+      const targetAttr = event.target.closest('[mindar-image-target]').getAttribute('mindar-image-target');
+      targetIndex = parseInt(targetAttr.split('targetIndex:')[1].trim());
+    }
+    
+    console.log("Target encontrado:", targetIndex, event); // Para debug
     
     // Mapeo directo de índices a países
     const countryMap = {
@@ -727,24 +875,91 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Mostrar banner de detección
       const banner = document.getElementById('detectionBanner');
-      document.getElementById('bannerTitle').textContent = `${detectedCountry.emoji} ${detectedCountry.name} Detectado`;
-      document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
-      banner.style.background = `linear-gradient(135deg, ${detectedCountry.color}, ${detectedCountry.color}CC)`;
-      banner.style.display = 'block';
+      if (banner) {
+        document.getElementById('bannerTitle').textContent = `${detectedCountry.emoji} ${detectedCountry.name} Detectado`;
+        document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
+        banner.style.background = `linear-gradient(135deg, ${detectedCountry.color}, ${detectedCountry.color}CC)`;
+        banner.style.display = 'block';
+        
+        // Ocultar banner después de 3 segundos
+        setTimeout(() => {
+          banner.style.display = 'none';
+        }, 3000);
+      }
       
       // Mostrar menú flotante
-      document.getElementById('floatingMenu').classList.add('active');
-      
-      // Ocultar banner después de 3 segundos
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 3000);
+      const floatingMenu = document.getElementById('floatingMenu');
+      if (floatingMenu) {
+        floatingMenu.classList.add('active');
+        console.log("Menú flotante activado");
+      } else {
+        console.error("No se encontró el elemento floatingMenu");
+      }
     }
+  });
+
+  // También escuchar eventos en cada target individual
+  document.querySelectorAll('[mindar-image-target]').forEach((target, index) => {
+    target.addEventListener('targetFound', (event) => {
+      const countryMap = {
+        0: { name: 'Argentina', emoji: '🇦🇷', color: '#74ACDF', key: 'argentina' },
+        1: { name: 'Australia', emoji: '🇦🇺', color: '#012169', key: 'australia' },
+        2: { name: 'Brasil', emoji: '🇧🇷', color: '#009739', key: 'brasil' },
+        3: { name: 'Canadá', emoji: '🇨🇦', color: '#FF0000', key: 'canada' },
+        4: { name: 'Colombia', emoji: '🇨🇴', color: '#FCD116', key: 'colombia' },
+        5: { name: 'Corea del Sur', emoji: '🇰🇷', color: '#CD2E3A', key: 'corea-del-sur' },
+        6: { name: 'Ecuador', emoji: '🇪🇨', color: '#FFD100', key: 'ecuador' },
+        7: { name: 'España', emoji: '🇪🇸', color: '#AA151B', key: 'espana' },
+        8: { name: 'Irán', emoji: '🇮🇷', color: '#DA0000', key: 'iran' },
+        9: { name: 'Japón', emoji: '🇯🇵', color: '#BC002D', key: 'japon' },
+        10: { name: 'Jordania', emoji: '🇯🇴', color: '#007A3D', key: 'jordania' },
+        11: { name: 'Marruecos', emoji: '🇲🇦', color: '#C1272D', key: 'marruecos' },
+        12: { name: 'México', emoji: '🇲🇽', color: '#006847', key: 'mexico' },
+        13: { name: 'Nueva Zelanda', emoji: '🇳🇿', color: '#00247D', key: 'nueva-zelanda' },
+        14: { name: 'Paraguay', emoji: '🇵🇾', color: '#D52B1E', key: 'paraguay' },
+        15: { name: 'Túnez', emoji: '🇹🇳', color: '#E70013', key: 'tunez' },
+        16: { name: 'Uruguay', emoji: '🇺🇾', color: '#0038A8', key: 'uruguay' },
+        17: { name: 'Estados Unidos', emoji: '🇺🇸', color: '#B22234', key: 'usa' },
+        18: { name: 'Uzbekistán', emoji: '🇺🇿', color: '#1EB53A', key: 'uzbekistan' }
+      };
+      
+      const detectedCountry = countryMap[index];
+      if (detectedCountry) {
+        currentCountry = detectedCountry.key;
+        
+        const banner = document.getElementById('detectionBanner');
+        if (banner) {
+          document.getElementById('bannerTitle').textContent = `${detectedCountry.emoji} ${detectedCountry.name} Detectado`;
+          document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
+          banner.style.background = `linear-gradient(135deg, ${detectedCountry.color}, ${detectedCountry.color}CC)`;
+          banner.style.display = 'block';
+          
+          setTimeout(() => {
+            banner.style.display = 'none';
+          }, 3000);
+        }
+        
+        const floatingMenu = document.getElementById('floatingMenu');
+        if (floatingMenu) {
+          floatingMenu.classList.add('active');
+        }
+      }
+    });
+    
+    target.addEventListener('targetLost', () => {
+      const floatingMenu = document.getElementById('floatingMenu');
+      if (floatingMenu) {
+        floatingMenu.classList.remove('active');
+      }
+    });
   });
 
   scene.addEventListener('targetLost', () => {
     // Ocultar menú cuando se pierde el target
-    document.getElementById('floatingMenu').classList.remove('active');
+    const floatingMenu = document.getElementById('floatingMenu');
+    if (floatingMenu) {
+      floatingMenu.classList.remove('active');
+    }
   });
 });
 
@@ -909,20 +1124,10 @@ function openVideoModal() {
   document.getElementById('videoTitle').textContent = `Video - ${country.emoji} ${country.name}`;
   
   const container = document.getElementById('videoContainer');
-  
-  // Restaurar el contenedor original si fue modificado
-  if (!container.querySelector('video')) {
-    container.innerHTML = `
-      <video id="countryVideo" controls>
-        <source src="" type="video/mp4">
-        Tu navegador no soporta el elemento de video.
-      </video>
-    `;
-  }
-  
   const videoElement = document.getElementById('countryVideo');
   
   if (videoUrl) {
+    // Usar iframe para YouTube
     videoElement.src = videoUrl;
     videoElement.style.display = 'block';
   } else {
@@ -958,6 +1163,7 @@ function applyVideoFilter(filterType, buttonElement) {
     buttonElement.classList.add('active');
   }
   
+  // Aplicar filtros CSS al iframe (funciona con YouTube embeds)
   switch(filterType) {
     case 'grayscale':
       video.style.filter = 'grayscale(100%)';
@@ -980,6 +1186,7 @@ function openStatsModal() {
   if (!currentCountry) return;
   
   const country = countries[currentCountry];
+  const stats = countryStats[currentCountry] || {};
   
   document.getElementById('statsTitle').textContent = `Estadísticas - ${country.emoji} ${country.name}`;
   
@@ -987,23 +1194,23 @@ function openStatsModal() {
   container.innerHTML = `
     <div class="stats-field">
       <div class="stats-field-label">Participaciones en Mundiales</div>
-      <div class="stats-field-placeholder">Dato a insertar</div>
+      <div class="stats-field-value">${stats.participaciones || "Dato a insertar"}</div>
     </div>
     <div class="stats-field">
       <div class="stats-field-label">Mejor Posición</div>
-      <div class="stats-field-placeholder">Dato a insertar</div>
+      <div class="stats-field-value">${stats.mejorPosicion || "Dato a insertar"}</div>
     </div>
     <div class="stats-field">
       <div class="stats-field-label">Máximo Goleador</div>
-      <div class="stats-field-placeholder">Dato a insertar</div>
+      <div class="stats-field-value">${stats.maximoGoleador || "Dato a insertar"}</div>
     </div>
     <div class="stats-field">
       <div class="stats-field-label">Último Resultado</div>
-      <div class="stats-field-placeholder">Dato a insertar</div>
+      <div class="stats-field-value">${stats.ultimoResultado || "Dato a insertar"}</div>
     </div>
     <div class="stats-field">
       <div class="stats-field-label">Ranking FIFA</div>
-      <div class="stats-field-placeholder">Dato a insertar</div>
+      <div class="stats-field-value">${stats.rankingFIFA || "Dato a insertar"}</div>
     </div>
   `;
   

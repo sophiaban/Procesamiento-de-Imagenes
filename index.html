@@ -63,10 +63,7 @@
       <button class="close-btn" onclick="closeModal('videoModal')">×</button>
       <h2 id="videoTitle">Video</h2>
       <div class="video-container" id="videoContainer">
-        <video id="countryVideo" controls>
-          <source src="" type="video/mp4">
-          Tu navegador no soporta el elemento de video.
-        </video>
+        <iframe id="countryVideo" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
       </div>
       <div class="video-filters">
         <button class="filter-btn" onclick="applyVideoFilter('none', this)">Normal</button>
