@@ -697,55 +697,45 @@ const triviaData = {
   usa: [
     {
       question: "¿En qué Mundial llegó a semifinales?",
-      options: ["1930", "1950", "1994", "2002"],
-      correctAnswer: 0
+      options: ["1930", "1950", "1994", "2002"]
     },
     {
       question: "¿Cuál es su confederación?",
-      options: ["CONCACAF", "CONMEBOL", "UEFA", "AFC"],
-      correctAnswer: 0
+      options: ["CONCACAF", "CONMEBOL", "UEFA", "AFC"]
     },
     {
       question: "¿Qué selección eliminó a EE.UU. en 2014?",
-      options: ["Bélgica", "Alemania", "Argentina", "Holanda"],
-      correctAnswer: 0
+      options: ["Bélgica", "Alemania", "Argentina", "Holanda"]
     },
     {
       question: "¿Cómo se llama su liga profesional?",
-      options: ["MLS", "USL", "NASL", "USSF"],
-      correctAnswer: 0
+      options: ["MLS", "USL", "NASL", "USSF"]
     },
     {
       question: "¿Quién es su mayor figura actual?",
-      options: ["Christian Pulisic", "Clint Dempsey", "Landon Donovan", "Tim Howard"],
-      correctAnswer: 0
+      options: ["Christian Pulisic", "Clint Dempsey", "Landon Donovan", "Tim Howard"]
     }
   ],
   uzbekistan: [
     {
       question: "¿Qué confederación representa?",
-      options: ["AFC", "UEFA", "CAF", "OFC"],
-      correctAnswer: 0
+      options: ["AFC", "UEFA", "CAF", "OFC"]
     },
     {
       question: "¿Cuál es su mejor ranking en Asia?",
-      options: ["Top 5", "Top 10", "Top 15", "Top 20"],
-      correctAnswer: 0
+      options: ["Top 5", "Top 10", "Top 15", "Top 20"]
     },
     {
       question: "¿Qué generaciones fueron más fuertes?",
-      options: ["2000s y 2010s", "1990s y 2000s", "2010s y 2020s", "1980s y 1990s"],
-      correctAnswer: 0
+      options: ["2000s y 2010s", "1990s y 2000s", "2010s y 2020s", "1980s y 1990s"]
     },
     {
       question: "¿Qué selección lo eliminó en repechaje 2014?",
-      options: ["Jordania", "Australia", "Irán", "Corea del Sur"],
-      correctAnswer: 0
+      options: ["Jordania", "Australia", "Irán", "Corea del Sur"]
     },
     {
       question: "¿Cuál es su apodo?",
-      options: ["Los Leones Blancos", "Los Lobos", "Los Tigres", "Los Guerreros"],
-      correctAnswer: 0
+      options: ["Los Leones Blancos", "Los Lobos", "Los Tigres", "Los Guerreros"]
     }
   ]
 };
@@ -1409,32 +1399,69 @@ function openStatsModal() {
 
 // Función para pausar/reanudar animaciones
 function animateModel() {
-  if (!currentCountry) return;
-  
-  animationsPaused = !animationsPaused;
+  if (!currentCountry) {
+    // Mostrar mensaje si no hay país detectado
+    const banner = document.getElementById('detectionBanner');
+    if (banner) {
+      document.getElementById('bannerTitle').textContent = '⚠️ No hay país detectado';
+      document.getElementById('bannerSubtitle').textContent = 'Escanea una bandera primero';
+      banner.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a6f)';
+      banner.style.display = 'block';
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 2000);
+    }
+    return;
+  }
   
   // Obtener el modelo del país actual
   const modelId = `${currentCountry}-3d`;
   const model = document.getElementById(modelId);
   
-  if (model) {
-    const animations = model.getAttribute('animation');
-    const animationBounce = model.getAttribute('animation__bounce');
+  if (!model) {
+    console.warn(`Modelo no encontrado: ${modelId}`);
+    return;
+  }
+  
+  // Cambiar el estado de pausa
+  animationsPaused = !animationsPaused;
+  
+  // Obtener los componentes de animación
+  const animationComponent = model.components.animation;
+  const animationBounceComponent = model.components['animation__bounce'];
+  
+  if (animationsPaused) {
+    // Pausar animaciones usando la API de A-Frame
+    // A-Frame usa TWEEN.js internamente, accedemos directamente a los tweens
+    if (animationComponent) {
+      const currentAnim = model.getAttribute('animation');
+      if (currentAnim && animationComponent.tween) {
+        animationComponent.tween.pause();
+      } else if (currentAnim) {
+        // Si no hay tween directo, usar setAttribute
+        const animObj = typeof currentAnim === 'string' ? {} : currentAnim;
+        model.setAttribute('animation', Object.assign({}, animObj, { paused: true }));
+      }
+    }
+    if (animationBounceComponent) {
+      const currentBounce = model.getAttribute('animation__bounce');
+      if (currentBounce && animationBounceComponent.tween) {
+        animationBounceComponent.tween.pause();
+      } else if (currentBounce) {
+        const bounceObj = typeof currentBounce === 'string' ? {} : currentBounce;
+        model.setAttribute('animation__bounce', Object.assign({}, bounceObj, { paused: true }));
+      }
+    }
     
-    if (animationsPaused) {
-      // Pausar animaciones
-      if (animations) {
-        model.setAttribute('animation', animations + '; paused: true');
-      }
-      if (animationBounce) {
-        model.setAttribute('animation__bounce', animationBounce + '; paused: true');
-      }
-      
-      // Actualizar icono
-      document.getElementById('animationIcon').textContent = '▶️';
-      
-      // Mostrar mensaje
-      const banner = document.getElementById('detectionBanner');
+    // Actualizar icono
+    const icon = document.getElementById('animationIcon');
+    if (icon) {
+      icon.textContent = '▶️';
+    }
+    
+    // Mostrar mensaje
+    const banner = document.getElementById('detectionBanner');
+    if (banner) {
       document.getElementById('bannerTitle').textContent = '⏸️ Animación Pausada';
       document.getElementById('bannerSubtitle').textContent = 'La animación del modelo está en pausa';
       banner.style.background = 'linear-gradient(135deg, #fdbb2d, #b21f1f)';
@@ -1443,20 +1470,39 @@ function animateModel() {
       setTimeout(() => {
         banner.style.display = 'none';
       }, 2000);
-    } else {
-      // Reanudar animaciones
-      if (animations) {
-        model.setAttribute('animation', animations.replace('; paused: true', ''));
+    }
+  } else {
+    // Reanudar animaciones usando la API de A-Frame
+    if (animationComponent) {
+      const currentAnim = model.getAttribute('animation');
+      if (currentAnim && animationComponent.tween) {
+        animationComponent.tween.resume();
+      } else if (currentAnim) {
+        const animObj = typeof currentAnim === 'string' ? {} : currentAnim;
+        const { paused, ...rest } = animObj;
+        model.setAttribute('animation', rest);
       }
-      if (animationBounce) {
-        model.setAttribute('animation__bounce', animationBounce.replace('; paused: true', ''));
+    }
+    if (animationBounceComponent) {
+      const currentBounce = model.getAttribute('animation__bounce');
+      if (currentBounce && animationBounceComponent.tween) {
+        animationBounceComponent.tween.resume();
+      } else if (currentBounce) {
+        const bounceObj = typeof currentBounce === 'string' ? {} : currentBounce;
+        const { paused, ...rest } = bounceObj;
+        model.setAttribute('animation__bounce', rest);
       }
-      
-      // Actualizar icono
-      document.getElementById('animationIcon').textContent = '⏸️';
-      
-      // Mostrar mensaje
-      const banner = document.getElementById('detectionBanner');
+    }
+    
+    // Actualizar icono
+    const icon = document.getElementById('animationIcon');
+    if (icon) {
+      icon.textContent = '⏸️';
+    }
+    
+    // Mostrar mensaje
+    const banner = document.getElementById('detectionBanner');
+    if (banner) {
       document.getElementById('bannerTitle').textContent = '▶️ Animación Reanudada';
       document.getElementById('bannerSubtitle').textContent = 'La animación del modelo está activa';
       banner.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
