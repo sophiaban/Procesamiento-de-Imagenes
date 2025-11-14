@@ -879,7 +879,7 @@ const countryStats = {
 
 // URLs de videos
 const videoUrls = {
-  argentina: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Argentina Campeón del Mundo 2022 – Resumen oficial FIFA"
+  argentina: "https://youtu.be/FA1sR2SZAlY", // "Argentina Campeón del Mundo 2022 – Resumen oficial FIFA"
   australia: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Australia vs Argentina – Octavos Qatar 2022 Highlights"
   brasil: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Brasil mejores goles en Copas del Mundo – FIFA Archive"
   canada: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Canadá vs Croacia – Mundial Qatar 2022 Resumen"
