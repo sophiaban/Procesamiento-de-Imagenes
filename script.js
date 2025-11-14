@@ -879,7 +879,7 @@ const countryStats = {
 
 // URLs de videos
 const videoUrls = {
-  argentina: "https://www.youtube.com/embed/FA1sR2SZAlY", // "Argentina Campeón del Mundo 2022 – Resumen oficial FIFA"
+  argentina: "https://youtu.be/FA1sR2SZAlY", // "Argentina Campeón del Mundo 2022 – Resumen oficial FIFA"
   australia: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Australia vs Argentina – Octavos Qatar 2022 Highlights"
   brasil: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Brasil mejores goles en Copas del Mundo – FIFA Archive"
   canada: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Canadá vs Croacia – Mundial Qatar 2022 Resumen"
@@ -1295,11 +1295,45 @@ function nextTriviaQuestion() {
 }
 
 // Función para abrir modal de Video
+// Función para convertir cualquier formato de URL de YouTube al formato de embed
+function convertYouTubeUrl(url) {
+  if (!url) return null;
+  
+  // Si ya está en formato embed, retornarlo tal cual
+  if (url.includes('youtube.com/embed/')) {
+    return url;
+  }
+  
+  let videoId = null;
+  
+  // Formato corto: https://youtu.be/VIDEO_ID o https://youtu.be/VIDEO_ID?t=123
+  const shortMatch = url.match(/(?:youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]+)/);
+  if (shortMatch) {
+    videoId = shortMatch[1];
+  }
+  
+  // Formato estándar: https://www.youtube.com/watch?v=VIDEO_ID
+  if (!videoId) {
+    const watchMatch = url.match(/(?:youtube\.com\/watch\?v=|youtube\.com\/v\/)([a-zA-Z0-9_-]+)/);
+    if (watchMatch) {
+      videoId = watchMatch[1];
+    }
+  }
+  
+  // Si encontramos un video ID, convertir a formato embed
+  if (videoId) {
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  
+  // Si no se pudo convertir, retornar la URL original (podría ser otro formato válido)
+  return url;
+}
+
 function openVideoModal() {
   if (!currentCountry) return;
   
   const country = countries[currentCountry];
-  const videoUrl = videoUrls[currentCountry];
+  let videoUrl = videoUrls[currentCountry];
   
   document.getElementById('videoTitle').textContent = `Video - ${country.emoji} ${country.name}`;
   
@@ -1307,6 +1341,9 @@ function openVideoModal() {
   const videoElement = document.getElementById('countryVideo');
   
   if (videoUrl) {
+    // Convertir la URL al formato de embed si es necesario
+    videoUrl = convertYouTubeUrl(videoUrl);
+    
     // Usar iframe para YouTube
     videoElement.src = videoUrl;
     videoElement.style.display = 'block';
