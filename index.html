@@ -9,221 +9,8 @@
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   
-  <style>
-    /* Tus estilos CSS permanecen igual */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-      color: white;
-      height: 100vh;
-      overflow: hidden;
-    }
-    
-    .header {
-      background: rgba(0, 0, 0, 0.9);
-      padding: 20px;
-      text-align: center;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      border-bottom: 3px solid gold;
-    }
-    
-    .header h1 {
-      font-size: 24px;
-      margin-bottom: 5px;
-    }
-    
-    .header p {
-      opacity: 0.8;
-      font-size: 14px;
-    }
-    
-    .detection-banner {
-      position: fixed;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      padding: 25px 40px;
-      border-radius: 20px;
-      z-index: 100;
-      text-align: center;
-      display: none;
-      animation: slideUp 0.5s ease-out;
-      border: 3px solid white;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-      min-width: 280px;
-      backdrop-filter: blur(10px);
-    }
-    
-    @keyframes slideUp {
-      from {
-        transform: translateX(-50%) translateY(100px);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
-      }
-    }
-    
-    .control-panel {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.9);
-      padding: 15px 30px;
-      border-radius: 50px;
-      z-index: 1000;
-      display: flex;
-      gap: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    .control-btn {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .control-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    }
-    
-    .country-info {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.95);
-      padding: 30px;
-      border-radius: 20px;
-      z-index: 2000;
-      text-align: center;
-      display: none;
-      max-width: 90%;
-      border: 3px solid gold;
-      backdrop-filter: blur(10px);
-    }
-    
-    .country-info.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translate(-50%, -40%); }
-      to { opacity: 1; transform: translate(-50%, -50%); }
-    }
-    
-    .close-btn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .close-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .info-content h2 {
-      margin-bottom: 20px;
-      font-size: 28px;
-    }
-    
-    .info-stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin: 20px 0;
-    }
-    
-    .stat-item {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-    }
-    
-    .stat-value {
-      font-size: 24px;
-      font-weight: bold;
-      color: gold;
-      display: block;
-    }
-    
-    .stat-label {
-      font-size: 12px;
-      opacity: 0.8;
-    }
-    
-    .ar-container {
-      width: 100%;
-      height: 100vh;
-    }
-    
-    /* Estilos para el UI de MindAR */
-    .mindar-ui-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 999;
-      pointer-events: none;
-    }
-    
-    .scanning-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 998;
-    }
-    
-    .scanning-text {
-      color: white;
-      font-size: 24px;
-      margin-top: 20px;
-      text-align: center;
-    }
-  </style>
+  <!-- Estilos CSS -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -237,6 +24,68 @@
   <div class="detection-banner" id="detectionBanner">
     <h2 id="bannerTitle">¡Bandera Detectada!</h2>
     <p id="bannerSubtitle">Contenido cargado correctamente</p>
+  </div>
+
+  <!-- Menú flotante -->
+  <div class="floating-menu" id="floatingMenu">
+    <button class="menu-btn" onclick="openMenu('trivia')" title="Trivia / Encuestas">
+      <span class="menu-icon">❓</span>
+      <span class="menu-label">Trivia</span>
+    </button>
+    <button class="menu-btn" onclick="openMenu('video')" title="Video">
+      <span class="menu-icon">🎥</span>
+      <span class="menu-label">Video</span>
+    </button>
+    <button class="menu-btn" onclick="openMenu('stats')" title="Estadísticas">
+      <span class="menu-icon">📊</span>
+      <span class="menu-label">Estadísticas</span>
+    </button>
+    <button class="menu-btn" onclick="animateModel()" title="Activar/Pausar Animación">
+      <span class="menu-icon" id="animationIcon">⏯️</span>
+      <span class="menu-label">Animación</span>
+    </button>
+  </div>
+
+  <!-- Modal Trivia -->
+  <div class="modal" id="triviaModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('triviaModal')">×</button>
+      <h2 id="triviaTitle">Trivia</h2>
+      <div class="trivia-container" id="triviaContainer">
+        <!-- Contenido dinámico -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Video -->
+  <div class="modal" id="videoModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('videoModal')">×</button>
+      <h2 id="videoTitle">Video</h2>
+      <div class="video-container" id="videoContainer">
+        <video id="countryVideo" controls>
+          <source src="" type="video/mp4">
+          Tu navegador no soporta el elemento de video.
+        </video>
+      </div>
+      <div class="video-filters">
+        <button class="filter-btn" onclick="applyVideoFilter('none', this)">Normal</button>
+        <button class="filter-btn" onclick="applyVideoFilter('grayscale', this)">Blanco y Negro</button>
+        <button class="filter-btn" onclick="applyVideoFilter('sepia', this)">Sepia</button>
+        <button class="filter-btn" onclick="applyVideoFilter('saturate', this)">Saturación Alta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Estadísticas -->
+  <div class="modal" id="statsModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('statsModal')">×</button>
+      <h2 id="statsTitle">Estadísticas</h2>
+      <div class="stats-container" id="statsContainer">
+        <!-- Contenido dinámico -->
+      </div>
+    </div>
   </div>
 
   <!-- Información del país -->
@@ -1083,397 +932,7 @@
     <button class="control-btn" onclick="toggleAnimations()" title="Pausar/Reanudar animaciones">⏯️</button>
   </div>
 
-  <script>
-    // Datos de los países
-    const countries = {
-      argentina: {
-        name: "Argentina",
-        emoji: "🇦🇷",
-        color: "#74ACDF",
-        stats: {
-          "Copas del Mundo": "3 (1978, 1986, 2022)",
-          "Mejor Resultado": "Campeón",
-          "Participaciones": "18",
-          "Grupo 2026": "Por definir"
-        },
-        description: "La selección argentina, actual campeona del mundo, buscará defender su título en el Mundial 2026 con Lionel Messi como figura principal."
-      },
-      australia: {
-        name: "Australia",
-        emoji: "🇦🇺",
-        color: "#012169",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Octavos de Final (2006)",
-          "Participaciones": "6",
-          "Grupo 2026": "Por definir"
-        },
-        description: "Los Socceroos buscan superar su mejor actuación histórica en el Mundial 2026 con un equipo en crecimiento."
-      },
-      brasil: {
-        name: "Brasil",
-        emoji: "🇧🇷",
-        color: "#009739",
-        stats: {
-          "Copas del Mundo": "5 (1958, 1962, 1970, 1994, 2002)",
-          "Mejor Resultado": "Campeón",
-          "Participaciones": "22",
-          "Grupo 2026": "Por definir"
-        },
-        description: "La canarinha, la selección más exitosa de la historia, busca su sexta Copa del Mundo en 2026 con una nueva generación de talentos."
-      },
-      canada: {
-        name: "Canadá",
-        emoji: "🇨🇦",
-        color: "#FF0000",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Fase de Grupos",
-          "Participaciones": "2",
-          "Grupo 2026": "Por definir"
-        },
-        description: "Como anfitrión del Mundial 2026, Canadá espera hacer historia en casa con un equipo en constante mejora."
-      },
-      colombia: {
-        name: "Colombia",
-        emoji: "🇨🇴",
-        color: "#FCD116",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Cuartos de Final (2014)",
-          "Participaciones": "6",
-          "Grupo 2026": "Por definir"
-        },
-        description: "La selección colombiana busca repetir su exitosa campaña de 2014 con un equipo lleno de talento y garra."
-      },
-      "corea-del-sur": {
-        name: "Corea del Sur",
-        emoji: "🇰🇷",
-        color: "#CD2E3A",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Semifinales (2002)",
-          "Participaciones": "11",
-          "Grupo 2026": "Por definir"
-        },
-        description: "Los Taegeuk Warriors buscan repetir la hazaña del 2002 con un equipo disciplinado y técnico."
-      },
-      ecuador: {
-        name: "Ecuador",
-        emoji: "🇪🇨",
-        color: "#FFD100",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Octavos de Final (2006)",
-          "Participaciones": "4",
-          "Grupo 2026": "Por definir"
-        },
-        description: "La tricolor ecuatoriana busca superar su mejor actuación en un Mundial con un equipo joven y prometedor."
-      },
-      espana: {
-        name: "España",
-        emoji: "🇪🇸",
-        color: "#AA151B",
-        stats: {
-          "Copas del Mundo": "1 (2010)",
-          "Mejor Resultado": "Campeón (2010)",
-          "Participaciones": "16",
-          "Grupo 2026": "Por definir"
-        },
-        description: "La furia roja busca repetir el éxito del 2010 con una nueva generación de talentosos jugadores."
-      },
-      iran: {
-        name: "Irán",
-        emoji: "🇮🇷",
-        color: "#DA0000",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Fase de Grupos",
-          "Participaciones": "6",
-          "Grupo 2026": "Por definir"
-        },
-        description: "El equipo persa busca hacer historia y pasar por primera vez a octavos de final en el Mundial 2026."
-      },
-      japon: {
-        name: "Japón",
-        emoji: "🇯🇵",
-        color: "#BC002D",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Octavos de Final (2002, 2010, 2018, 2022)",
-          "Participaciones": "7",
-          "Grupo 2026": "Por definir"
-        },
-        description: "Los Samuráis Azules buscan superar por primera vez los octavos de final con su estilo técnico y disciplinado."
-      },
-      jordania: {
-        name: "Jordania",
-        emoji: "🇯🇴",
-        color: "#007A3D",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Nunca clasificó",
-          "Participaciones": "0",
-          "Grupo 2026": "Por definir"
-        },
-        description: "Jordania busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026."
-      },
-      marruecos: {
-        name: "Marruecos",
-        emoji: "🇲🇦",
-        color: "#C1272D",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Semifinales (2022)",
-          "Participaciones": "6",
-          "Grupo 2026": "Por definir"
-        },
-        description: "Tras su histórica semifinal en 2022, los Leones del Atlas buscan repetir el éxito en 2026."
-      },
-      mexico: {
-        name: "México",
-        emoji: "🇲🇽",
-        color: "#006847",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Cuartos de Final",
-          "Participaciones": "17",
-          "Grupo 2026": "Por definir"
-        },
-        description: "La selección mexicana busca hacer historia en el Mundial 2026 como anfitrión conjuntamente con USA y Canadá."
-      },
-      "nueva-zelanda": {
-        name: "Nueva Zelanda",
-        emoji: "🇳🇿",
-        color: "#00247D",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Fase de Grupos",
-          "Participaciones": "2",
-          "Grupo 2026": "Por definir"
-        },
-        description: "Los All Whites buscan ganar su primer partido en una Copa del Mundo en la edición de 2026."
-      },
-      paraguay: {
-        name: "Paraguay",
-        emoji: "🇵🇾",
-        color: "#D52B1E",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Cuartos de Final (2010)",
-          "Participaciones": "8",
-          "Grupo 2026": "Por definir"
-        },
-        description: "La albirroja paraguaya busca repetir su exitosa campaña de 2010 con un equipo sólido defensivamente."
-      },
-      tunez: {
-        name: "Túnez",
-        emoji: "🇹🇳",
-        color: "#E70013",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Fase de Grupos",
-          "Participaciones": "6",
-          "Grupo 2026": "Por definir"
-        },
-        description: "Las Águilas de Cartago buscan por primera vez pasar a octavos de final en un Mundial."
-      },
-      uruguay: {
-        name: "Uruguay",
-        emoji: "🇺🇾",
-        color: "#0038A8",
-        stats: {
-          "Copas del Mundo": "2 (1930, 1950)",
-          "Mejor Resultado": "Campeón",
-          "Participaciones": "14",
-          "Grupo 2026": "Por definir"
-        },
-        description: "La celeste, primera campeona del mundo, busca su tercer título con su característica garra charrúa."
-      },
-      usa: {
-        name: "Estados Unidos",
-        emoji: "🇺🇸",
-        color: "#B22234",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Semifinales (1930)",
-          "Participaciones": "11",
-          "Grupo 2026": "Por definir"
-        },
-        description: "Como anfitrión del Mundial 2026, USA espera aprovechar su ventaja local para lograr un resultado histórico."
-      },
-      uzbekistan: {
-        name: "Uzbekistán",
-        emoji: "🇺🇿",
-        color: "#1EB53A",
-        stats: {
-          "Copas del Mundo": "0",
-          "Mejor Resultado": "Nunca clasificó",
-          "Participaciones": "0",
-          "Grupo 2026": "Por definir"
-        },
-        description: "Uzbekistán busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026."
-      }
-    };
-
-    let currentCountry = null;
-
-    // Inicialización cuando la escena cargue
-    document.addEventListener('DOMContentLoaded', function() {
-      const scene = document.querySelector('a-scene');
-      
-      // Configurar botones AR
-      scene.addEventListener('loaded', function() {
-        document.querySelectorAll('.info-button').forEach(btn => {
-          btn.addEventListener('click', function() {
-            const country = this.getAttribute('data-country');
-            showCountryInfo(country);
-          });
-        });
-      });
-
-      // Eventos de detección - CORREGIDO
-      scene.addEventListener('targetFound', (event) => {
-        const targetIndex = event.detail.targetIndex;
-        console.log("Target encontrado:", targetIndex); // Para debug
-        
-        // Mapeo directo de índices a países
-        const countryMap = {
-          0: { name: 'Argentina', emoji: '🇦🇷', color: '#74ACDF', key: 'argentina' },
-          1: { name: 'Australia', emoji: '🇦🇺', color: '#012169', key: 'australia' },
-          2: { name: 'Brasil', emoji: '🇧🇷', color: '#009739', key: 'brasil' },
-          3: { name: 'Canadá', emoji: '🇨🇦', color: '#FF0000', key: 'canada' },
-          4: { name: 'Colombia', emoji: '🇨🇴', color: '#FCD116', key: 'colombia' },
-          5: { name: 'Corea del Sur', emoji: '🇰🇷', color: '#CD2E3A', key: 'corea-del-sur' },
-          6: { name: 'Ecuador', emoji: '🇪🇨', color: '#FFD100', key: 'ecuador' },
-          7: { name: 'España', emoji: '🇪🇸', color: '#AA151B', key: 'espana' },
-          8: { name: 'Irán', emoji: '🇮🇷', color: '#DA0000', key: 'iran' },
-          9: { name: 'Japón', emoji: '🇯🇵', color: '#BC002D', key: 'japon' },
-          10: { name: 'Jordania', emoji: '🇯🇴', color: '#007A3D', key: 'jordania' },
-          11: { name: 'Marruecos', emoji: '🇲🇦', color: '#C1272D', key: 'marruecos' },
-          12: { name: 'México', emoji: '🇲🇽', color: '#006847', key: 'mexico' },
-          13: { name: 'Nueva Zelanda', emoji: '🇳🇿', color: '#00247D', key: 'nueva-zelanda' },
-          14: { name: 'Paraguay', emoji: '🇵🇾', color: '#D52B1E', key: 'paraguay' },
-          15: { name: 'Túnez', emoji: '🇹🇳', color: '#E70013', key: 'tunez' },
-          16: { name: 'Uruguay', emoji: '🇺🇾', color: '#0038A8', key: 'uruguay' },
-          17: { name: 'Estados Unidos', emoji: '🇺🇸', color: '#B22234', key: 'usa' },
-          18: { name: 'Uzbekistán', emoji: '🇺🇿', color: '#1EB53A', key: 'uzbekistan' }
-        };
-
-        const detectedCountry = countryMap[targetIndex];
-        
-        if (detectedCountry) {
-          currentCountry = detectedCountry.key;
-          
-          // Mostrar banner de detección
-          const banner = document.getElementById('detectionBanner');
-          document.getElementById('bannerTitle').textContent = `${detectedCountry.emoji} ${detectedCountry.name} Detectado`;
-          document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
-          banner.style.background = `linear-gradient(135deg, ${detectedCountry.color}, ${detectedCountry.color}CC)`;
-          banner.style.display = 'block';
-          
-          // Ocultar banner después de 3 segundos
-          setTimeout(() => {
-            banner.style.display = 'none';
-          }, 3000);
-        }
-      });
-
-      scene.addEventListener('targetLost', () => {
-        // Mantener el país actual hasta que se detecte uno nuevo
-      });
-    });
-
-    // Funciones de la interfaz (permanecen igual)
-    function showCountryInfo(countryKey) {
-      const country = countries[countryKey];
-      const infoDiv = document.getElementById('countryInfo');
-      
-      document.getElementById('infoTitle').textContent = `${country.emoji} ${country.name}`;
-      document.getElementById('infoTitle').style.color = country.color;
-      
-      // Llenar estadísticas
-      const statsDiv = document.getElementById('infoStats');
-      statsDiv.innerHTML = '';
-      
-      Object.entries(country.stats).forEach(([key, value]) => {
-        const statItem = document.createElement('div');
-        statItem.className = 'stat-item';
-        statItem.innerHTML = `
-          <span class="stat-value">${value}</span>
-          <span class="stat-label">${key}</span>
-        `;
-        statsDiv.appendChild(statItem);
-      });
-      
-      document.getElementById('infoDescription').textContent = country.description;
-      infoDiv.classList.add('active');
-    }
-
-    function closeCountryInfo() {
-      document.getElementById('countryInfo').classList.remove('active');
-    }
-
-    function showAllInfo() {
-      let allInfo = "🌍 INFORMACIÓN DEL MUNDIAL 2026\n\n";
-      Object.values(countries).forEach(country => {
-        allInfo += `${country.emoji} ${country.name}\n`;
-        allInfo += `Copas del Mundo: ${country.stats['Copas del Mundo']}\n`;
-        allInfo += `Participaciones: ${country.stats['Participaciones']}\n\n`;
-      });
-      allInfo += "🏆 Primer Mundial con 48 equipos\n⚽ 3 países anfitriones\n🎯 80 partidos en total";
-      
-      alert(allInfo);
-    }
-
-    function resetAR() {
-      // Reiniciar todas las animaciones
-      document.querySelectorAll('a-gltf-model').forEach(model => {
-        model.emit('animationrestart');
-      });
-      
-      // Mostrar mensaje
-      const banner = document.getElementById('detectionBanner');
-      document.getElementById('bannerTitle').textContent = '🔄 Experiencia Reiniciada';
-      document.getElementById('bannerSubtitle').textContent = 'Todas las animaciones reiniciadas';
-      banner.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
-      banner.style.display = 'block';
-      
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 2000);
-    }
-
-    function toggleAnimations() {
-      const models = document.querySelectorAll('a-gltf-model');
-      const isPaused = models[0].getAttribute('animation-mixer');
-      
-      models.forEach(model => {
-        if (isPaused) {
-          model.removeAttribute('animation-mixer');
-        } else {
-          model.setAttribute('animation-mixer', 'clip: *; loop: repeat');
-        }
-      });
-      
-      // Mostrar estado
-      const banner = document.getElementById('detectionBanner');
-      document.getElementById('bannerTitle').textContent = isPaused ? '▶️ Animaciones Reanudadas' : '⏸️ Animaciones Pausadas';
-      document.getElementById('bannerSubtitle').textContent = isPaused ? 'Todas las animaciones activadas' : 'Animaciones en pausa';
-      banner.style.background = 'linear-gradient(135deg, #fdbb2d, #b21f1f)';
-      banner.style.display = 'block';
-      
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 2000);
-    }
-
-    // Cerrar modal al hacer clic fuera
-    document.getElementById('countryInfo').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeCountryInfo();
-      }
-    });
-  </script>
+  <!-- JavaScript -->
+  <script src="script.js"></script>
 </body>
 </html>
