@@ -891,12 +891,12 @@ const videoUrls = {
   japon: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Japón vs Alemania – Mundial 2022"
   jordania: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Jordania – mejores momentos eliminatorias AFC"
   marruecos: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Marruecos histórico semifinalista – Qatar 2022"
-  mexico: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "México vs Alemania 2018 – Partido Histórico"
+  mexico: "https://youtu.be/6BSeFs40QOI", // "México vs Alemania 2018 – Partido Histórico"
   "nueva-zelanda": "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Nueva Zelanda en Sudáfrica 2010 – Resumen"
   paraguay: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Paraguay en Sudáfrica 2010 – Mejores momentos"
   tunez: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Túnez vs Francia – Mundial 2022 Resumen"
   uruguay: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Uruguay – Historia en los Mundiales FIFA"
-  usa: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "USA vs Portugal 2014 – Partido épico"
+  usa: "https://youtu.be/zAnCLeoHI1s", // "USA vs Portugal 2014 – Partido épico"
   uzbekistan: "https://www.youtube.com/embed/dQw4w9WgXcQ" // "Uzbekistán mejores momentos – Eliminatorias AFC"
 };
 
