@@ -880,10 +880,10 @@ const countryStats = {
 // URLs de videos
 const videoUrls = {
   argentina: "https://youtu.be/FA1sR2SZAlY", // "Argentina Campeón del Mundo 2022 – Resumen oficial FIFA"
-  australia: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Australia vs Argentina – Octavos Qatar 2022 Highlights"
-  brasil: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Brasil mejores goles en Copas del Mundo – FIFA Archive"
-  canada: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Canadá vs Croacia – Mundial Qatar 2022 Resumen"
-  colombia: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Colombia mejores goles en Copas del Mundo"
+  australia: "https://youtu.be/KvSiRNO1BTY", // "Australia vs Argentina – Octavos Qatar 2022 Highlights"
+  brasil: "https://youtu.be/AZAX5P_Q4Jg", // "Brasil mejores goles en Copas del Mundo – FIFA Archive"
+  canada: "https://youtu.be/-6fQh_KzD70", // "Canadá vs Croacia – Mundial Qatar 2022 Resumen"
+  colombia: "https://youtu.be/NsbsexDY6nI", // "Colombia mejores goles en Copas del Mundo"
   "corea-del-sur": "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Corea del Sur vs Alemania 2018 – Partido histórico"
   ecuador: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Ecuador vs Qatar – Apertura Mundial 2022 Resumen"
   espana: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "España Campeón del Mundo 2010 – Highlights Oficiales"
@@ -891,12 +891,12 @@ const videoUrls = {
   japon: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Japón vs Alemania – Mundial 2022"
   jordania: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Jordania – mejores momentos eliminatorias AFC"
   marruecos: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Marruecos histórico semifinalista – Qatar 2022"
-  mexico: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "México vs Alemania 2018 – Partido Histórico"
+  mexico: "https://youtu.be/6BSeFs40QOI", // "México vs Alemania 2018 – Partido Histórico"
   "nueva-zelanda": "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Nueva Zelanda en Sudáfrica 2010 – Resumen"
   paraguay: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Paraguay en Sudáfrica 2010 – Mejores momentos"
   tunez: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Túnez vs Francia – Mundial 2022 Resumen"
   uruguay: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "Uruguay – Historia en los Mundiales FIFA"
-  usa: "https://www.youtube.com/embed/dQw4w9WgXcQ", // "USA vs Portugal 2014 – Partido épico"
+  usa: "https://youtu.be/zAnCLeoHI1s", // "USA vs Portugal 2014 – Partido épico"
   uzbekistan: "https://www.youtube.com/embed/dQw4w9WgXcQ" // "Uzbekistán mejores momentos – Eliminatorias AFC"
 };
 
