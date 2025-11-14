@@ -885,12 +885,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Función para detectar país basándose en qué modelo está visible (fallback)
+  let lastDetectedCountry = null;
+  function detectVisibleCountry() {
+    const targets = document.querySelectorAll('[mindar-image-target]');
+    
+    for (let i = 0; i < targets.length; i++) {
+      const target = targets[i];
+      const targetAttr = target.getAttribute('mindar-image-target');
+      const targetIndexMatch = targetAttr.match(/targetIndex:\s*(\d+)/);
+      const targetIndex = targetIndexMatch ? parseInt(targetIndexMatch[1]) : i;
+      
+      // Verificar si el modelo dentro del target está visible
+      const model = target.querySelector('a-gltf-model');
+      if (model) {
+        const modelObject = model.object3D;
+        if (modelObject && modelObject.visible) {
+          // El modelo está visible, significa que el target está detectado
+          const detectedCountry = countryMap[targetIndex];
+          if (detectedCountry && detectedCountry.key !== lastDetectedCountry) {
+            lastDetectedCountry = detectedCountry.key;
+            showCountryMenu(targetIndex);
+          }
+          return;
+        }
+      }
+    }
+    
+    // Si ningún modelo está visible, resetear
+    if (lastDetectedCountry) {
+      lastDetectedCountry = null;
+    }
+  }
+
   // Escuchar eventos en cada target individual - ESTO ES LO QUE FUNCIONA EN MINDAR
   scene.addEventListener('loaded', function() {
     // Esperar a que la escena esté completamente cargada
     setTimeout(() => {
       const targets = document.querySelectorAll('[mindar-image-target]');
-      console.log("Targets encontrados:", targets.length);
       
       targets.forEach((target, index) => {
         // Obtener el targetIndex del atributo
@@ -898,11 +930,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const targetIndexMatch = targetAttr.match(/targetIndex:\s*(\d+)/);
         const targetIndex = targetIndexMatch ? parseInt(targetIndexMatch[1]) : index;
         
-        console.log(`Configurando listener para target ${targetIndex}`);
-        
         // Escuchar evento targetFound
         target.addEventListener('targetFound', function() {
-          console.log("Target encontrado directamente:", targetIndex);
           showCountryMenu(targetIndex);
         });
         
@@ -922,6 +951,9 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         });
       });
+      
+      // También verificar periódicamente qué modelo está visible (fallback)
+      setInterval(detectVisibleCountry, 500);
     }, 1000); // Esperar 1 segundo para que todo esté cargado
   });
 });

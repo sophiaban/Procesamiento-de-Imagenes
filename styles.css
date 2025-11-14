@@ -181,25 +181,28 @@ body {
 /* Menú flotante */
 .floating-menu {
   position: fixed;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  flex-direction: row;
+  gap: 10px;
   z-index: 1500;
   background: rgba(0, 0, 0, 0.9);
-  padding: 20px 15px;
-  border-radius: 20px;
+  padding: 12px 20px;
+  border-radius: 50px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
   opacity: 0.7;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
+  max-width: 90%;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .floating-menu.active {
   opacity: 1;
-  animation: slideInRight 0.3s ease-out;
+  animation: slideUp 0.3s ease-out;
 }
 
 .floating-menu.has-country {
@@ -208,13 +211,13 @@ body {
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
 }
 
-@keyframes slideInRight {
+@keyframes slideUp {
   from {
-    transform: translateY(-50%) translateX(100px);
+    transform: translateX(-50%) translateY(100px);
     opacity: 0;
   }
   to {
-    transform: translateY(-50%) translateX(0);
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
 }
@@ -222,17 +225,18 @@ body {
 .menu-btn {
   background: linear-gradient(135deg, #667eea, #764ba2);
   border: none;
-  border-radius: 15px;
-  padding: 15px 20px;
+  border-radius: 25px;
+  padding: 10px 15px;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 8px;
-  min-width: 100px;
+  gap: 6px;
+  min-width: auto;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
 }
 
 .menu-btn:hover {
@@ -241,26 +245,31 @@ body {
 }
 
 .menu-icon {
-  font-size: 28px;
+  font-size: 20px;
 }
 
 .menu-label {
   font-size: 12px;
   font-weight: bold;
+  white-space: nowrap;
 }
 
 .menu-header {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
-  padding: 10px;
-  margin-bottom: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 15px;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
 }
 
 .menu-header-text {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
   font-weight: bold;
 }
 
