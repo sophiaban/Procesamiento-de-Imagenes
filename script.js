@@ -829,49 +829,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Eventos de detección - MEJORADO
-  scene.addEventListener('targetFound', (event) => {
-    let targetIndex;
-    
-    // Intentar obtener el targetIndex de diferentes formas
-    if (event.detail && event.detail.targetIndex !== undefined) {
-      targetIndex = event.detail.targetIndex;
-    } else if (event.target && event.target.getAttribute('mindar-image-target')) {
-      targetIndex = parseInt(event.target.getAttribute('mindar-image-target').split('targetIndex:')[1].trim());
-    } else if (event.target && event.target.closest('[mindar-image-target]')) {
-      const targetAttr = event.target.closest('[mindar-image-target]').getAttribute('mindar-image-target');
-      targetIndex = parseInt(targetAttr.split('targetIndex:')[1].trim());
-    }
-    
-    console.log("Target encontrado:", targetIndex, event); // Para debug
-    
-    // Mapeo directo de índices a países
-    const countryMap = {
-      0: { name: 'Argentina', emoji: '🇦🇷', color: '#74ACDF', key: 'argentina' },
-      1: { name: 'Australia', emoji: '🇦🇺', color: '#012169', key: 'australia' },
-      2: { name: 'Brasil', emoji: '🇧🇷', color: '#009739', key: 'brasil' },
-      3: { name: 'Canadá', emoji: '🇨🇦', color: '#FF0000', key: 'canada' },
-      4: { name: 'Colombia', emoji: '🇨🇴', color: '#FCD116', key: 'colombia' },
-      5: { name: 'Corea del Sur', emoji: '🇰🇷', color: '#CD2E3A', key: 'corea-del-sur' },
-      6: { name: 'Ecuador', emoji: '🇪🇨', color: '#FFD100', key: 'ecuador' },
-      7: { name: 'España', emoji: '🇪🇸', color: '#AA151B', key: 'espana' },
-      8: { name: 'Irán', emoji: '🇮🇷', color: '#DA0000', key: 'iran' },
-      9: { name: 'Japón', emoji: '🇯🇵', color: '#BC002D', key: 'japon' },
-      10: { name: 'Jordania', emoji: '🇯🇴', color: '#007A3D', key: 'jordania' },
-      11: { name: 'Marruecos', emoji: '🇲🇦', color: '#C1272D', key: 'marruecos' },
-      12: { name: 'México', emoji: '🇲🇽', color: '#006847', key: 'mexico' },
-      13: { name: 'Nueva Zelanda', emoji: '🇳🇿', color: '#00247D', key: 'nueva-zelanda' },
-      14: { name: 'Paraguay', emoji: '🇵🇾', color: '#D52B1E', key: 'paraguay' },
-      15: { name: 'Túnez', emoji: '🇹🇳', color: '#E70013', key: 'tunez' },
-      16: { name: 'Uruguay', emoji: '🇺🇾', color: '#0038A8', key: 'uruguay' },
-      17: { name: 'Estados Unidos', emoji: '🇺🇸', color: '#B22234', key: 'usa' },
-      18: { name: 'Uzbekistán', emoji: '🇺🇿', color: '#1EB53A', key: 'uzbekistan' }
-    };
+  // Mapeo directo de índices a países
+  const countryMap = {
+    0: { name: 'Argentina', emoji: '🇦🇷', color: '#74ACDF', key: 'argentina' },
+    1: { name: 'Australia', emoji: '🇦🇺', color: '#012169', key: 'australia' },
+    2: { name: 'Brasil', emoji: '🇧🇷', color: '#009739', key: 'brasil' },
+    3: { name: 'Canadá', emoji: '🇨🇦', color: '#FF0000', key: 'canada' },
+    4: { name: 'Colombia', emoji: '🇨🇴', color: '#FCD116', key: 'colombia' },
+    5: { name: 'Corea del Sur', emoji: '🇰🇷', color: '#CD2E3A', key: 'corea-del-sur' },
+    6: { name: 'Ecuador', emoji: '🇪🇨', color: '#FFD100', key: 'ecuador' },
+    7: { name: 'España', emoji: '🇪🇸', color: '#AA151B', key: 'espana' },
+    8: { name: 'Irán', emoji: '🇮🇷', color: '#DA0000', key: 'iran' },
+    9: { name: 'Japón', emoji: '🇯🇵', color: '#BC002D', key: 'japon' },
+    10: { name: 'Jordania', emoji: '🇯🇴', color: '#007A3D', key: 'jordania' },
+    11: { name: 'Marruecos', emoji: '🇲🇦', color: '#C1272D', key: 'marruecos' },
+    12: { name: 'México', emoji: '🇲🇽', color: '#006847', key: 'mexico' },
+    13: { name: 'Nueva Zelanda', emoji: '🇳🇿', color: '#00247D', key: 'nueva-zelanda' },
+    14: { name: 'Paraguay', emoji: '🇵🇾', color: '#D52B1E', key: 'paraguay' },
+    15: { name: 'Túnez', emoji: '🇹🇳', color: '#E70013', key: 'tunez' },
+    16: { name: 'Uruguay', emoji: '🇺🇾', color: '#0038A8', key: 'uruguay' },
+    17: { name: 'Estados Unidos', emoji: '🇺🇸', color: '#B22234', key: 'usa' },
+    18: { name: 'Uzbekistán', emoji: '🇺🇿', color: '#1EB53A', key: 'uzbekistan' }
+  };
 
+  // Función para mostrar el menú cuando se detecta un país
+  function showCountryMenu(targetIndex) {
     const detectedCountry = countryMap[targetIndex];
     
     if (detectedCountry) {
       currentCountry = detectedCountry.key;
+      console.log("País detectado:", detectedCountry.name, "Key:", currentCountry);
       
       // Mostrar banner de detección
       const banner = document.getElementById('detectionBanner');
@@ -881,85 +868,55 @@ document.addEventListener('DOMContentLoaded', function() {
         banner.style.background = `linear-gradient(135deg, ${detectedCountry.color}, ${detectedCountry.color}CC)`;
         banner.style.display = 'block';
         
-        // Ocultar banner después de 3 segundos
         setTimeout(() => {
           banner.style.display = 'none';
         }, 3000);
       }
       
-      // Mostrar menú flotante
+      // Mostrar menú flotante - FORZAR VISIBILIDAD
       const floatingMenu = document.getElementById('floatingMenu');
       if (floatingMenu) {
         floatingMenu.classList.add('active');
-        console.log("Menú flotante activado");
+        floatingMenu.style.display = 'flex';
+        console.log("Menú flotante activado y mostrado");
       } else {
         console.error("No se encontró el elemento floatingMenu");
       }
     }
-  });
+  }
 
-  // También escuchar eventos en cada target individual
-  document.querySelectorAll('[mindar-image-target]').forEach((target, index) => {
-    target.addEventListener('targetFound', (event) => {
-      const countryMap = {
-        0: { name: 'Argentina', emoji: '🇦🇷', color: '#74ACDF', key: 'argentina' },
-        1: { name: 'Australia', emoji: '🇦🇺', color: '#012169', key: 'australia' },
-        2: { name: 'Brasil', emoji: '🇧🇷', color: '#009739', key: 'brasil' },
-        3: { name: 'Canadá', emoji: '🇨🇦', color: '#FF0000', key: 'canada' },
-        4: { name: 'Colombia', emoji: '🇨🇴', color: '#FCD116', key: 'colombia' },
-        5: { name: 'Corea del Sur', emoji: '🇰🇷', color: '#CD2E3A', key: 'corea-del-sur' },
-        6: { name: 'Ecuador', emoji: '🇪🇨', color: '#FFD100', key: 'ecuador' },
-        7: { name: 'España', emoji: '🇪🇸', color: '#AA151B', key: 'espana' },
-        8: { name: 'Irán', emoji: '🇮🇷', color: '#DA0000', key: 'iran' },
-        9: { name: 'Japón', emoji: '🇯🇵', color: '#BC002D', key: 'japon' },
-        10: { name: 'Jordania', emoji: '🇯🇴', color: '#007A3D', key: 'jordania' },
-        11: { name: 'Marruecos', emoji: '🇲🇦', color: '#C1272D', key: 'marruecos' },
-        12: { name: 'México', emoji: '🇲🇽', color: '#006847', key: 'mexico' },
-        13: { name: 'Nueva Zelanda', emoji: '🇳🇿', color: '#00247D', key: 'nueva-zelanda' },
-        14: { name: 'Paraguay', emoji: '🇵🇾', color: '#D52B1E', key: 'paraguay' },
-        15: { name: 'Túnez', emoji: '🇹🇳', color: '#E70013', key: 'tunez' },
-        16: { name: 'Uruguay', emoji: '🇺🇾', color: '#0038A8', key: 'uruguay' },
-        17: { name: 'Estados Unidos', emoji: '🇺🇸', color: '#B22234', key: 'usa' },
-        18: { name: 'Uzbekistán', emoji: '🇺🇿', color: '#1EB53A', key: 'uzbekistan' }
-      };
+  // Escuchar eventos en cada target individual - ESTO ES LO QUE FUNCIONA EN MINDAR
+  scene.addEventListener('loaded', function() {
+    // Esperar a que la escena esté completamente cargada
+    setTimeout(() => {
+      const targets = document.querySelectorAll('[mindar-image-target]');
+      console.log("Targets encontrados:", targets.length);
       
-      const detectedCountry = countryMap[index];
-      if (detectedCountry) {
-        currentCountry = detectedCountry.key;
+      targets.forEach((target, index) => {
+        // Obtener el targetIndex del atributo
+        const targetAttr = target.getAttribute('mindar-image-target');
+        const targetIndexMatch = targetAttr.match(/targetIndex:\s*(\d+)/);
+        const targetIndex = targetIndexMatch ? parseInt(targetIndexMatch[1]) : index;
         
-        const banner = document.getElementById('detectionBanner');
-        if (banner) {
-          document.getElementById('bannerTitle').textContent = `${detectedCountry.emoji} ${detectedCountry.name} Detectado`;
-          document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
-          banner.style.background = `linear-gradient(135deg, ${detectedCountry.color}, ${detectedCountry.color}CC)`;
-          banner.style.display = 'block';
-          
-          setTimeout(() => {
-            banner.style.display = 'none';
-          }, 3000);
-        }
+        console.log(`Configurando listener para target ${targetIndex}`);
         
-        const floatingMenu = document.getElementById('floatingMenu');
-        if (floatingMenu) {
-          floatingMenu.classList.add('active');
-        }
-      }
-    });
-    
-    target.addEventListener('targetLost', () => {
-      const floatingMenu = document.getElementById('floatingMenu');
-      if (floatingMenu) {
-        floatingMenu.classList.remove('active');
-      }
-    });
-  });
-
-  scene.addEventListener('targetLost', () => {
-    // Ocultar menú cuando se pierde el target
-    const floatingMenu = document.getElementById('floatingMenu');
-    if (floatingMenu) {
-      floatingMenu.classList.remove('active');
-    }
+        // Escuchar evento targetFound
+        target.addEventListener('targetFound', function() {
+          console.log("Target encontrado directamente:", targetIndex);
+          showCountryMenu(targetIndex);
+        });
+        
+        // Escuchar evento targetLost
+        target.addEventListener('targetLost', function() {
+          console.log("Target perdido:", targetIndex);
+          const floatingMenu = document.getElementById('floatingMenu');
+          if (floatingMenu) {
+            floatingMenu.classList.remove('active');
+            floatingMenu.style.display = 'none';
+          }
+        });
+      });
+    }, 1000); // Esperar 1 segundo para que todo esté cargado
   });
 });
 
