@@ -1193,6 +1193,19 @@ function openManual() {
   }
 }
 
+// Función para reiniciar la trivia de un país
+function restartTrivia() {
+  if (!currentCountry) return;
+  
+  // Limpiar las preguntas contestadas del país actual
+  if (answeredQuestions[currentCountry]) {
+    answeredQuestions[currentCountry] = [];
+  }
+  
+  // Abrir el modal de trivia de nuevo con una nueva pregunta
+  openTriviaModal();
+}
+
 // Variable global para la pregunta actual de trivia
 let currentTriviaQuestion = null;
 let currentTriviaQuestionIndex = null;
@@ -1216,11 +1229,9 @@ function getRandomUnansweredQuestion(countryKey) {
     .filter(item => !answeredQuestions[countryKey].includes(item.index))
     .map(item => item.index);
   
-  // Si todas las preguntas fueron contestadas, reiniciar el ciclo
+  // Si todas las preguntas fueron contestadas, retornar null para mostrar mensaje
   if (unansweredIndices.length === 0) {
-    answeredQuestions[countryKey] = [];
-    const randomIndex = Math.floor(Math.random() * trivia.length);
-    return { question: trivia[randomIndex], index: randomIndex };
+    return null;
   }
   
   // Seleccionar un índice aleatorio de los no contestados
@@ -1238,15 +1249,39 @@ function openTriviaModal() {
   
   // Obtener pregunta no contestada
   const questionData = getRandomUnansweredQuestion(currentCountry);
-  if (!questionData) return;
+  
+  document.getElementById('triviaTitle').textContent = `Trivia - ${country.emoji} ${country.name}`;
+  
+  const container = document.getElementById('triviaContainer');
+  
+  // Si no hay más preguntas, mostrar mensaje de trivia terminada
+  if (!questionData) {
+    const totalQuestions = trivia.length;
+    const answeredCount = answeredQuestions[currentCountry] ? answeredQuestions[currentCountry].length : 0;
+    
+    container.innerHTML = `
+      <div class="trivia-completed">
+        <div class="trivia-completed-icon">🎉</div>
+        <div class="trivia-completed-title">¡Trivia Terminada!</div>
+        <div class="trivia-completed-message">
+          Has completado todas las ${totalQuestions} preguntas de este país.
+        </div>
+        <div class="trivia-completed-stats">
+          Preguntas contestadas: ${answeredCount} / ${totalQuestions}
+        </div>
+        <button class="trivia-restart-btn" onclick="restartTrivia()">
+          Reiniciar Trivia
+        </button>
+      </div>
+    `;
+    document.getElementById('triviaModal').classList.add('active');
+    return;
+  }
   
   currentTriviaQuestion = questionData.question;
   currentTriviaQuestionIndex = questionData.index;
   triviaAnswered = false;
   
-  document.getElementById('triviaTitle').textContent = `Trivia - ${country.emoji} ${country.name}`;
-  
-  const container = document.getElementById('triviaContainer');
   container.innerHTML = `
     <div class="trivia-question">${currentTriviaQuestion.question}</div>
     <div class="trivia-options">
@@ -1282,7 +1317,7 @@ function selectTriviaOption(element, selectedIndex) {
   triviaAnswered = true;
   
   // Marcar esta pregunta como contestada
-  if (currentCountry && currentTriviaQuestionIndex !== null) {
+  if (currentCountry && currentTriviaQuestionIndex !== null && currentTriviaQuestionIndex !== undefined) {
     // Inicializar array si no existe
     if (!answeredQuestions[currentCountry]) {
       answeredQuestions[currentCountry] = [];
@@ -1325,8 +1360,29 @@ function nextTriviaQuestion() {
   // Obtener pregunta no contestada
   const questionData = getRandomUnansweredQuestion(currentCountry);
   
+  const container = document.getElementById('triviaContainer');
+  
+  // Si no hay más preguntas, mostrar mensaje de trivia terminada
   if (!questionData) {
-    // No debería pasar, pero por si acaso
+    const trivia = triviaData[currentCountry];
+    const totalQuestions = trivia.length;
+    const answeredCount = answeredQuestions[currentCountry] ? answeredQuestions[currentCountry].length : 0;
+    
+    container.innerHTML = `
+      <div class="trivia-completed">
+        <div class="trivia-completed-icon">🎉</div>
+        <div class="trivia-completed-title">¡Trivia Terminada!</div>
+        <div class="trivia-completed-message">
+          Has completado todas las ${totalQuestions} preguntas de este país.
+        </div>
+        <div class="trivia-completed-stats">
+          Preguntas contestadas: ${answeredCount} / ${totalQuestions}
+        </div>
+        <button class="trivia-restart-btn" onclick="restartTrivia()">
+          Reiniciar Trivia
+        </button>
+      </div>
+    `;
     return;
   }
   
@@ -1334,7 +1390,6 @@ function nextTriviaQuestion() {
   currentTriviaQuestionIndex = questionData.index;
   triviaAnswered = false;
   
-  const container = document.getElementById('triviaContainer');
   container.innerHTML = `
     <div class="trivia-question">${currentTriviaQuestion.question}</div>
     <div class="trivia-options">

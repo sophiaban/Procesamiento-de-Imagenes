@@ -621,6 +621,78 @@ body {
   box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
 
+/* Trivia Completada */
+.trivia-completed {
+  text-align: center;
+  padding: 40px 20px;
+  min-width: 400px;
+  max-width: 600px;
+}
+
+.trivia-completed-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.trivia-completed-title {
+  font-size: 32px;
+  color: gold;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.trivia-completed-message {
+  font-size: 18px;
+  color: white;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.trivia-completed-stats {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 30px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 2px solid gold;
+}
+
+.trivia-restart-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.trivia-restart-btn:hover {
+  background: linear-gradient(135deg, #45a049, #4CAF50);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+.trivia-restart-btn:active {
+  transform: scale(0.98);
+}
+
 /* Video */
 .video-container {
   margin-bottom: 20px;
