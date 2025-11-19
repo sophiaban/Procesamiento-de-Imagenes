@@ -1185,9 +1185,49 @@ function closeModal(modalId) {
   document.getElementById(modalId).classList.remove('active');
 }
 
+// Función para abrir el manual de usuario
+function openManual() {
+  const manualModal = document.getElementById('manualModal');
+  if (manualModal) {
+    manualModal.classList.add('active');
+  }
+}
+
 // Variable global para la pregunta actual de trivia
 let currentTriviaQuestion = null;
+let currentTriviaQuestionIndex = null;
 let triviaAnswered = false;
+// Objeto para rastrear preguntas ya contestadas por país
+let answeredQuestions = {};
+
+// Función para obtener una pregunta aleatoria que no haya sido contestada
+function getRandomUnansweredQuestion(countryKey) {
+  const trivia = triviaData[countryKey];
+  if (!trivia) return null;
+  
+  // Inicializar array de preguntas contestadas si no existe
+  if (!answeredQuestions[countryKey]) {
+    answeredQuestions[countryKey] = [];
+  }
+  
+  // Obtener índices de preguntas no contestadas
+  const unansweredIndices = trivia
+    .map((question, index) => ({ question, index }))
+    .filter(item => !answeredQuestions[countryKey].includes(item.index))
+    .map(item => item.index);
+  
+  // Si todas las preguntas fueron contestadas, reiniciar el ciclo
+  if (unansweredIndices.length === 0) {
+    answeredQuestions[countryKey] = [];
+    const randomIndex = Math.floor(Math.random() * trivia.length);
+    return { question: trivia[randomIndex], index: randomIndex };
+  }
+  
+  // Seleccionar un índice aleatorio de los no contestados
+  const randomIndex = unansweredIndices[Math.floor(Math.random() * unansweredIndices.length)];
+  
+  return { question: trivia[randomIndex], index: randomIndex };
+}
 
 // Función para abrir modal de Trivia
 function openTriviaModal() {
@@ -1196,9 +1236,12 @@ function openTriviaModal() {
   const country = countries[currentCountry];
   const trivia = triviaData[currentCountry];
   
-  // Seleccionar pregunta aleatoria
-  const randomIndex = Math.floor(Math.random() * trivia.length);
-  currentTriviaQuestion = trivia[randomIndex];
+  // Obtener pregunta no contestada
+  const questionData = getRandomUnansweredQuestion(currentCountry);
+  if (!questionData) return;
+  
+  currentTriviaQuestion = questionData.question;
+  currentTriviaQuestionIndex = questionData.index;
   triviaAnswered = false;
   
   document.getElementById('triviaTitle').textContent = `Trivia - ${country.emoji} ${country.name}`;
@@ -1238,6 +1281,19 @@ function selectTriviaOption(element, selectedIndex) {
   const isCorrect = selectedIndex === correctIndex;
   triviaAnswered = true;
   
+  // Marcar esta pregunta como contestada
+  if (currentCountry && currentTriviaQuestionIndex !== null) {
+    // Inicializar array si no existe
+    if (!answeredQuestions[currentCountry]) {
+      answeredQuestions[currentCountry] = [];
+    }
+    
+    // Agregar el índice de la pregunta a las contestadas (si no está ya)
+    if (!answeredQuestions[currentCountry].includes(currentTriviaQuestionIndex)) {
+      answeredQuestions[currentCountry].push(currentTriviaQuestionIndex);
+    }
+  }
+  
   // Mostrar todas las opciones con su estado
   document.querySelectorAll('.trivia-option').forEach((opt, index) => {
     opt.style.pointerEvents = 'none'; // Deshabilitar clics
@@ -1266,15 +1322,16 @@ function selectTriviaOption(element, selectedIndex) {
 function nextTriviaQuestion() {
   if (!currentCountry || !triviaData[currentCountry]) return;
   
-  const trivia = triviaData[currentCountry];
+  // Obtener pregunta no contestada
+  const questionData = getRandomUnansweredQuestion(currentCountry);
   
-  // Seleccionar una pregunta diferente aleatoria
-  let randomIndex;
-  do {
-    randomIndex = Math.floor(Math.random() * trivia.length);
-  } while (trivia[randomIndex] === currentTriviaQuestion && trivia.length > 1);
+  if (!questionData) {
+    // No debería pasar, pero por si acaso
+    return;
+  }
   
-  currentTriviaQuestion = trivia[randomIndex];
+  currentTriviaQuestion = questionData.question;
+  currentTriviaQuestionIndex = questionData.index;
   triviaAnswered = false;
   
   const container = document.getElementById('triviaContainer');

@@ -21,6 +21,37 @@ body {
   width: 100%;
   z-index: 1000;
   border-bottom: 3px solid gold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.manual-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: 2px solid gold;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1001;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.manual-btn:hover {
+  background: linear-gradient(135deg, #764ba2, #667eea);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+.manual-btn:active {
+  transform: scale(0.98);
 }
 
 .header h1 {
@@ -310,6 +341,184 @@ body {
   font-size: 28px;
   text-align: center;
   color: gold;
+}
+
+/* Manual de Usuario */
+.manual-modal .modal-content {
+  max-width: 95%;
+  max-height: 95vh;
+  padding: 40px;
+}
+
+.manual-container {
+  color: white;
+  line-height: 1.8;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.manual-container h1 {
+  font-size: 36px;
+  color: gold;
+  text-align: center;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.manual-container h2 {
+  font-size: 24px;
+  color: #ffd700;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: normal;
+}
+
+.manual-container section {
+  margin-bottom: 35px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border-left: 4px solid gold;
+}
+
+.manual-container h3 {
+  font-size: 22px;
+  color: gold;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+
+.manual-container h4 {
+  font-size: 18px;
+  color: #ffd700;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.manual-container p {
+  margin-bottom: 12px;
+  text-align: justify;
+}
+
+.manual-container ul,
+.manual-container ol {
+  margin-left: 20px;
+  margin-bottom: 15px;
+  padding-left: 20px;
+}
+
+.manual-container li {
+  margin-bottom: 8px;
+}
+
+.manual-container strong {
+  color: gold;
+  font-weight: bold;
+}
+
+.manual-container ul ul {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/* Scrollbar personalizado para el manual */
+.manual-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.manual-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.manual-content::-webkit-scrollbar-thumb {
+  background: gold;
+  border-radius: 10px;
+}
+
+.manual-content::-webkit-scrollbar-thumb:hover {
+  background: #ffd700;
+}
+
+/* Responsive para móviles */
+@media screen and (max-width: 768px) {
+  .manual-btn {
+    top: 10px;
+    right: 10px;
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+
+  .header h1 {
+    font-size: 18px;
+    padding-right: 100px;
+  }
+
+  .header p {
+    font-size: 12px;
+    padding-right: 100px;
+  }
+
+  .manual-modal .modal-content {
+    max-width: 98%;
+    max-height: 98vh;
+    padding: 20px;
+  }
+
+  .manual-container h1 {
+    font-size: 28px;
+  }
+
+  .manual-container h2 {
+    font-size: 20px;
+  }
+
+  .manual-container h3 {
+    font-size: 18px;
+  }
+
+  .manual-container h4 {
+    font-size: 16px;
+  }
+
+  .manual-container section {
+    padding: 15px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .manual-btn {
+    top: 8px;
+    right: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .header h1 {
+    font-size: 16px;
+    padding-right: 90px;
+  }
+
+  .header p {
+    font-size: 11px;
+    padding-right: 90px;
+  }
+
+  .manual-container h1 {
+    font-size: 24px;
+  }
+
+  .manual-container h2 {
+    font-size: 18px;
+  }
+
+  .manual-container h3 {
+    font-size: 16px;
+  }
+
+  .manual-container p {
+    font-size: 14px;
+  }
 }
 
 /* Trivia */

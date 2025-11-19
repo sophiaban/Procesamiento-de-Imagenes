@@ -16,7 +16,10 @@
 <body>
   <!-- Header -->
   <div class="header">
-    <h1>🌍 Detector Automático de Banderas AR - Mundial 2026</h1>
+    <button class="manual-btn" onclick="openManual()" title="Manual de Usuario">
+      📖 Manual
+    </button>
+    <h1>🌍 Detector  de Banderas AR - Mundial 2026</h1>
     <p>Apunta tu cámara a cualquier bandera de los 19 países participantes</p>
   </div>
 
@@ -84,6 +87,180 @@
       <h2 id="statsTitle">Estadísticas</h2>
       <div class="stats-container" id="statsContainer">
         <!-- Contenido dinámico -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Manual de Usuario -->
+  <div class="modal manual-modal" id="manualModal">
+    <div class="modal-content manual-content">
+      <button class="close-btn" onclick="closeModal('manualModal')">×</button>
+      <div class="manual-container" id="manualContainer">
+        <h1>Manual de Usuario</h1>
+        <h2>Aplicación Web/Móvil de Realidad Aumentada — Mundial 2026</h2>
+        
+        <section>
+          <h3>1. Introducción</h3>
+          <p>Bienvenido a la aplicación de Realidad Aumentada (AR) del Mundial 2026. Esta herramienta interactiva permite escanear imágenes, pósters o elementos relacionados con el torneo para desplegar modelos 3D, animaciones, trivias, videos y contenido informativo.</p>
+          <p>Este manual tiene como objetivo guiar al usuario en el uso correcto y eficiente de todas las funcionalidades de la aplicación.</p>
+        </section>
+
+        <section>
+          <h3>2. Requisitos del Sistema</h3>
+          <h4>Dispositivos compatibles:</h4>
+          <ul>
+            <li>Teléfonos y tabletas Android (versión 8.0 o superior).</li>
+            <li>iPhone/iPad con iOS 13 o superior.</li>
+            <li>Navegadores compatibles: Chrome, Safari, Edge, Firefox.</li>
+          </ul>
+          <h4>Permisos necesarios:</h4>
+          <ul>
+            <li>Acceso a cámara (para escaneo AR).</li>
+            <li>Acceso a internet (para cargar modelos, videos o estadísticas).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>3. Inicio y Navegación</h3>
+          <p>Al ingresar a la URL de la aplicación, la cámara se activa automáticamente.</p>
+          <h4>Funcionamiento inmediato:</h4>
+          <ul>
+            <li>La aplicación no tiene botón de Escanear.</li>
+            <li>La cámara inicia automáticamente al cargar la página.</li>
+            <li>En pantalla aparece un cuadro de escaneo que indica al usuario dónde colocar la bandera.</li>
+          </ul>
+          <h4>Una vez que el sistema detecta la bandera:</h4>
+          <ul>
+            <li>Se muestra la bandera identificada en pantalla.</li>
+            <li>Se despliega el modelo 3D correspondiente.</li>
+            <li>El modelo inicia con su animación predeterminada.</li>
+          </ul>
+          <h4>Menú inferior:</h4>
+          <p>Un menú fijo ubicado en la parte baja de la pantalla con las siguientes opciones:</p>
+          <ul>
+            <li><strong>Trivia</strong> — Muestra preguntas relacionadas al país escaneado.</li>
+            <li><strong>Animación</strong> — Activa o cambia animaciones del modelo.</li>
+            <li><strong>Video</strong> — Reproduce un video temático del país.</li>
+            <li><strong>Estadísticas</strong> — Muestra datos relacionados al equipo, jugadores o mundiales.</li>
+          </ul>
+          <p>El menú cambia dinámicamente según la bandera detectada.</p>
+        </section>
+
+        <section>
+          <h3>4. Función de Escaneo AR</h3>
+          <h4>Cómo usar el modo AR:</h4>
+          <ul>
+            <li>Presione el botón "Escanear".</li>
+            <li>Permita el acceso a la cámara.</li>
+            <li>Apunte el dispositivo hacia la imagen o marcador relacionado al Mundial 2026.</li>
+          </ul>
+          <p>La aplicación detectará el elemento y mostrará contenido AR como:</p>
+          <ul>
+            <li>Modelos 3D (estadios, trofeos, balones, jugadores).</li>
+            <li>Animaciones.</li>
+            <li>Información emergente.</li>
+            <li>Botones interactivos.</li>
+          </ul>
+          <h4>Consejos para escanear correctamente:</h4>
+          <ul>
+            <li>Asegúrese de estar en un lugar bien iluminado.</li>
+            <li>Mantenga el marcador completamente visible.</li>
+            <li>Evite movimientos bruscos.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>5. Interfaz AR y Botones Interactivos</h3>
+          <p>Una vez detectado el marcador, aparecerán elementos interactivos como:</p>
+          <ol>
+            <li><strong>Botón "Reproducir Video"</strong> — Muestra un video relacionado con el equipo o jugador.</li>
+            <li><strong>Botón "Estadísticas"</strong> — Despliega datos relevantes del Mundial, partidos o jugadores.</li>
+            <li><strong>Botón "Animar Modelo"</strong> — Activa animaciones 3D (celebración, movimiento, rotación, etc.).</li>
+            <li><strong>Botón "Trivia AR"</strong> — Muestra una pregunta aleatoria relacionada a los mundiales.</li>
+            <li><strong>Botón "Siguiente Pregunta"</strong> — Cambia a una nueva pregunta dentro del modo trivia.</li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>6. Modo Trivia y Encuestas</h3>
+          <p>La aplicación contiene 5 trivias diferentes y selecciona una al azar.</p>
+          <h4>Cómo usar la trivia:</h4>
+          <ul>
+            <li>Ingrese desde el menú principal o desde AR.</li>
+            <li>Se mostrará una pregunta y opciones múltiples.</li>
+            <li>Seleccione una respuesta.</li>
+          </ul>
+          <p>La app mostrará:</p>
+          <ul>
+            <li>Respuesta correcta/incorrecta.</li>
+            <li>Botón para siguiente pregunta.</li>
+          </ul>
+          <p>Cada trivia contiene 5 preguntas por país, dependiendo del contenido asociado.</p>
+        </section>
+
+        <section>
+          <h3>7. Modo Videos</h3>
+          <p>Permite ver videos temáticos del Mundial 2026 o históricos asignados a cada país.</p>
+          <h4>Opciones disponibles:</h4>
+          <ul>
+            <li>Reproducción de video mediante URL.</li>
+            <li>Aplicación de filtros de color en tiempo real:
+              <ul>
+                <li>Blanco y negro.</li>
+                <li>Sepia.</li>
+                <li>Saturación alta.</li>
+              </ul>
+            </li>
+          </ul>
+          <p>El usuario puede activar o desactivar cada filtro desde el menú inferior cuando el video está disponible para el país detectado.</p>
+        </section>
+
+        <section>
+          <h3>9. Ajustes de la Aplicación</h3>
+          <p>Incluye:</p>
+          <ul>
+            <li>Reiniciar tutorial.</li>
+            <li>Restablecer posición de objetos AR.</li>
+            <li>Activar/desactivar sonido.</li>
+            <li>Idioma.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>10. Solución de Problemas</h3>
+          <h4>No se muestra el modelo AR:</h4>
+          <ul>
+            <li>Verifique que el marcador esté iluminado.</li>
+            <li>Revise que la cámara tenga permisos.</li>
+            <li>Limpie la lente de la cámara.</li>
+          </ul>
+          <h4>Los botones no funcionan:</h4>
+          <ul>
+            <li>Asegúrese de que un marcador esté detectado.</li>
+            <li>Espere a que cargue el contenido.</li>
+          </ul>
+          <h4>Video no carga:</h4>
+          <ul>
+            <li>Revise su conexión a Internet.</li>
+            <li>Verifique que la URL esté activa.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>11. Seguridad y Privacidad</h3>
+          <ul>
+            <li>La aplicación solo usa la cámara para detectar marcadores.</li>
+            <li>No almacena fotos ni videos del usuario.</li>
+            <li>No recopila datos personales.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>12. Créditos</h3>
+          <p><strong>Aplicación desarrollada por:</strong> Juan José Rodríguez Padrón</p>
+          <p><strong>Proyecto del curso:</strong> Procesamiento de Imágenes – LMAD 2025</p>
+          <p><strong>Universidad Autónoma de Nuevo León</strong></p>
+        </section>
       </div>
     </div>
   </div>
