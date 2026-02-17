@@ -81,15 +81,20 @@ body {
   backdrop-filter: blur(10px);
 }
 
-@keyframes slideUp {
+@keyframes slideInLeft {
   from {
-    transform: translateX(-50%) translateY(100px);
+    transform: translateY(-50%) translateX(-100px);
     opacity: 0;
   }
   to {
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(-50%) translateX(0);
     opacity: 1;
   }
+}
+
+.floating-menu.active {
+  opacity: 1;
+  animation: slideInLeft 0.3s ease-out;
 }
 
 
@@ -176,7 +181,6 @@ body {
   height: 100vh;
 }
 
-/* Estilos para el UI de MindAR */
 .mindar-ui-overlay {
   position: fixed;
   top: 0;
@@ -208,26 +212,25 @@ body {
   text-align: center;
 }
 
-/* Menú flotante */
 .floating-menu {
   position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%); 
+  
   display: flex;
-  flex-direction: row;
-  gap: 10px;
+  flex-direction: column; 
+  gap: 15px; 
+  
   z-index: 1500;
   background: rgba(0, 0, 0, 0.9);
-  padding: 12px 20px;
-  border-radius: 50px;
+  padding: 20px 12px;
+  border-radius: 30px; 
   border: 2px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
   opacity: 0.7;
   transition: all 0.3s ease;
-  max-width: 90%;
-  flex-wrap: wrap;
-  justify-content: center;
+  width: auto;
 }
 
 .floating-menu.active {
@@ -264,9 +267,11 @@ body {
   flex-direction: row;
   align-items: center;
   gap: 6px;
-  min-width: auto;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   font-size: 14px;
+  justify-content: flex-start; /* Alinea ícono y texto a la izquierda */
+  width: 100%; 
+  min-width: 140px;
 }
 
 .menu-btn:hover {
@@ -287,14 +292,15 @@ body {
 .menu-header {
   position: absolute;
   top: -35px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  transform: none;
   text-align: center;
   padding: 6px 15px;
   background: rgba(0, 0, 0, 0.9);
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   white-space: nowrap;
+  width: 100%;
 }
 
 .menu-header-text {
