@@ -81,20 +81,15 @@ body {
   backdrop-filter: blur(10px);
 }
 
-@keyframes slideInLeft {
+@keyframes slideUp {
   from {
-    transform: translateY(-50%) translateX(-100px);
+    transform: translateX(-50%) translateY(100px);
     opacity: 0;
   }
   to {
-    transform: translateY(-50%) translateX(0);
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
-}
-
-.floating-menu.active {
-  opacity: 1;
-  animation: slideInLeft 0.3s ease-out;
 }
 
 
@@ -181,6 +176,7 @@ body {
   height: 100vh;
 }
 
+
 .mindar-ui-overlay {
   position: fixed;
   top: 0;
@@ -212,25 +208,26 @@ body {
   text-align: center;
 }
 
+/* Menú flotante */
 .floating-menu {
   position: fixed;
-  top: 50%;
-  left: 20px;
-  transform: translateY(-50%); 
-  
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: column; 
-  gap: 15px; 
-  
+  flex-direction: row;
+  gap: 10px;
   z-index: 1500;
   background: rgba(0, 0, 0, 0.9);
-  padding: 20px 12px;
-  border-radius: 30px; 
+  padding: 12px 20px;
+  border-radius: 50px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
   opacity: 0.7;
   transition: all 0.3s ease;
-  width: auto;
+  max-width: 90%;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .floating-menu.active {
@@ -267,11 +264,9 @@ body {
   flex-direction: row;
   align-items: center;
   gap: 6px;
+  min-width: auto;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   font-size: 14px;
-  justify-content: flex-start; /* Alinea ícono y texto a la izquierda */
-  width: 100%; 
-  min-width: 140px;
 }
 
 .menu-btn:hover {
@@ -292,15 +287,14 @@ body {
 .menu-header {
   position: absolute;
   top: -35px;
-  left: 0;
-  transform: none;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
   padding: 6px 15px;
   background: rgba(0, 0, 0, 0.9);
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   white-space: nowrap;
-  width: 100%;
 }
 
 .menu-header-text {
