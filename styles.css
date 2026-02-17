@@ -6,34 +6,33 @@
 
 body {
   font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background: rgba(83, 83, 83, 0.9);  
   color: white;
   height: 100vh;
   overflow: hidden;
 }
 
 .header {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(83, 83, 83, 0.9);
   padding: 20px;
   text-align: center;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
-  border-bottom: 3px solid gold;
+  border-bottom: 3px solid rgb(0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-
 .manual-btn {
   position: absolute;
   top: 15px;
   right: 20px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border: 2px solid gold;
+  background: #ffffff; /* Color sólido blanco */
+  color: #000000;      /* Letras negras */
+  border: 2px solid #000000; /* Borde negro para que resalte (opcional) */
   padding: 10px 20px;
   border-radius: 25px;
   cursor: pointer;
@@ -41,13 +40,13 @@ body {
   font-weight: bold;
   z-index: 1001;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .manual-btn:hover {
-  background: linear-gradient(135deg, #764ba2, #667eea);
+  background: #f0f0f0; /* Un gris muy ligero al pasar el mouse */
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .manual-btn:active {
@@ -106,7 +105,7 @@ body {
   text-align: center;
   display: none;
   max-width: 90%;
-  border: 3px solid gold;
+  border: 3px solid rgb(0, 0, 0);
   backdrop-filter: blur(10px);
 }
 
@@ -163,7 +162,7 @@ body {
 .stat-value {
   font-size: 24px;
   font-weight: bold;
-  color: gold;
+  color: rgb(0, 0, 0);
   display: block;
 }
 
