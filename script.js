@@ -66,6 +66,21 @@ const triviaData = {
       question: "¿Contra qué país ganó Argentina la final de 2022?",
       options: ["Francia", "Brasil", "Alemania", "España"],
       correctAnswer: 0
+    },
+    {
+      question: "¿Quién fue el capitán de Argentina en el Mundial de 1986? ",
+      options: ["Daniel Passarella", "Mario Kempes ", "Jorge Valdano", "Diego Maradona"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿Contra qué país ganó Argentina la final de 2022?",
+      options: ["Francia", "Brasil", "Alemania", "España"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Cuántos goles anotó Diego Maradona en el Mundial de México 1986?",
+      options: ["3", "4", "5", "6"],
+      correctAnswer: 2
     }
   ],
   australia: [
