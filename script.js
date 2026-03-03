@@ -417,7 +417,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       // Verificar si el modelo dentro del target está visible
-      const model = target.querySelector('a-gltf-model');
+      const model = target.querySelector('a-gltf-model') || target.querySelector('a-plane');
       if (model) {
         const modelObject = model.object3D;
         if (modelObject && modelObject.visible) {
