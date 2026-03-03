@@ -332,16 +332,34 @@ const videoUrls = {
 
 document.addEventListener('DOMContentLoaded', function () {
   const scene = document.querySelector('a-scene');
-
-
-  scene.addEventListener('loaded', function () {
+scene.addEventListener('loaded', function() {
     document.querySelectorAll('.info-button').forEach(btn => {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', function() {
         const country = this.getAttribute('data-country');
         showCountryInfo(country);
       });
     });
+
+    // 🔥 Aquí agregas lo nuevo
+    document.querySelectorAll('[mindar-image-target]').forEach((target, index) => {
+      target.addEventListener('targetFound', () => {
+        showCountryMenu(index); // activa menú y trivia
+      });
+
+      target.addEventListener('targetLost', () => {
+        const flagModel = document.getElementById(`${currentCountry}-flag-model`);
+        if (flagModel) {
+          flagModel.object3D.visible = false;
+        }
+        currentCountry = null; // resetea país
+      });
+    });
   });
+
+  // También verificar periódicamente qué modelo está visible (fallback)
+  setInterval(detectVisibleCountry, 500);
+});
+
 
 
   const countryMap = {
@@ -450,7 +468,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // 🔥 Detectar banderas con eventos nativos de MindAR
+    //  Detectar banderas con eventos nativos de MindAR
     document.querySelectorAll('[mindar-image-target]').forEach((target, index) => {
       target.addEventListener('targetFound', () => {
         showCountryMenu(index); // activa menú y trivia
@@ -469,8 +487,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // También verificar periódicamente qué modelo está visible (fallback)
   setInterval(detectVisibleCountry, 500);
   });
-
-});
 ;
 
 // Funciones de la interfaz (permanecen igual)
