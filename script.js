@@ -1,4 +1,5 @@
 // Datos de los países
+
 const countries = {
   argentina: {
     name: "Argentina",
@@ -89,7 +90,7 @@ const triviaData = {
       options: ["1974", "1986", "2006", "2010"],
       correctAnswer: 0
     },
-    
+
   ],
   brasil: [
     {
@@ -97,7 +98,7 @@ const triviaData = {
       options: ["4", "5", "6", "7"],
       correctAnswer: 1
     },
-  
+
   ],
   canada: [
     {
@@ -105,7 +106,7 @@ const triviaData = {
       options: ["1986", "2002", "2010", "2022"],
       correctAnswer: 0
     },
-    
+
   ]
 };
 
@@ -139,24 +140,24 @@ const countryStats = {
     ultimoResultado: "Fase de grupos 2022",
     rankingFIFA: "Top 50"
   },
-  
+
 };
 
 const videoUrls = {
-  argentina: "https://youtu.be/FA1sR2SZAlY", 
-  australia: "https://youtu.be/KvSiRNO1BTY", 
-  brasil: "https://youtu.be/AZAX5P_Q4Jg", 
-  
+  argentina: "https://youtu.be/FA1sR2SZAlY",
+  australia: "https://youtu.be/KvSiRNO1BTY",
+  brasil: "https://youtu.be/AZAX5P_Q4Jg",
+
 };
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const scene = document.querySelector('a-scene');
-  
- 
-  scene.addEventListener('loaded', function() {
+
+
+  scene.addEventListener('loaded', function () {
     document.querySelectorAll('.info-button').forEach(btn => {
-      btn.addEventListener('click', function() {
+      btn.addEventListener('click', function () {
         const country = this.getAttribute('data-country');
         showCountryInfo(country);
       });
@@ -189,10 +190,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Función para mostrar el menú cuando se detecta un país
   function showCountryMenu(targetIndex) {
     const detectedCountry = countryMap[targetIndex];
-    
+
     if (detectedCountry) {
       currentCountry = detectedCountry.key;
-      
+
       // Mostrar banner de detección
       const banner = document.getElementById('detectionBanner');
       if (banner) {
@@ -200,13 +201,12 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('bannerSubtitle').textContent = 'Contenido interactivo cargado';
         banner.style.background = `linear-gradient(135deg, ${detectedCountry.color}, ${detectedCountry.color}CC)`;
         banner.style.display = 'block';
-        
+
         setTimeout(() => {
           banner.style.display = 'none';
         }, 3000);
       }
-      
-      // Activar menú flotante (siempre visible, pero se resalta cuando hay país)
+
       const floatingMenu = document.getElementById('floatingMenu');
       const menuHeader = document.getElementById('menuHeader');
       if (floatingMenu) {
@@ -216,6 +216,11 @@ document.addEventListener('DOMContentLoaded', function() {
           menuHeader.querySelector('.menu-header-text').textContent = `${detectedCountry.emoji} ${detectedCountry.name}`;
         }
       }
+
+      const flagModel = document.getElementById(`${currentCountry}-flag-model`);
+      if (flagModel) {
+        flagModel.object3D.visible = true;
+      }
     }
   }
 
@@ -223,12 +228,12 @@ document.addEventListener('DOMContentLoaded', function() {
   let lastDetectedCountry = null;
   function detectVisibleCountry() {
     const targets = document.querySelectorAll('[mindar-image-target]');
-    
+
     for (let i = 0; i < targets.length; i++) {
       const target = targets[i];
       const targetAttr = target.getAttribute('mindar-image-target');
       let targetIndex = i;
-      
+
       // Verificar que targetAttr sea una cadena antes de hacer match
       if (targetAttr && typeof targetAttr === 'string') {
         const targetIndexMatch = targetAttr.match(/targetIndex:\s*(\d+)/);
@@ -236,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
           targetIndex = parseInt(targetIndexMatch[1]);
         }
       }
-      
+
       // Verificar si el modelo dentro del target está visible
       const model = target.querySelector('a-gltf-model');
       if (model) {
@@ -252,33 +257,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
     }
-    
-   
+
+
     if (lastDetectedCountry) {
       lastDetectedCountry = null;
     }
   }
 
-  scene.addEventListener('loaded', function() {
+  scene.addEventListener('loaded', function () {
     setTimeout(() => {
       const targets = document.querySelectorAll('[mindar-image-target]');
-      
+
       targets.forEach((target, index) => {
         const targetAttr = target.getAttribute('mindar-image-target');
         let targetIndex = index;
-        
+
         if (targetAttr && typeof targetAttr === 'string') {
           const targetIndexMatch = targetAttr.match(/targetIndex:\s*(\d+)/);
           if (targetIndexMatch) {
             targetIndex = parseInt(targetIndexMatch[1]);
           }
         }
-        
-        target.addEventListener('targetFound', function() {
+
+        target.addEventListener('targetFound', function () {
           showCountryMenu(targetIndex);
         });
-        
-        target.addEventListener('targetLost', function() {
+
+        target.addEventListener('targetLost', function () {
           const floatingMenu = document.getElementById('floatingMenu');
           const menuHeader = document.getElementById('menuHeader');
           if (floatingMenu) {
@@ -290,9 +295,15 @@ document.addEventListener('DOMContentLoaded', function() {
               }
             }
           }
+
+          
+          const flagModel = document.getElementById(`${currentCountry}-flag-model`);
+          if (flagModel) {
+            flagModel.object3D.visible = false;
+          }
         });
       });
-      
+
       // También verificar periódicamente qué modelo está visible (fallback)
       setInterval(detectVisibleCountry, 500);
     }, 1000); // Esperar 1 segundo para que todo esté cargado
@@ -303,14 +314,14 @@ document.addEventListener('DOMContentLoaded', function() {
 function showCountryInfo(countryKey) {
   const country = countries[countryKey];
   const infoDiv = document.getElementById('countryInfo');
-  
+
   document.getElementById('infoTitle').textContent = `${country.emoji} ${country.name}`;
   document.getElementById('infoTitle').style.color = country.color;
-  
+
   // Llenar estadísticas
   const statsDiv = document.getElementById('infoStats');
   statsDiv.innerHTML = '';
-  
+
   Object.entries(country.stats).forEach(([key, value]) => {
     const statItem = document.createElement('div');
     statItem.className = 'stat-item';
@@ -320,7 +331,7 @@ function showCountryInfo(countryKey) {
     `;
     statsDiv.appendChild(statItem);
   });
-  
+
   document.getElementById('infoDescription').textContent = country.description;
   infoDiv.classList.add('active');
 }
@@ -337,7 +348,7 @@ function showAllInfo() {
     allInfo += `Participaciones: ${country.stats['Participaciones']}\n\n`;
   });
   allInfo += "🏆 Primer Mundial con 48 equipos\n⚽ 3 países anfitriones\n🎯 80 partidos en total";
-  
+
   alert(allInfo);
 }
 
@@ -346,14 +357,14 @@ function resetAR() {
   document.querySelectorAll('a-gltf-model').forEach(model => {
     model.emit('animationrestart');
   });
-  
+
   // Mostrar mensaje
   const banner = document.getElementById('detectionBanner');
   document.getElementById('bannerTitle').textContent = '🔄 Experiencia Reiniciada';
   document.getElementById('bannerSubtitle').textContent = 'Todas las animaciones reiniciadas';
   banner.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
   banner.style.display = 'block';
-  
+
   setTimeout(() => {
     banner.style.display = 'none';
   }, 2000);
@@ -362,7 +373,7 @@ function resetAR() {
 function toggleAnimations() {
   const models = document.querySelectorAll('a-gltf-model');
   const isPaused = models[0].getAttribute('animation-mixer');
-  
+
   models.forEach(model => {
     if (isPaused) {
       model.removeAttribute('animation-mixer');
@@ -370,21 +381,21 @@ function toggleAnimations() {
       model.setAttribute('animation-mixer', 'clip: *; loop: repeat');
     }
   });
-  
+
   // Mostrar estado
   const banner = document.getElementById('detectionBanner');
   document.getElementById('bannerTitle').textContent = isPaused ? '▶️ Animaciones Reanudadas' : '⏸️ Animaciones Pausadas';
   document.getElementById('bannerSubtitle').textContent = isPaused ? 'Todas las animaciones activadas' : 'Animaciones en pausa';
   banner.style.background = 'linear-gradient(135deg, #fdbb2d, #b21f1f)';
   banner.style.display = 'block';
-  
+
   setTimeout(() => {
     banner.style.display = 'none';
   }, 2000);
 }
 
 // Cerrar modal al hacer clic fuera
-document.getElementById('countryInfo').addEventListener('click', function(e) {
+document.getElementById('countryInfo').addEventListener('click', function (e) {
   if (e.target === this) {
     closeCountryInfo();
   }
@@ -400,17 +411,17 @@ function openMenu(type) {
       document.getElementById('bannerSubtitle').textContent = 'Escanea una bandera primero';
       banner.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a6f)';
       banner.style.display = 'block';
-      
+
       setTimeout(() => {
         banner.style.display = 'none';
       }, 3000);
     }
     return;
   }
-  
+
   const country = countries[currentCountry];
-  
-  switch(type) {
+
+  switch (type) {
     case 'trivia':
       openTriviaModal();
       break;
@@ -438,12 +449,12 @@ function openManual() {
 // Función para reiniciar la trivia de un país
 function restartTrivia() {
   if (!currentCountry) return;
-  
+
   // Limpiar las preguntas contestadas del país actual
   if (answeredQuestions[currentCountry]) {
     answeredQuestions[currentCountry] = [];
   }
-  
+
   // Abrir el modal de trivia de nuevo con una nueva pregunta
   openTriviaModal();
 }
@@ -459,48 +470,48 @@ let answeredQuestions = {};
 function getRandomUnansweredQuestion(countryKey) {
   const trivia = triviaData[countryKey];
   if (!trivia) return null;
-  
+
   // Inicializar array de preguntas contestadas si no existe
   if (!answeredQuestions[countryKey]) {
     answeredQuestions[countryKey] = [];
   }
-  
+
   // Obtener índices de preguntas no contestadas
   const unansweredIndices = trivia
     .map((question, index) => ({ question, index }))
     .filter(item => !answeredQuestions[countryKey].includes(item.index))
     .map(item => item.index);
-  
+
   // Si todas las preguntas fueron contestadas, retornar null para mostrar mensaje
   if (unansweredIndices.length === 0) {
     return null;
   }
-  
+
   // Seleccionar un índice aleatorio de los no contestados
   const randomIndex = unansweredIndices[Math.floor(Math.random() * unansweredIndices.length)];
-  
+
   return { question: trivia[randomIndex], index: randomIndex };
 }
 
 // Función para abrir modal de Trivia
 function openTriviaModal() {
   if (!currentCountry || !triviaData[currentCountry]) return;
-  
+
   const country = countries[currentCountry];
   const trivia = triviaData[currentCountry];
-  
+
   // Obtener pregunta no contestada
   const questionData = getRandomUnansweredQuestion(currentCountry);
-  
+
   document.getElementById('triviaTitle').textContent = `Trivia - ${country.emoji} ${country.name}`;
-  
+
   const container = document.getElementById('triviaContainer');
-  
+
   // Si no hay más preguntas, mostrar mensaje de trivia terminada
   if (!questionData) {
     const totalQuestions = trivia.length;
     const answeredCount = answeredQuestions[currentCountry] ? answeredQuestions[currentCountry].length : 0;
-    
+
     container.innerHTML = `
       <div class="trivia-completed">
         <div class="trivia-completed-icon">🎉</div>
@@ -519,11 +530,11 @@ function openTriviaModal() {
     document.getElementById('triviaModal').classList.add('active');
     return;
   }
-  
+
   currentTriviaQuestion = questionData.question;
   currentTriviaQuestionIndex = questionData.index;
   triviaAnswered = false;
-  
+
   container.innerHTML = `
     <div class="trivia-question">${currentTriviaQuestion.question}</div>
     <div class="trivia-options">
@@ -538,39 +549,39 @@ function openTriviaModal() {
       Siguiente Pregunta
     </button>
   `;
-  
+
   document.getElementById('triviaModal').classList.add('active');
 }
 
 function selectTriviaOption(element, selectedIndex) {
   if (triviaAnswered) return; // No permitir cambiar respuesta después de responder
-  
+
   // Remover selección anterior
   document.querySelectorAll('.trivia-option').forEach(opt => {
     opt.classList.remove('selected');
   });
-  
+
   // Seleccionar nueva opción
   element.classList.add('selected');
-  
+
   // Verificar respuesta
   const correctIndex = currentTriviaQuestion.correctAnswer;
   const isCorrect = selectedIndex === correctIndex;
   triviaAnswered = true;
-  
+
   // Marcar esta pregunta como contestada
   if (currentCountry && currentTriviaQuestionIndex !== null && currentTriviaQuestionIndex !== undefined) {
     // Inicializar array si no existe
     if (!answeredQuestions[currentCountry]) {
       answeredQuestions[currentCountry] = [];
     }
-    
+
     // Agregar el índice de la pregunta a las contestadas (si no está ya)
     if (!answeredQuestions[currentCountry].includes(currentTriviaQuestionIndex)) {
       answeredQuestions[currentCountry].push(currentTriviaQuestionIndex);
     }
   }
-  
+
   // Mostrar todas las opciones con su estado
   document.querySelectorAll('.trivia-option').forEach((opt, index) => {
     opt.style.pointerEvents = 'none'; // Deshabilitar clics
@@ -580,11 +591,11 @@ function selectTriviaOption(element, selectedIndex) {
       opt.classList.add('incorrect');
     }
   });
-  
+
   // Mostrar feedback
   const feedbackDiv = document.getElementById('triviaFeedback');
   const nextBtn = document.getElementById('triviaNextBtn');
-  
+
   if (isCorrect) {
     feedbackDiv.innerHTML = '<div class="feedback-correct">✅ ¡Correcto!</div>';
     feedbackDiv.style.display = 'block';
@@ -592,24 +603,24 @@ function selectTriviaOption(element, selectedIndex) {
     feedbackDiv.innerHTML = `<div class="feedback-incorrect">❌ Incorrecto. La respuesta correcta es: <strong>${currentTriviaQuestion.options[correctIndex]}</strong></div>`;
     feedbackDiv.style.display = 'block';
   }
-  
+
   nextBtn.style.display = 'block';
 }
 
 function nextTriviaQuestion() {
   if (!currentCountry || !triviaData[currentCountry]) return;
-  
+
   // Obtener pregunta no contestada
   const questionData = getRandomUnansweredQuestion(currentCountry);
-  
+
   const container = document.getElementById('triviaContainer');
-  
+
   // Si no hay más preguntas, mostrar mensaje de trivia terminada
   if (!questionData) {
     const trivia = triviaData[currentCountry];
     const totalQuestions = trivia.length;
     const answeredCount = answeredQuestions[currentCountry] ? answeredQuestions[currentCountry].length : 0;
-    
+
     container.innerHTML = `
       <div class="trivia-completed">
         <div class="trivia-completed-icon">🎉</div>
@@ -627,11 +638,11 @@ function nextTriviaQuestion() {
     `;
     return;
   }
-  
+
   currentTriviaQuestion = questionData.question;
   currentTriviaQuestionIndex = questionData.index;
   triviaAnswered = false;
-  
+
   container.innerHTML = `
     <div class="trivia-question">${currentTriviaQuestion.question}</div>
     <div class="trivia-options">
@@ -651,47 +662,47 @@ function nextTriviaQuestion() {
 
 function convertYouTubeUrl(url) {
   if (!url) return null;
-  
- 
+
+
   if (url.includes('youtube.com/embed/')) {
     return url;
   }
-  
+
   let videoId = null;
-  
+
   const shortMatch = url.match(/(?:youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]+)/);
   if (shortMatch) {
     videoId = shortMatch[1];
   }
-  
+
   if (!videoId) {
     const watchMatch = url.match(/(?:youtube\.com\/watch\?v=|youtube\.com\/v\/)([a-zA-Z0-9_-]+)/);
     if (watchMatch) {
       videoId = watchMatch[1];
     }
   }
-  
+
   if (videoId) {
     return `https://www.youtube.com/embed/${videoId}`;
   }
-  
+
   return url;
 }
 
 function openVideoModal() {
   if (!currentCountry) return;
-  
+
   const country = countries[currentCountry];
   let videoUrl = videoUrls[currentCountry];
-  
+
   document.getElementById('videoTitle').textContent = `Video - ${country.emoji} ${country.name}`;
-  
+
   const container = document.getElementById('videoContainer');
   const videoElement = document.getElementById('countryVideo');
-  
+
   if (videoUrl) {
     videoUrl = convertYouTubeUrl(videoUrl);
-    
+
     videoElement.src = videoUrl;
     videoElement.style.display = 'block';
   } else {
@@ -702,12 +713,12 @@ function openVideoModal() {
       </div>
     `;
   }
-  
+
   const firstBtn = document.querySelectorAll('.filter-btn')[0];
   if (firstBtn && videoUrl) {
     applyVideoFilter('none', firstBtn);
   }
-  
+
   document.getElementById('videoModal').classList.add('active');
 }
 
@@ -724,7 +735,7 @@ function applyVideoFilter(filterType, buttonElement) {
     buttonElement.classList.add('active');
   }
 
-  switch(filterType) {
+  switch (filterType) {
     case 'grayscale': // ahora será Desenfoque
       video.style.filter = 'blur(25px)';
       break;
@@ -746,12 +757,12 @@ function applyVideoFilter(filterType, buttonElement) {
 
 function openStatsModal() {
   if (!currentCountry) return;
-  
+
   const country = countries[currentCountry];
   const stats = countryStats[currentCountry] || {};
-  
+
   document.getElementById('statsTitle').textContent = `Estadísticas - ${country.emoji} ${country.name}`;
-  
+
   const container = document.getElementById('statsContainer');
   container.innerHTML = `
     <div class="stats-field">
@@ -775,7 +786,7 @@ function openStatsModal() {
       <div class="stats-field-value">${stats.rankingFIFA || "Dato a insertar"}</div>
     </div>
   `;
-  
+
   document.getElementById('statsModal').classList.add('active');
 }
 
@@ -793,20 +804,20 @@ function animateModel() {
     }
     return;
   }
-  
+
   const modelId = `${currentCountry}-3d`;
   const model = document.getElementById(modelId);
-  
+
   if (!model) {
     console.warn(`Modelo no encontrado: ${modelId}`);
     return;
   }
-  
+
   animationsPaused = !animationsPaused;
-  
+
   const animationComponent = model.components.animation;
   const animationBounceComponent = model.components['animation__bounce'];
-  
+
   if (animationsPaused) {
     if (animationComponent) {
       const currentAnim = model.getAttribute('animation');
@@ -826,19 +837,19 @@ function animateModel() {
         model.setAttribute('animation__bounce', Object.assign({}, bounceObj, { paused: true }));
       }
     }
-    
+
     const icon = document.getElementById('animationIcon');
     if (icon) {
       icon.textContent = '▶️';
     }
-    
+
     const banner = document.getElementById('detectionBanner');
     if (banner) {
       document.getElementById('bannerTitle').textContent = '⏸️ Animación Pausada';
       document.getElementById('bannerSubtitle').textContent = 'La animación del modelo está en pausa';
       banner.style.background = 'linear-gradient(135deg, #fdbb2d, #b21f1f)';
       banner.style.display = 'block';
-      
+
       setTimeout(() => {
         banner.style.display = 'none';
       }, 2000);
@@ -864,19 +875,19 @@ function animateModel() {
         model.setAttribute('animation__bounce', rest);
       }
     }
-    
+
     const icon = document.getElementById('animationIcon');
     if (icon) {
       icon.textContent = '⏸️';
     }
-    
+
     const banner = document.getElementById('detectionBanner');
     if (banner) {
       document.getElementById('bannerTitle').textContent = '▶️ Animación Reanudada';
       document.getElementById('bannerSubtitle').textContent = 'La animación del modelo está activa';
       banner.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
       banner.style.display = 'block';
-      
+
       setTimeout(() => {
         banner.style.display = 'none';
       }, 2000);
@@ -885,7 +896,7 @@ function animateModel() {
 }
 
 document.querySelectorAll('.modal').forEach(modal => {
-  modal.addEventListener('click', function(e) {
+  modal.addEventListener('click', function (e) {
     if (e.target === this) {
       this.classList.remove('active');
     }
