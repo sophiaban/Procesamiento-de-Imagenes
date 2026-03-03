@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Changa One', sans-serif;
   background: rgba(83, 83, 83, 0.9);  
   color: white;
   height: 100vh;
@@ -234,7 +234,7 @@ body {
 }
 .floating-menu.has-country {
   opacity: 1;
-  border-color: rgba(255, 215, 0, 0.6);
+  border-color: rgba(0, 204, 255, 0.6);
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
 }
 
@@ -328,7 +328,7 @@ body {
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  border: 3px solid gold;
+  border: 3px solid rgb(34, 128, 151);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
@@ -374,7 +374,7 @@ body {
   padding: 20px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 10px;
-  border-left: 4px solid gold;
+  border-left: 4px solid rgb(28, 175, 143);
 }
 
 .manual-container h3 {
@@ -382,6 +382,7 @@ body {
   color: rgb(255, 255, 255);
   margin-bottom: 15px;
   margin-top: 0;
+  opacity: 80%;
 }
 
 .manual-container h4 {

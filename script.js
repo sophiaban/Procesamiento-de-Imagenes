@@ -715,25 +715,28 @@ function applyVideoFilter(filterType, buttonElement) {
   const video = document.getElementById('countryVideo');
   
   if (!video) return;
-  
+
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.classList.remove('active');
   });
-  
+
   if (buttonElement) {
     buttonElement.classList.add('active');
   }
-  
+
   switch(filterType) {
-    case 'grayscale':
-      video.style.filter = 'grayscale(100%)';
+    case 'grayscale': // ahora será Desenfoque
+      video.style.filter = 'blur(5px)';
       break;
-    case 'sepia':
-      video.style.filter = 'sepia(100%)';
+
+    case 'sepia': // ahora será Cámara térmica
+      video.style.filter = 'contrast(200%) saturate(300%) hue-rotate(90deg)';
       break;
-    case 'saturate':
-      video.style.filter = 'saturate(200%)';
+
+    case 'saturate': // Saturación alta
+      video.style.filter = 'saturate(250%)';
       break;
+
     case 'none':
     default:
       video.style.filter = 'none';
