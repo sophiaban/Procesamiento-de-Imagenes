@@ -724,29 +724,24 @@ function applyVideoFilter(filterType, buttonElement) {
     buttonElement.classList.add('active');
   }
 
- switch(filterType) {
-  case 'grayscale': // Desenfoque EXTREMO
-    video.style.filter = 'blur(60px) brightness(120%)';
-    break;
+  switch(filterType) {
+    case 'grayscale': // ahora será Desenfoque
+      video.style.filter = 'blur(25px)';
+      break;
 
-  case 'sepia': // Cámara térmica exagerada
-    video.style.filter = `
-      contrast(400%)
-      saturate(600%)
-      hue-rotate(140deg)
-      brightness(150%)
-    `;
-    break;
+    case 'sepia': // ahora será Cámara térmica
+      video.style.filter = 'contrast(200%) saturate(300%) hue-rotate(90deg)';
+      break;
 
-  case 'saturate': // Saturación salvaje
-    video.style.filter = 'saturate(500%) contrast(200%)';
-    break;
+    case 'saturate': // Saturación alta
+      video.style.filter = 'saturate(250%)';
+      break;
 
-  case 'none':
-  default:
-    video.style.filter = 'none';
-    break;
-}
+    case 'none':
+    default:
+      video.style.filter = 'none';
+      break;
+  }
 }
 
 function openStatsModal() {
