@@ -438,7 +438,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
   const scene = document.querySelector('a-scene');
   
   // Configurar botones AR
@@ -449,12 +449,28 @@ document.addEventListener('DOMContentLoaded', function () {
         showCountryInfo(country);
       });
     });
+
+    // 🔥 Detectar banderas con eventos nativos de MindAR
+    document.querySelectorAll('[mindar-image-target]').forEach((target, index) => {
+      target.addEventListener('targetFound', () => {
+        showCountryMenu(index); // activa menú y trivia
+      });
+
+      target.addEventListener('targetLost', () => {
+        const flagModel = document.getElementById(`${currentCountry}-flag-model`);
+        if (flagModel) {
+          flagModel.object3D.visible = false;
+        }
+        currentCountry = null; // resetea país
+      });
+    });
   });
 
-      // También verificar periódicamente qué modelo está visible (fallback)
-      setInterval(detectVisibleCountry, 500);
-    }, 1000); // Esperar 1 segundo para que todo esté cargado
+  // También verificar periódicamente qué modelo está visible (fallback)
+  setInterval(detectVisibleCountry, 500);
   });
+
+});
 ;
 
 // Funciones de la interfaz (permanecen igual)
