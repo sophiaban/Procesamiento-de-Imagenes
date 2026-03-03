@@ -216,11 +216,6 @@ document.addEventListener('DOMContentLoaded', function () {
           menuHeader.querySelector('.menu-header-text').textContent = `${detectedCountry.emoji} ${detectedCountry.name}`;
         }
       }
-
-      const flagModel = document.getElementById(`${currentCountry}-flag-model`);
-      if (flagModel) {
-        flagModel.object3D.visible = true;
-      }
     }
   }
 
@@ -295,13 +290,13 @@ document.addEventListener('DOMContentLoaded', function () {
               }
             }
           }
-
-          
           const flagModel = document.getElementById(`${currentCountry}-flag-model`);
           if (flagModel) {
             flagModel.object3D.visible = false;
+
           }
-        });
+        }
+        );
       });
 
       // También verificar periódicamente qué modelo está visible (fallback)
@@ -794,7 +789,7 @@ function animateModel() {
   if (!currentCountry) {
     const banner = document.getElementById('detectionBanner');
     if (banner) {
-      document.getElementById('bannerTitle').textContent = '⚠️ No hay país detectado';
+      document.getElementById('bannerTitle').textContent = ' No hay país detectado';
       document.getElementById('bannerSubtitle').textContent = 'Escanea una bandera primero';
       banner.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a6f)';
       banner.style.display = 'block';
