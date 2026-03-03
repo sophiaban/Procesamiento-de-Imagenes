@@ -49,7 +49,186 @@ const countries = {
     },
     description: "Como anfitrión del Mundial 2026, Canadá espera hacer historia en casa con un equipo en constante mejora."
   },
-
+colombia: {
+    name: "Colombia",
+    emoji: "🇨🇴",
+    color: "#FCD116",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Cuartos de Final (2014)",
+      "Participaciones": "6",
+      "Grupo 2026": "Por definir"
+    },
+    description: "La selección colombiana busca repetir su exitosa campaña de 2014 con un equipo lleno de talento y garra."
+  },
+  "corea-del-sur": {
+    name: "Corea del Sur",
+    emoji: "🇰🇷",
+    color: "#CD2E3A",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Semifinales (2002)",
+      "Participaciones": "11",
+      "Grupo 2026": "Por definir"
+    },
+    description: "Los Taegeuk Warriors buscan repetir la hazaña del 2002 con un equipo disciplinado y técnico."
+  },
+  ecuador: {
+    name: "Ecuador",
+    emoji: "🇪🇨",
+    color: "#FFD100",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Octavos de Final (2006)",
+      "Participaciones": "4",
+      "Grupo 2026": "Por definir"
+    },
+    description: "La tricolor ecuatoriana busca superar su mejor actuación en un Mundial con un equipo joven y prometedor."
+  },
+  espana: {
+    name: "España",
+    emoji: "🇪🇸",
+    color: "#AA151B",
+    stats: {
+      "Copas del Mundo": "1 (2010)",
+      "Mejor Resultado": "Campeón (2010)",
+      "Participaciones": "16",
+      "Grupo 2026": "Por definir"
+    },
+    description: "La furia roja busca repetir el éxito del 2010 con una nueva generación de talentosos jugadores."
+  },
+  iran: {
+    name: "Irán",
+    emoji: "🇮🇷",
+    color: "#DA0000",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Fase de Grupos",
+      "Participaciones": "6",
+      "Grupo 2026": "Por definir"
+    },
+    description: "El equipo persa busca hacer historia y pasar por primera vez a octavos de final en el Mundial 2026."
+  },
+  japon: {
+    name: "Japón",
+    emoji: "🇯🇵",
+    color: "#BC002D",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Octavos de Final (2002, 2010, 2018, 2022)",
+      "Participaciones": "7",
+      "Grupo 2026": "Por definir"
+    },
+    description: "Los Samuráis Azules buscan superar por primera vez los octavos de final con su estilo técnico y disciplinado."
+  },
+  jordania: {
+    name: "Jordania",
+    emoji: "🇯🇴",
+    color: "#007A3D",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Nunca clasificó",
+      "Participaciones": "0",
+      "Grupo 2026": "Por definir"
+    },
+    description: "Jordania busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026."
+  },
+  marruecos: {
+    name: "Marruecos",
+    emoji: "🇲🇦",
+    color: "#C1272D",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Semifinales (2022)",
+      "Participaciones": "6",
+      "Grupo 2026": "Por definir"
+    },
+    description: "Tras su histórica semifinal en 2022, los Leones del Atlas buscan repetir el éxito en 2026."
+  },
+  mexico: {
+    name: "México",
+    emoji: "🇲🇽",
+    color: "#006847",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Cuartos de Final",
+      "Participaciones": "17",
+      "Grupo 2026": "Por definir"
+    },
+    description: "La selección mexicana busca hacer historia en el Mundial 2026 como anfitrión conjuntamente con USA y Canadá."
+  },
+  "nueva-zelanda": {
+    name: "Nueva Zelanda",
+    emoji: "🇳🇿",
+    color: "#00247D",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Fase de Grupos",
+      "Participaciones": "2",
+      "Grupo 2026": "Por definir"
+    },
+    description: "Los All Whites buscan ganar su primer partido en una Copa del Mundo en la edición de 2026."
+  },
+  paraguay: {
+    name: "Paraguay",
+    emoji: "🇵🇾",
+    color: "#D52B1E",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Cuartos de Final (2010)",
+      "Participaciones": "8",
+      "Grupo 2026": "Por definir"
+    },
+    description: "La albirroja paraguaya busca repetir su exitosa campaña de 2010 con un equipo sólido defensivamente."
+  },
+  tunez: {
+    name: "Túnez",
+    emoji: "🇹🇳",
+    color: "#E70013",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Fase de Grupos",
+      "Participaciones": "6",
+      "Grupo 2026": "Por definir"
+    },
+    description: "Las Águilas de Cartago buscan por primera vez pasar a octavos de final en un Mundial."
+  },
+  uruguay: {
+    name: "Uruguay",
+    emoji: "🇺🇾",
+    color: "#0038A8",
+    stats: {
+      "Copas del Mundo": "2 (1930, 1950)",
+      "Mejor Resultado": "Campeón",
+      "Participaciones": "14",
+      "Grupo 2026": "Por definir"
+    },
+    description: "La celeste, primera campeona del mundo, busca su tercer título con su característica garra charrúa."
+  },
+  usa: {
+    name: "Estados Unidos",
+    emoji: "🇺🇸",
+    color: "#B22234",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Semifinales (1930)",
+      "Participaciones": "11",
+      "Grupo 2026": "Por definir"
+    },
+    description: "Como anfitrión del Mundial 2026, USA espera aprovechar su ventaja local para lograr un resultado histórico."
+  },
+  uzbekistan: {
+    name: "Uzbekistán",
+    emoji: "🇺🇿",
+    color: "#1EB53A",
+    stats: {
+      "Copas del Mundo": "0",
+      "Mejor Resultado": "Nunca clasificó",
+      "Participaciones": "0",
+      "Grupo 2026": "Por definir"
+    },
+    description: "Uzbekistán busca hacer historia y clasificar por primera vez a una Copa del Mundo en 2026."
+  }
 };
 
 let currentCountry = null;
@@ -259,51 +438,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  scene.addEventListener('loaded', function () {
-    setTimeout(() => {
-      const targets = document.querySelectorAll('[mindar-image-target]');
-
-      targets.forEach((target, index) => {
-        const targetAttr = target.getAttribute('mindar-image-target');
-        let targetIndex = index;
-
-        if (targetAttr && typeof targetAttr === 'string') {
-          const targetIndexMatch = targetAttr.match(/targetIndex:\s*(\d+)/);
-          if (targetIndexMatch) {
-            targetIndex = parseInt(targetIndexMatch[1]);
-          }
-        }
-
-        target.addEventListener('targetFound', function () {
-          showCountryMenu(targetIndex);
-        });
-
-        target.addEventListener('targetLost', function () {
-          const floatingMenu = document.getElementById('floatingMenu');
-          const menuHeader = document.getElementById('menuHeader');
-          if (floatingMenu) {
-            floatingMenu.classList.remove('has-country');
-            if (menuHeader && currentCountry) {
-              const country = countries[currentCountry];
-              if (country) {
-                menuHeader.querySelector('.menu-header-text').textContent = `${country.emoji} ${country.name} (sin señal)`;
-              }
-            }
-          }
-          const flagModel = document.getElementById(`${currentCountry}-flag-model`);
-          if (flagModel) {
-            flagModel.object3D.visible = false;
-
-          }
-        }
-        );
+  document.addEventListener('DOMContentLoaded', function() {
+  const scene = document.querySelector('a-scene');
+  
+  // Configurar botones AR
+  scene.addEventListener('loaded', function() {
+    document.querySelectorAll('.info-button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const country = this.getAttribute('data-country');
+        showCountryInfo(country);
       });
+    });
+  });
 
       // También verificar periódicamente qué modelo está visible (fallback)
       setInterval(detectVisibleCountry, 500);
     }, 1000); // Esperar 1 segundo para que todo esté cargado
   });
-});
+;
 
 // Funciones de la interfaz (permanecen igual)
 function showCountryInfo(countryKey) {
@@ -840,7 +992,7 @@ function animateModel() {
 
     const banner = document.getElementById('detectionBanner');
     if (banner) {
-      document.getElementById('bannerTitle').textContent = '⏸️ Animación Pausada';
+      document.getElementById('bannerTitle').textContent = '⏸ Animación Pausada';
       document.getElementById('bannerSubtitle').textContent = 'La animación del modelo está en pausa';
       banner.style.background = 'linear-gradient(135deg, #fdbb2d, #b21f1f)';
       banner.style.display = 'block';
@@ -878,7 +1030,7 @@ function animateModel() {
 
     const banner = document.getElementById('detectionBanner');
     if (banner) {
-      document.getElementById('bannerTitle').textContent = '▶️ Animación Reanudada';
+      document.getElementById('bannerTitle').textContent = '▶ Animación Reanudada';
       document.getElementById('bannerSubtitle').textContent = 'La animación del modelo está activa';
       banner.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
       banner.style.display = 'block';
