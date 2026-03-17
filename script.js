@@ -409,21 +409,21 @@ const countryStats = {
 };
 
 const videoUrls = {
-  //arabia: "https://youtu.be/spLV1gF0fkI?si=mlJm0-ynq2BLyx5O",
+  //arabia: "https://youtu.be/_Pyfr79FU34?si=OQ9ZFmU3_Zc_IJEH",
   argentina: "https://youtu.be/FA1sR2SZAlY",
   australia: "https://youtu.be/KvSiRNO1BTY",
   brasil: "https://youtu.be/AZAX5P_Q4Jg",
   //Cabo-Verde: "https://youtu.be/nwwJPz-DHnE?si=5j9IyrWma50KVh3C",
-  colombia: "https://youtu.be/RbmaLT320hw?si=bLendShe3oehPan_",
-  "corea-del-sur": "https://youtu.be/pb4nQnRaQx8?si=zC_FCwY7q55MMd7O",
-  espana: "https://youtu.be/DCYNq2dyVj0?si=Pm8qzJS7aoe2xPkJ", 
-  japon: "https://youtu.be/91eoGiLSCgY?si=lYSYWkWoo7mbyrE9", 
-  mexico: "https://youtu.be/n55qabXypdQ?si=f44pk2fJB4J79Xzg",
-  //Rep-checa: "https://youtu.be/ET0Xqlsj-r8?si=Ve3cSnH8mFTsZoQf",
-  //sudafrica: "https://youtu.be/auIjAxIPyxk?si=XIkSKLeXCsHS8qPA",
-  tunez: "https://youtu.be/J8lF9XAlW4U?si=I2IwPAgINebjfef0",
-  uruguay: "https://youtu.be/1ykn3lx-I0w?si=oClnJYNPegYklxS3",
-  uzbekistan: "https://youtu.be/Ckn-UZlZ9s0?si=8oWBRQNDmMP6GuZX",
+  colombia: "https://youtu.be/GXW4upfqoMg?si=g-Aq2PE-vmI8TCw1",
+  "corea-del-sur": "https://youtu.be/5Zwjyi8bdE4?si=vIsnA4e3fMCYRlYN",
+  espana: "https://youtu.be/UHf4AkgQxhY?si=wJkt_3jfkCuDvGVc", 
+  japon: "https://youtu.be/nMd4-BdJPDs?si=BdL5g5UoHpUp7WWc", 
+  mexico: "https://youtu.be/5-S3oTo2iwQ?si=PZXKsTRH7FY_ZVLe",
+  //Rep-checa: "https://youtu.be/docsnyKUwNw?si=S0Kjeydh2nIcOMGM",
+  //sudafrica: "https://youtu.be/M7hcpszOswM?si=IU0mEgpfq1S7aFCA",
+  tunez: "https://youtu.be/w6wpXzMUIlM?si=ZqRsp89RIh2B3YAB",
+  uruguay: "https://youtu.be/jIHZ2N3II8s?si=3QXReUSlm8NLiKy8",
+  uzbekistan: "https://youtu.be/VTfJV-sEy4k?si=xYnUaUJBpFbL6NUp",
 };
 
 
