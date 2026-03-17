@@ -319,6 +319,13 @@ const countryStats = {
     ultimoResultado: "Fase de grupos 2022",
     rankingFIFA: "Top 50"
   },
+   espana: {
+    participaciones: "16",
+    mejorPosicion: "Campeon 2010",
+    maximoGoleador: "David Villa",
+    ultimoResultado: "Octavos de final 2022",
+    rankingFIFA: "Top 50"
+  },
 
 };
 
