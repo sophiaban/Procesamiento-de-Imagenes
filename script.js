@@ -296,7 +296,7 @@ const countryStats = {
     mejorPosicion: "Campeón",
     maximoGoleador: "Lionel Messi",
     ultimoResultado: "Campeón 2022",
-    rankingFIFA: "Top 3"
+    rankingFIFA: "Top 2"
   },
   australia: {
     participaciones: "6",
@@ -319,14 +319,93 @@ const countryStats = {
     ultimoResultado: "Fase de grupos 2022",
     rankingFIFA: "Top 50"
   },
+  colombia: {
+    participaciones: "6",
+    mejorPosicion: "Cuartos de final (2014)",
+    maximoGoleador: "Radamel Falcao",
+    ultimoResultado: "Octavos de final 2018",
+    rankingFIFA: "Top 12"
+  },
+  "corea-del-sur":{
+    participaciones: "11",
+    mejorPosicion: "Semifinal  (2002)",
+    maximoGoleador: "Cha Bum-kun",
+    ultimoResultado: "Octavos de final 2022",
+    rankingFIFA: "Top 22"
+  },
    espana: {
     participaciones: "16",
     mejorPosicion: "Campeon 2010",
     maximoGoleador: "David Villa",
     ultimoResultado: "Octavos de final 2022",
-    rankingFIFA: "Top 50"
+    rankingFIFA: "Top 1"
+  },
+   japon: {
+    participaciones: "7",
+    mejorPosicion: "Octavos de final 2022",
+    maximoGoleador: "Kunishige Kamamoto",
+    ultimoResultado: "Octavos de final 2022",
+    rankingFIFA: "Top 19"
+  },
+   mexico: {
+    participaciones: "17",
+    mejorPosicion: "Cuartos de final 1986",
+    maximoGoleador: "Javier Hernández",
+    ultimoResultado: "Fases de grupos 2022",
+    rankingFIFA: "Top 16"
+  },
+    tunez:{
+    participaciones: "6",
+    mejorPosicion: "Fases de grupos 2022",
+    maximoGoleador: "Issam Jemâa",
+    ultimoResultado: "Fases de grupos 2022",
+    rankingFIFA: "Top 41"
+  },
+   uruguay:{
+    participaciones: "14",
+    mejorPosicion: "Campeón 1950",
+    maximoGoleador: "Luis Suárez",
+    ultimoResultado: "Fases de grupos 2022",
+    rankingFIFA: "Top 17"
+  },
+  uzbekistan:{
+    participaciones: "0",
+    mejorPosicion: "No a clasificado",
+    maximoGoleador: "Eldor Shomurodov",
+    ultimoResultado: "N/A",
+    rankingFIFA: "Top 64"
   },
 
+  /*
+  Sudafrica:{
+    participaciones: "3",
+    mejorPosicion: "Fase de Grupos",
+    maximoGoleador: "Benni McCarthy",
+    ultimoResultado: "Fase de Grupos (2010)",
+    rankingFIFA: "Top 59"
+  },
+  Cabo-Verde:{
+    participaciones: "0",
+    mejorPosicion: "No a clasificado",
+    maximoGoleador: "Héldon Ramos",
+    ultimoResultado: "N/A",
+    rankingFIFA: "Top 65"
+  },
+  Rep-Checa:{
+    participaciones: "1",
+    mejorPosicion: "Fase de Grupos (2006)",
+    maximoGoleador: "Jan Koller",
+    ultimoResultado: "Fase de Grupos (2006)",
+    rankingFIFA: "Top 40"
+  },
+   Arabia:{
+    participaciones: "6",
+    mejorPosicion: "Octavos de final 1994",
+    maximoGoleador: "Majed Abdullah",
+    ultimoResultado: "Fase de Grupos 2022",
+    rankingFIFA: "Top 56"
+  },
+  */
 };
 
 const videoUrls = {
