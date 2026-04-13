@@ -764,3 +764,23 @@ body {
   color: #888;
   font-style: italic;
 }
+
+/* Efecto de partículas para los botones */
+.particle {
+  position: fixed;
+  pointer-events: none; /* Para que no estorben si el usuario da múltiples clics */
+  border-radius: 50%;
+  z-index: 9999;
+  animation: particle-burst 0.8s ease-out forwards;
+}
+
+@keyframes particle-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}

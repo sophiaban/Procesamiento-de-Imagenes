@@ -1177,4 +1177,4 @@ document.querySelectorAll('.modal').forEach(modal => {
       this.classList.remove('active');
     }
   });
-});
+}); //cambio para git
