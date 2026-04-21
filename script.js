@@ -871,26 +871,29 @@ const countryStats = {
 };
 
 const videoUrls = {
-  argentina: "https://youtu.be/FA1sR2SZAlY",
-  australia: "https://youtu.be/KvSiRNO1BTY",
-  brasil: "https://youtu.be/AZAX5P_Q4Jg",
-  canada: "https://youtu.be/GWrOR1FxBhs", // Highlights Canadá vs Croacia 2022
-  colombia: "https://youtu.be/GXW4upfqoMg?si=g-Aq2PE-vmI8TCw1",
+  "argentina": "https://youtu.be/FA1sR2SZAlY",
+  "australia": "https://youtu.be/KvSiRNO1BTY",
+  "brasil": "https://youtu.be/AZAX5P_Q4Jg",
+  "canada": "https://youtu.be/GWrOR1FxBhs", // Highlights Canadá vs Croacia 2022
+  "colombia": "https://youtu.be/GXW4upfqoMg?si=g-Aq2PE-vmI8TCw1",
   "corea-del-sur": "https://youtu.be/5Zwjyi8bdE4?si=vIsnA4e3fMCYRlYN",
-  ecuador: "https://youtu.be/b7X1YkrkUHA", // Highlights Ecuador vs Qatar 2022
-  espana: "https://youtu.be/UHf4AkgQxhY?si=wJkt_3jfkCuDvGVc", 
-  iran: "https://youtu.be/-C80_VKBMZc", // Final de locura Irán vs Gales 2022
-  japon: "https://youtu.be/nMd4-BdJPDs?si=BdL5g5UoHpUp7WWc", 
-  jordania: "https://youtu.be/3kO6I9xztd8", // Jordania llegando a la final de la Copa Asiática 2023
-  marruecos: "https://youtu.be/M766FGsv5do", // Histórica victoria de Marruecos vs Portugal 2022
-  mexico: "https://youtu.be/5-S3oTo2iwQ?si=PZXKsTRH7FY_ZVLe",
+  "ecuador": "https://youtu.be/b7X1YkrkUHA", // Highlights Ecuador vs Qatar 2022
+  "espana": "https://youtu.be/UHf4AkgQxhY?si=wJkt_3jfkCuDvGVc", 
+  "iran": "https://youtu.be/-C80_VKBMZc", // Final de locura Irán vs Gales 2022
+  "japon": "https://youtu.be/nMd4-BdJPDs?si=BdL5g5UoHpUp7WWc", 
+  "jordania": "https://youtu.be/3kO6I9xztd8", // Jordania llegando a la final de la Copa Asiática 2023
+  "marruecos": "https://youtu.be/M766FGsv5do", // Histórica victoria de Marruecos vs Portugal 2022
+  "mexico": "https://youtu.be/5-S3oTo2iwQ?si=PZXKsTRH7FY_ZVLe",
   "nueva-zelanda": "https://youtu.be/GVtf4GICxdU", // Highlights Nueva Zelanda vs Paraguay Mundial 2010
-  paraguay: "https://youtu.be/Mger-g-Swbo", // Tanda de penales de Paraguay vs Japón 2010
-  tunez: "https://youtu.be/w6wpXzMUIlM?si=ZqRsp89RIh2B3YAB",
-  uruguay: "https://youtu.be/jIHZ2N3II8s?si=3QXReUSlm8NLiKy8",
-  usa: "https://youtu.be/6mi1VfbjGB4", // Todos los goles de Estados Unidos en Mundiales 2010-2022
-  uzbekistan: "https://youtu.be/VTfJV-sEy4k?si=xYnUaUJBpFbL6NUp",
+  "paraguay": "https://youtu.be/Mger-g-Swbo", // Tanda de penales de Paraguay vs Japón 2010
+  "tunez": "https://youtu.be/w6wpXzMUIlM?si=ZqRsp89RIh2B3YAB",
+  "uruguay": "https://youtu.be/jIHZ2N3II8s?si=3QXReUSlm8NLiKy8",
+  "usa": "https://youtu.be/6mi1VfbjGB4", // Todos los goles de Estados Unidos en Mundiales 2010-2022
+  "uzbekistan": "https://youtu.be/VTfJV-sEy4k?si=xYnUaUJBpFbL6NUp",
 };
+
+
+
 
   const countryMap = {
     0: { name: 'Argentina', emoji: '🇦🇷', color: '#74ACDF', key: 'argentina' },
