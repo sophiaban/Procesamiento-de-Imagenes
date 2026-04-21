@@ -1566,8 +1566,8 @@ function triggerCelebration() {
   // CONFIGURACION DE LA PARTICULA
   const particleConfig = {
     preset: 'default',
-    color: '#FFD700,#FF0000,#00FF00,#0000FF,#FF69B4,#FFA500,#9B59B6',
-    particleCount: '800',        // Más partículas para más efecto
+    color: '#0000FF',
+    particleCount: '900',        // Más partículas para más efecto
     size: '3.3',                // Tamaño más pequeño como confetti
     sizeRandomness: '0.5',      // Variedad de tamaños
     velocityValue: '8 12 0',    // Explosión hacia arriba
@@ -1583,6 +1583,40 @@ function triggerCelebration() {
   
   tempParticles.setAttribute('particle-system', particleConfig);
   scene.appendChild(tempParticles);
+
+////////////
+
+  const oldCelebration1 = document.getElementById('tempCelebration1');
+  if (oldCelebration1) {
+    oldCelebration1.parentNode.removeChild(oldCelebration1);
+  }
+  
+  const tempParticles1 = document.createElement('a-entity');
+  tempParticles1.id = 'tempCelebration1';
+  tempParticles1.setAttribute('position', '2 2 -1.0'); // Más arriba para que caiga mejor
+  
+  // CONFIGURACION DE LA PARTICULA
+  const particleConfig1 = {
+    preset: 'default',
+    color: '#FF0000',
+    particleCount: '900',        // Más partículas para más efecto
+    size: '4.3',                // Tamaño más pequeño como confetti
+    sizeRandomness: '0.5',      // Variedad de tamaños
+    velocityValue: '9 13 0',    // Explosión hacia arriba
+    velocityRandomness: '4',     // Variedad en velocidades
+    accelerationValue: '0 -8 0', // Gravedad para que caiga
+    accelerationRandomness: '2',  // Variedad en caída
+    enabled: 'true',
+    duration: '4',              // Duración de cada partícula (segundos)
+    opacity: '0.9',
+    rotationVelocity: '360',     // Que giren como confetti
+    rotationVelocityRandomness: '180'
+  };
+  
+  tempParticles1.setAttribute('particle-system', particleConfig1);
+  scene.appendChild(tempParticles1);
+
+  //////////////
   
   // Mostrar mensaje de celebración
   const banner = document.getElementById('detectionBanner');
@@ -1598,8 +1632,12 @@ function triggerCelebration() {
     if (tempParticles && tempParticles.parentNode) {
       tempParticles.parentNode.removeChild(tempParticles);
     }
+       if (tempParticles1 && tempParticles1.parentNode) {
+      tempParticles1.parentNode.removeChild(tempParticles1);
+    }
     if (banner) {
       banner.style.display = 'none';
     }
-  }, 5000); // Cambiado de 3000 a 5000 (5 segundos)
+
+  }, 10000); 
 }
