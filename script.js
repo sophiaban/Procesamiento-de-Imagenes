@@ -1052,20 +1052,17 @@ function animateModel() {
   const modelId = `${currentCountry}-3d`;
   const model = document.getElementById(modelId);
   
-  // BUSCAR EL SISTEMA DE PARTÍCULAS dentro del target actual
   const targetEntity = model.closest('a-entity[mindar-image-target]');
   const particles = targetEntity.querySelector('[particle-system]');
 
   animationsPaused = !animationsPaused;
 
-  // Pausar/Reanudar Modelo 3D
   if (animationsPaused) {
     model.setAttribute('animation', {enabled: false});
     model.setAttribute('animation__bounce', {enabled: false});
     
-    // Apagar y ocultar partículas
     if (particles) {
-      particles.setAttribute('visible', 'false'); 
+      particles.setAttribute('visible', 'false');
       particles.setAttribute('particle-system', 'enabled', false);
     }
     document.getElementById('animationIcon').textContent = '▶️';
@@ -1074,9 +1071,8 @@ function animateModel() {
     model.setAttribute('animation', {enabled: true});
     model.setAttribute('animation__bounce', {enabled: true});
     
-    // Encender y mostrar partículas
     if (particles) {
-      particles.setAttribute('visible', 'true'); 
+      particles.setAttribute('visible', 'true');
       particles.setAttribute('particle-system', 'enabled', true);
     }
     document.getElementById('animationIcon').textContent = '⏸️';
@@ -1085,6 +1081,7 @@ function animateModel() {
 
 function triggerCelebration() {
   if (!currentCountry) return;
+
   const countryData = countries[currentCountry];
   const modelId = `${currentCountry}-3d`;
   const model = document.getElementById(modelId);
@@ -1092,18 +1089,16 @@ function triggerCelebration() {
   const particles = targetEntity.querySelector('[particle-system]');
 
   if (particles) {
-    // Esto inyecta el color real del país (ej. Rojo de Marruecos) 
     particles.setAttribute('particle-system', {
         color: `${countryData.color}, #FFFFFF`,
         enabled: true
     });
-    particles.setAttribute('visible', 'true'); [cite: 356]
+    particles.setAttribute('visible', 'true');
 
     const banner = document.getElementById('detectionBanner');
     document.getElementById('bannerTitle').textContent = `🎊 ¡CELEBRACIÓN ${countryData.name.toUpperCase()}! 🎊`;
     banner.style.display = 'block';
 
-    // Optimización para móviles: apagado automático [cite: 357]
     setTimeout(() => {
       particles.setAttribute('particle-system', 'enabled', false);
       particles.setAttribute('visible', 'false');
