@@ -1077,7 +1077,6 @@ function animateModel() {
     document.getElementById('animationIcon').textContent = '⏸️';
   }
 }
-
 function triggerCelebration() {
   if (!currentCountry) return;
 
@@ -1088,18 +1087,21 @@ function triggerCelebration() {
   const particles = targetEntity.querySelector('[particle-system]');
 
   if (particles) {
-    particles.setAttribute('particle-system', {
-        color: `${countryData.color}, #FFFFFF`,
-        enabled: true
-    });
+    // TRUCO: Pasamos toda la configuración como un texto para forzar el renderizado
+    // Redujimos a 300 partículas y usamos 'default' que es más estable que 'snow'
+    const configString = `preset: default; color: ${countryData.color}, #FFFFFF; particleCount: 300; size: 2; velocityValue: 0 5 0; accelerationValue: 0 -5 0; enabled: true`;
+    
+    particles.setAttribute('particle-system', configString);
     particles.setAttribute('visible', 'true');
 
+    // Retroalimentación visual
     const banner = document.getElementById('detectionBanner');
     document.getElementById('bannerTitle').textContent = `🎊 ¡CELEBRACIÓN ${countryData.name.toUpperCase()}! 🎊`;
     banner.style.display = 'block';
 
+    // Apagado automático
     setTimeout(() => {
-      particles.setAttribute('particle-system', 'enabled', false);
+      particles.setAttribute('particle-system', 'enabled', 'false');
       particles.setAttribute('visible', 'false');
       banner.style.display = 'none';
     }, 5000);
