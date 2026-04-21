@@ -391,6 +391,11 @@
           rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
+
+        <a-entity 
+          position="0 2.25 -15" 
+          particle-system="color: #012169, #FFFFFF, #E01933; particleCount: 1000; size: 0.5; velocityValue: 0 10 0; accelerationValue: 0 -10 0">
+        </a-entity>
         
         <a-gltf-model 
           id="australia-3d"
@@ -410,12 +415,10 @@
           font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
         
-        <!-- Botón de información -->
         <a-entity 
           position="0 0.8 0" 
           class="info-button" 
-          data-country="australia"
-          mindar-face-up-button>
+          data-country="australia">
           <a-ring color="#012169" radius-inner="0.04" radius-outer="0.06"></a-ring>
           <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
         </a-entity>
@@ -431,6 +434,11 @@
           rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
+        
+        <a-entity 
+          position="0 2.25 -15" 
+          particle-system="color: #009739, #FFD100, #002776; particleCount: 1000; size: 0.5; velocityValue: 0 10 0; accelerationValue: 0 -10 0">
+        </a-entity>
         
         <a-gltf-model 
           id="brasil-3d"
@@ -450,12 +458,10 @@
           font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
         
-        <!-- Botón de información -->
         <a-entity 
           position="0 0.8 0" 
           class="info-button" 
-          data-country="brasil"
-          mindar-face-up-button>
+          data-country="brasil">
           <a-ring color="#009739" radius-inner="0.04" radius-outer="0.06"></a-ring>
           <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
         </a-entity>
@@ -821,45 +827,30 @@
         </a-entity>
       </a-entity>
 
-      <!-- TARGET 12: MÉXICO -->
-      <a-entity mindar-image-target="targetIndex: 12">
-        <a-plane 
-          src="#mexico-flag" 
-          position="0 0 0" 
-          height="0.552" 
-          width="1" 
-          rotation="0 0 0"
-          material="transparent: true; opacity: 0.9; side: double">
-        </a-plane>
-        
-        <a-gltf-model 
-          id="mexico-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.25 0.25 0.25" 
-          src="#mexico-model"
-          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
-        </a-gltf-model>
-        
-        <a-text 
-          value="🇲🇽 México" 
-          position="-0.6 0.4 0" 
-          scale="0.8 0.8 0.8" 
-          color="#FFFFFF"
-          align="center"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
-        </a-text>
-        
-        <!-- Botón de información -->
-        <a-entity 
-          position="0 0.8 0" 
-          class="info-button" 
-          data-country="mexico"
-          mindar-face-up-button>
-          <a-ring color="#006847" radius-inner="0.04" radius-outer="0.06"></a-ring>
-          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
-        </a-entity>
+       <!-- TARGET 12: MEXICO -->
+    <a-entity mindar-image-target="targetIndex: 12">
+      <a-plane src="#mexico-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
+        material="transparent: true; opacity: 0.9; side: double">
+      </a-plane>
+    
+      <a-entity position="0 2.25 -15"
+        particle-system="color: #006847,#FFFFFF,#CE1126; particleCount: 1000; size: 0.5; velocityValue: 0 10 0; accelerationValue: 0 -10 0">
       </a-entity>
+    
+      <a-gltf-model id="mexico-3d" position="0.6 0.3 0.1" scale="0.25 0.25 0.25" src="#mexico-model"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
+        animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
+      </a-gltf-model>
+    
+      <a-text value="🇲🇽 México" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF" align="center"
+        font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+      </a-text>
+    
+      <a-entity position="0 0.8 0" class="info-button" data-country="mexico">
+        <a-ring color="#006847" radius-inner="0.04" radius-outer="0.06"></a-ring>
+        <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+      </a-entity>
+    </a-entity>
 
       <!-- TARGET 13: NUEVA ZELANDA -->
       <a-entity mindar-image-target="targetIndex: 13">
