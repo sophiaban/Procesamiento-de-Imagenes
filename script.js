@@ -1543,30 +1543,63 @@ function animateModel() {
   }
 }
 function triggerCelebration() {
-  if (!currentCountry) return;
+  if (!currentCountry) {
+    showTemporaryMessage('⚠️ No hay país detectado', 'Escanea una bandera primero', '#ff6b6b');
+    return;
+  }
 
   const countryData = countries[currentCountry];
-  const modelId = `${currentCountry}-3d`;
-  const model = document.getElementById(modelId);
-  const targetEntity = model.closest('a-entity[mindar-image-target]');
-  const particles = targetEntity.querySelector('[particle-system]');
-
-  if (particles) {
-    // 1. Actualizamos SOLO el color y el motor, respetando la física del HTML
-    particles.setAttribute('particle-system', 'color', `${countryData.color}, #FFFFFF`);
-    particles.setAttribute('particle-system', 'enabled', true);
-    particles.setAttribute('visible', 'true');
-
-    // 2. Banner de feedback
-    const banner = document.getElementById('detectionBanner');
-    document.getElementById('bannerTitle').textContent = `🎊 ¡CELEBRACIÓN ${countryData.name.toUpperCase()}! 🎊`;
-    banner.style.display = 'block';
-
-    // 3. Apagado automático en 5 segundos
-    setTimeout(() => {
-      particles.setAttribute('particle-system', 'enabled', false);
-      particles.setAttribute('visible', 'false');
-      banner.style.display = 'none';
-    }, 5000);
+  
+  // Crear sistema de partículas TEMPORAL
+  const scene = document.querySelector('a-scene');
+  
+  // Eliminar cualquier celebración anterior
+  const oldCelebration = document.getElementById('tempCelebration');
+  if (oldCelebration) {
+    oldCelebration.parentNode.removeChild(oldCelebration);
   }
+  
+  const tempParticles = document.createElement('a-entity');
+  tempParticles.id = 'tempCelebration';
+  tempParticles.setAttribute('position', '0 2 -1.5'); // Más arriba para que caiga mejor
+  
+  // CONFIGURACION DE LA PARTICULA
+  const particleConfig = {
+    preset: 'default',
+    color: '#FFD700,#FF0000,#00FF00,#0000FF,#FF69B4,#FFA500,#9B59B6',
+    particleCount: '800',        // Más partículas para más efecto
+    size: '3.3',                // Tamaño más pequeño como confetti
+    sizeRandomness: '0.5',      // Variedad de tamaños
+    velocityValue: '8 12 0',    // Explosión hacia arriba
+    velocityRandomness: '4',     // Variedad en velocidades
+    accelerationValue: '0 -8 0', // Gravedad para que caiga
+    accelerationRandomness: '2',  // Variedad en caída
+    enabled: 'true',
+    duration: '4',              // Duración de cada partícula (segundos)
+    opacity: '0.9',
+    rotationVelocity: '360',     // Que giren como confetti
+    rotationVelocityRandomness: '180'
+  };
+  
+  tempParticles.setAttribute('particle-system', particleConfig);
+  scene.appendChild(tempParticles);
+  
+  // Mostrar mensaje de celebración
+  const banner = document.getElementById('detectionBanner');
+  if (banner) {
+    document.getElementById('bannerTitle').textContent = `🎊 ¡CELEBRACIÓN ${countryData.name.toUpperCase()}! 🎊`;
+    document.getElementById('bannerSubtitle').textContent = `${countryData.emoji} ¡Vamos por el Mundial 2026! ⚽🏆`;
+    banner.style.background = `linear-gradient(135deg, ${countryData.color}, ${countryData.color}CC)`;
+    banner.style.display = 'block';
+  }
+  
+  // Apagar después de 5 SEGUNDOS (más tiempo)
+  setTimeout(() => {
+    if (tempParticles && tempParticles.parentNode) {
+      tempParticles.parentNode.removeChild(tempParticles);
+    }
+    if (banner) {
+      banner.style.display = 'none';
+    }
+  }, 5000); // Cambiado de 3000 a 5000 (5 segundos)
 }
