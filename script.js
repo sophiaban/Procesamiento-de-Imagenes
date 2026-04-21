@@ -525,37 +525,36 @@ const videoUrls = {
   }
 
 document.addEventListener('DOMContentLoaded', function() {
-  const scene = document.querySelector('a-scene');
   
-  // Configurar botones AR
-  scene.addEventListener('loaded', function() {
-    document.querySelectorAll('.info-button').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const country = this.getAttribute('data-country');
-        showCountryInfo(country);
-      });
+  // 1. Configurar botones de información (la 'i' debajo del modelo)
+  document.querySelectorAll('.info-button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const country = this.getAttribute('data-country');
+      showCountryInfo(country);
+    });
+  });
+
+  // 2. Detectar banderas y encender avisos INMEDIATAMENTE con eventos nativos de MindAR
+  document.querySelectorAll('[mindar-image-target]').forEach((target, index) => {
+    target.addEventListener('targetFound', () => {
+      showCountryMenu(index); // activa menú, banners y actualiza currentCountry
     });
 
-    //  Detectar banderas con eventos nativos de MindAR
-    document.querySelectorAll('[mindar-image-target]').forEach((target, index) => {
-      target.addEventListener('targetFound', () => {
-        showCountryMenu(index); // activa menú y trivia
-      });
-
-      target.addEventListener('targetLost', () => {
+    target.addEventListener('targetLost', () => {
+      // Ocultar modelo de la bandera si existe (opcional)
+      if (currentCountry) {
         const flagModel = document.getElementById(`${currentCountry}-flag-model`);
         if (flagModel) {
           flagModel.object3D.visible = false;
         }
-        currentCountry = null; // resetea país
-      });
+      }
+      currentCountry = null; // resetea país para que los botones sepan que ya no hay bandera
     });
   });
 
-  // También verificar periódicamente qué modelo está visible (fallback)
+  // 3. Sistema de seguridad (fallback) por si falla la detección nativa
   setInterval(detectVisibleCountry, 500);
-  });
-;
+});
 
 // Funciones de la interfaz (permanecen igual)
 function showCountryInfo(countryKey) {
