@@ -248,14 +248,14 @@ const triviaData = {
       correctAnswer: 0
     },
     {
-      question: "¿Quién fue el capitán de Argentina en el Mundial de 1986? ",
-      options: ["Daniel Passarella", "Mario Kempes ", "Jorge Valdano", "Diego Maradona"],
+      question: "¿Quién fue el capitán de Argentina en el Mundial de 1986?",
+      options: ["Daniel Passarella", "Mario Kempes", "Jorge Valdano", "Diego Maradona"],
       correctAnswer: 3
     },
     {
-      question: "¿Contra qué país ganó Argentina la final de 2022?",
-      options: ["Francia", "Brasil", "Alemania", "España"],
-      correctAnswer: 0
+      question: "¿Qué jugador argentino es conocido como 'El Fideo'?",
+      options: ["Lionel Messi", "Sergio Agüero", "Ángel Di María", "Gonzalo Higuaín"],
+      correctAnswer: 2
     },
     {
       question: "¿Cuántos goles anotó Diego Maradona en el Mundial de México 1986?",
@@ -269,15 +269,53 @@ const triviaData = {
       options: ["1974", "1986", "2006", "2010"],
       correctAnswer: 0
     },
-
+    {
+      question: "¿Cuál es el apodo oficial de la selección de Australia?",
+      options: ["Los Canguros", "Socceroos", "Aussies", "Wallabies"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿En qué confederación juega actualmente Australia para clasificar al Mundial?",
+      options: ["OFC (Oceanía)", "CONMEBOL (Sudamérica)", "AFC (Asia)", "CONCACAF (Norteamérica)"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Quién es el máximo goleador histórico de Australia en Mundiales?",
+      options: ["Tim Cahill", "Harry Kewell", "Mark Viduka", "Mile Jedinak"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Cuál ha sido su mejor posición histórica en un Mundial?",
+      options: ["Fase de Grupos", "Octavos de final", "Cuartos de final", "Semifinales"],
+      correctAnswer: 1
+    }
   ],
   brasil: [
+    {
+      question: "¿Quién es el máximo goleador brasileño en la historia de los Mundiales?",
+      options: ["Ronaldo Nazário", "Pelé", "Neymar Jr", "Romário"],
+      correctAnswer: 0
+    },
     {
       question: "¿Cuántas Copas del Mundo ha ganado Brasil?",
       options: ["4", "5", "6", "7"],
       correctAnswer: 1
     },
-
+    {
+      question: "¿Contra quién perdió Brasil el famoso 'Maracanazo' en 1950?",
+      options: ["Argentina", "Alemania", "Uruguay", "Italia"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿En qué año ganó Brasil su último Mundial?",
+      options: ["1994", "1998", "2006", "2002"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿Qué jugador brasileño es conocido como 'O Rei'?",
+      options: ["Zico", "Pelé", "Garrincha", "Ronaldinho"],
+      correctAnswer: 1
+    }
   ],
   canada: [
     {
@@ -285,7 +323,431 @@ const triviaData = {
       options: ["1986", "2002", "2010", "2022"],
       correctAnswer: 0
     },
-
+    {
+      question: "¿Quién anotó el primer gol de Canadá en la historia de los Mundiales (en 2022)?",
+      options: ["Jonathan David", "Alphonso Davies", "Tajon Buchanan", "Cyle Larin"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿Qué país será coanfitrión con Canadá en el Mundial 2026?",
+      options: ["Solo Estados Unidos", "Solo México", "México y Estados Unidos", "Costa Rica y EE.UU."],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Cuántos goles anotó Canadá en su primer Mundial en 1986?",
+      options: ["0", "1", "2", "3"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿A qué confederación de fútbol pertenece Canadá?",
+      options: ["UEFA", "CONMEBOL", "AFC", "CONCACAF"],
+      correctAnswer: 3
+    }
+  ],
+  colombia: [
+    {
+      question: "¿Quién fue el goleador del Mundial 2014 jugando para Colombia?",
+      options: ["James Rodríguez", "Radamel Falcao", "Juan Cuadrado", "Carlos Bacca"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Cuál es el apodo de la selección colombiana?",
+      options: ["La Tricolor", "Los Cafeteros", "Los Cóndores", "Los Paisas"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿Cuál ha sido el mejor resultado de Colombia en un Mundial?",
+      options: ["Octavos de final", "Semifinales", "Cuartos de final", "Fase de grupos"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Contra qué selección anotó Freddy Rincón un famoso gol en el Mundial 1990?",
+      options: ["Argentina", "Camerún", "Yugoslavia", "Alemania"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿En qué país se celebró el Mundial donde Colombia llegó a Cuartos de final?",
+      options: ["Rusia", "Brasil", "Sudáfrica", "Alemania"],
+      correctAnswer: 1
+    }
+  ],
+  "corea-del-sur": [
+    {
+      question: "¿Cuál ha sido la mejor participación de Corea del Sur en un Mundial?",
+      options: ["Semifinales", "Cuartos de final", "Octavos de final", "Subcampeón"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Con qué país coorganizó Corea del Sur el Mundial de 2002?",
+      options: ["China", "Japón", "Australia", "Tailandia"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿Qué jugador surcoreano ha sido una gran estrella en el Tottenham Hotspur?",
+      options: ["Park Ji-sung", "Hwang Hee-chan", "Son Heung-min", "Kim Min-jae"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Cómo se le conoce a la selección de Corea del Sur?",
+      options: ["Los Dragones", "La Furia Asiática", "Los Tigres", "Los Guerreros Taeguk"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿A qué selección histórica eliminó Corea del Sur en Octavos del Mundial 2002?",
+      options: ["Italia", "España", "Alemania", "Brasil"],
+      correctAnswer: 0
+    }
+  ],
+  ecuador: [
+    {
+      question: "¿Quién es el máximo goleador histórico de Ecuador en Mundiales?",
+      options: ["Enner Valencia", "Agustín Delgado", "Carlos Tenorio", "Christian Benítez"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿En qué año debutó Ecuador en una Copa del Mundo?",
+      options: ["1998", "2002", "2006", "2010"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿Cuál es el mejor resultado de Ecuador en Mundiales?",
+      options: ["Fase de Grupos", "Cuartos de final", "Octavos de final", "Semifinales"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Contra qué país jugó Ecuador el partido inaugural del Mundial 2022?",
+      options: ["Países Bajos", "Senegal", "Arabia Saudita", "Catar"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿En qué país se jugó el Mundial donde Ecuador llegó a Octavos (2006)?",
+      options: ["Japón", "Alemania", "Sudáfrica", "Brasil"],
+      correctAnswer: 1
+    }
+  ],
+  espana: [
+    {
+      question: "¿Qué jugador anotó el gol de la victoria en la final del Mundial 2010?",
+      options: ["Andrés Iniesta", "David Villa", "Fernando Torres", "Xavi Hernández"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Contra qué selección jugó España la final en 2010?",
+      options: ["Alemania", "Países Bajos", "Brasil", "Argentina"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿En qué año organizó España la Copa del Mundo?",
+      options: ["1978", "1990", "1982", "1994"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Quién era el entrenador de España cuando ganaron el Mundial?",
+      options: ["Luis Aragonés", "Luis Enrique", "Julen Lopetegui", "Vicente del Bosque"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿Cuántas Copas del Mundo ha ganado España?",
+      options: ["Una", "Dos", "Tres", "Ninguna"],
+      correctAnswer: 0
+    }
+  ],
+  iran: [
+    {
+      question: "¿Cuántas veces ha superado Irán la fase de grupos en un Mundial?",
+      options: ["Ninguna", "Una vez", "Dos veces", "Tres veces"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Cuál es el apodo de la selección iraní?",
+      options: ["Los Príncipes", "Team Melli", "Los Persas", "Los Leones de Asia"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿Qué histórico partido ganó Irán en el Mundial de 1998?",
+      options: ["Contra Alemania", "Contra Brasil", "Contra Estados Unidos", "Contra Francia"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿A qué confederación pertenece la selección de Irán?",
+      options: ["UEFA", "CAF", "CONCACAF", "AFC"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿En qué año debutó Irán en los Mundiales?",
+      options: ["1978", "1998", "2006", "2014"],
+      correctAnswer: 0
+    }
+  ],
+  japon: [
+    {
+      question: "¿Cuál es el apodo de la selección japonesa?",
+      options: ["Samuráis Azules", "Soles Nacientes", "Ninjas", "Dragones Rojos"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Cuántas veces ha llegado Japón a Octavos de Final hasta 2022?",
+      options: ["2 veces", "4 veces", "1 vez", "Nunca"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿En qué año debutó Japón en una Copa del Mundo?",
+      options: ["1990", "1994", "1998", "2002"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Con qué país compartió la sede del Mundial 2002?",
+      options: ["China", "Taiwán", "Australia", "Corea del Sur"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿Qué selección eliminó a Japón en penales en el Mundial 2022?",
+      options: ["Croacia", "España", "Alemania", "Marruecos"],
+      correctAnswer: 0
+    }
+  ],
+  jordania: [
+    {
+      question: "¿Cuántas veces ha clasificado Jordania a un Mundial de la FIFA?",
+      options: ["Ninguna", "Una vez", "Dos veces", "Tres veces"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿De qué color es usualmente su uniforme de local?",
+      options: ["Rojo", "Blanco", "Verde", "Negro"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿Cuál es el apodo de la selección de Jordania?",
+      options: ["Los Faraones", "Los Halcones", "Los Bravos (Al-Nashama)", "Los Reyes"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿En qué torneo continental Jordania llegó a la final en 2024?",
+      options: ["Copa Oro", "Copa Africana", "Copa América", "Copa Asiática"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿A qué confederación de fútbol pertenece Jordania?",
+      options: ["AFC (Asia)", "CAF (África)", "UEFA (Europa)", "OFC (Oceanía)"],
+      correctAnswer: 0
+    }
+  ],
+  marruecos: [
+    {
+      question: "¿Qué histórico logro alcanzó Marruecos en el Mundial 2022?",
+      options: ["Llegar a Semifinales", "Ganar el torneo", "Llegar a la Final", "Ser el equipo más goleador"],
+      correctAnswer: 0
+    },
+    {
+      question: "Marruecos fue el primer país de qué continente en llegar a semifinales del Mundial?",
+      options: ["Asia", "África", "Oceanía", "Norteamérica"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿Cuál es el apodo de la selección marroquí?",
+      options: ["Faraones", "Águilas del Desierto", "Leones del Atlas", "Zorros del Sahara"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿En qué año se convirtió Marruecos en el primer país africano en pasar la fase de grupos?",
+      options: ["1970", "1978", "1994", "1986"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿Qué portero fue figura clave de Marruecos en 2022?",
+      options: ["Yassine Bounou (Bono)", "Munir Mohamedi", "Keylor Navas", "Edouard Mendy"],
+      correctAnswer: 0
+    }
+  ],
+  mexico: [
+    {
+      question: "¿Qué jugador mexicano ha participado en 5 Copas del Mundo?",
+      options: ["Rafael Márquez", "Hugo Sánchez", "Jared Borgetti", "Cuauhtémoc Blanco"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Cuál es la mejor fase alcanzada por México en los Mundiales de 1970 y 1986?",
+      options: ["Octavos de final", "Cuartos de final", "Semifinales", "Final"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿Quién es el máximo goleador histórico de la selección mexicana?",
+      options: ["Raúl Jiménez", "Hugo Sánchez", "Javier 'Chicharito' Hernández", "Luis Hernández"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Contra qué país logró México una histórica victoria en su primer partido del Mundial 2018?",
+      options: ["Brasil", "Suecia", "Corea del Sur", "Alemania"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿Cuántas veces ha organizado México la Copa del Mundo (incluyendo 2026)?",
+      options: ["3 veces", "2 veces", "1 vez", "4 veces"],
+      correctAnswer: 0
+    }
+  ],
+  "nueva-zelanda": [
+    {
+      question: "¿A qué confederación pertenece Nueva Zelanda tras la salida de Australia en 2006?",
+      options: ["OFC (Oceanía)", "AFC (Asia)", "CONMEBOL", "CONCACAF"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Cuál es el apodo de la selección de Nueva Zelanda?",
+      options: ["Kiwis", "All Whites", "Silver Ferns", "Ocean Boys"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿En qué Mundial Nueva Zelanda se fue invicta en fase de grupos pero no avanzó?",
+      options: ["1982", "2006", "2010", "2014"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿En qué año debutó Nueva Zelanda en un Mundial?",
+      options: ["1974", "1990", "1998", "1982"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿De qué color es usualmente su uniforme de local?",
+      options: ["Blanco", "Negro", "Verde", "Azul"],
+      correctAnswer: 0
+    }
+  ],
+  paraguay: [
+    {
+      question: "¿Cuál es el apodo de la selección paraguaya?",
+      options: ["La Albirroja", "La Celeste", "La Tricolor", "La Vinotinto"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Qué famoso portero goleador paraguayo jugó los mundiales de 1998 y 2002?",
+      options: ["Justo Villar", "José Luis Chilavert", "Roberto Fernández", "Antony Silva"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿En qué Mundial Paraguay alcanzó por primera vez los Cuartos de Final?",
+      options: ["1998", "2006", "2010", "2014"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Qué selección eliminó a Paraguay en los cuartos de final del Mundial 2010?",
+      options: ["Alemania", "Argentina", "Uruguay", "España"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿Cuántas veces ha participado Paraguay en un Mundial (hasta 2022)?",
+      options: ["8 veces", "6 veces", "10 veces", "4 veces"],
+      correctAnswer: 0
+    }
+  ],
+  tunez: [
+    {
+      question: "¿Cuántas veces ha pasado Túnez de la fase de grupos en un Mundial?",
+      options: ["Ninguna", "Una vez", "Dos veces", "Tres veces"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Cuál es el apodo de la selección de Túnez?",
+      options: ["Faraones", "Las Águilas de Cartago", "Leones Indomables", "Zorros del Desierto"],
+      correctAnswer: 1
+    },
+    {
+      question: "Túnez logró la primera victoria de un equipo africano en un Mundial, ¿en qué año?",
+      options: ["1970", "1982", "1978", "1986"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Contra qué selección campeona del mundo logró ganar Túnez en 2022?",
+      options: ["Argentina", "Brasil", "Alemania", "Francia"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿A qué confederación pertenece Túnez?",
+      options: ["CAF (África)", "AFC (Asia)", "UEFA (Europa)", "CONMEBOL"],
+      correctAnswer: 0
+    }
+  ],
+  uruguay: [
+    {
+      question: "¿Quién es el máximo goleador histórico de la selección uruguaya?",
+      options: ["Luis Suárez", "Edinson Cavani", "Diego Forlán", "Enzo Francescoli"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Quién fue elegido el Mejor Jugador del Mundial 2010, llevando a Uruguay a semifinales?",
+      options: ["Luis Suárez", "Diego Forlán", "Fernando Muslera", "Diego Godín"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿A qué selección venció Uruguay en el famoso 'Maracanazo' de 1950?",
+      options: ["Argentina", "Italia", "Brasil", "Alemania"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Cuál es el apodo de la selección uruguaya?",
+      options: ["La Albiceleste", "La Tricolor", "La Roja", "La Celeste"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿En qué año ganó Uruguay el primer Mundial de la historia?",
+      options: ["1930", "1934", "1938", "1950"],
+      correctAnswer: 0
+    }
+  ],
+  usa: [
+    {
+      question: "¿Con qué países coorganizará USA el Mundial 2026?",
+      options: ["México y Canadá", "Solo Canadá", "Solo México", "Brasil y Argentina"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿Quién es uno de los jugadores estadounidenses más reconocidos actualmente?",
+      options: ["Landon Donovan", "Christian Pulisic", "Clint Dempsey", "Tim Howard"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿Cuál es el mejor resultado histórico de Estados Unidos en un Mundial?",
+      options: ["Cuartos de Final (2002)", "Octavos de Final (2014)", "Semifinales (1930)", "Subcampeón (1950)"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿Contra qué equipo logró Estados Unidos su histórica victoria de 1-0 en 1950?",
+      options: ["Brasil", "Alemania", "Italia", "Inglaterra"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿En qué año organizó Estados Unidos su primer Mundial?",
+      options: ["1994", "1998", "2002", "1990"],
+      correctAnswer: 0
+    }
+  ],
+  uzbekistan: [
+    {
+      question: "¿Cuántas veces ha participado Uzbekistán en la fase final de una Copa del Mundo?",
+      options: ["Ninguna", "Una vez", "Dos veces", "Tres veces"],
+      correctAnswer: 0
+    },
+    {
+      question: "¿A qué confederación de fútbol pertenece Uzbekistán?",
+      options: ["UEFA (Europa)", "AFC (Asia)", "CAF (África)", "OFC (Oceanía)"],
+      correctAnswer: 1
+    },
+    {
+      question: "¿Cuál es el apodo de la selección de Uzbekistán?",
+      options: ["Los Dragones", "Los Halcones", "Los Lobos Blancos", "Los Tigres"],
+      correctAnswer: 2
+    },
+    {
+      question: "¿De qué antigua nación formaba parte Uzbekistán antes de competir independientemente?",
+      options: ["Yugoslavia", "Checoslovaquia", "Imperio Otomano", "Unión Soviética"],
+      correctAnswer: 3
+    },
+    {
+      question: "¿De qué colores es tradicionalmente el uniforme principal de Uzbekistán?",
+      options: ["Azul y Blanco", "Rojo y Negro", "Verde y Amarillo", "Naranja y Blanco"],
+      correctAnswer: 0
+    }
   ]
 };
 
@@ -409,26 +871,26 @@ const countryStats = {
 };
 
 const videoUrls = {
-  //arabia: "https://youtu.be/_Pyfr79FU34?si=OQ9ZFmU3_Zc_IJEH",
   argentina: "https://youtu.be/FA1sR2SZAlY",
   australia: "https://youtu.be/KvSiRNO1BTY",
   brasil: "https://youtu.be/AZAX5P_Q4Jg",
-  //Cabo-Verde: "https://youtu.be/nwwJPz-DHnE?si=5j9IyrWma50KVh3C",
+  canada: "https://youtu.be/GWrOR1FxBhs", // Highlights Canadá vs Croacia 2022
   colombia: "https://youtu.be/GXW4upfqoMg?si=g-Aq2PE-vmI8TCw1",
   "corea-del-sur": "https://youtu.be/5Zwjyi8bdE4?si=vIsnA4e3fMCYRlYN",
+  ecuador: "https://youtu.be/b7X1YkrkUHA", // Highlights Ecuador vs Qatar 2022
   espana: "https://youtu.be/UHf4AkgQxhY?si=wJkt_3jfkCuDvGVc", 
+  iran: "https://youtu.be/-C80_VKBMZc", // Final de locura Irán vs Gales 2022
   japon: "https://youtu.be/nMd4-BdJPDs?si=BdL5g5UoHpUp7WWc", 
+  jordania: "https://youtu.be/3kO6I9xztd8", // Jordania llegando a la final de la Copa Asiática 2023
+  marruecos: "https://youtu.be/M766FGsv5do", // Histórica victoria de Marruecos vs Portugal 2022
   mexico: "https://youtu.be/5-S3oTo2iwQ?si=PZXKsTRH7FY_ZVLe",
-  //Rep-checa: "https://youtu.be/docsnyKUwNw?si=S0Kjeydh2nIcOMGM",
-  //sudafrica: "https://youtu.be/M7hcpszOswM?si=IU0mEgpfq1S7aFCA",
+  "nueva-zelanda": "https://youtu.be/GVtf4GICxdU", // Highlights Nueva Zelanda vs Paraguay Mundial 2010
+  paraguay: "https://youtu.be/Mger-g-Swbo", // Tanda de penales de Paraguay vs Japón 2010
   tunez: "https://youtu.be/w6wpXzMUIlM?si=ZqRsp89RIh2B3YAB",
   uruguay: "https://youtu.be/jIHZ2N3II8s?si=3QXReUSlm8NLiKy8",
+  usa: "https://youtu.be/6mi1VfbjGB4", // Todos los goles de Estados Unidos en Mundiales 2010-2022
   uzbekistan: "https://youtu.be/VTfJV-sEy4k?si=xYnUaUJBpFbL6NUp",
 };
-
-
-
-
 
   const countryMap = {
     0: { name: 'Argentina', emoji: '🇦🇷', color: '#74ACDF', key: 'argentina' },
