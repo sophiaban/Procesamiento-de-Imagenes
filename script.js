@@ -1552,21 +1552,19 @@ function triggerCelebration() {
   const particles = targetEntity.querySelector('[particle-system]');
 
   if (particles) {
-    // TRUCO: Pasamos toda la configuración como un texto para forzar el renderizado
-    // Redujimos a 300 partículas y usamos 'default' que es más estable que 'snow'
-    const configString = `preset: default; color: ${countryData.color}, #FFFFFF; particleCount: 300; size: 2; velocityValue: 0 5 0; accelerationValue: 0 -5 0; enabled: true`;
-    
-    particles.setAttribute('particle-system', configString);
+    // 1. Actualizamos SOLO el color y el motor, respetando la física del HTML
+    particles.setAttribute('particle-system', 'color', `${countryData.color}, #FFFFFF`);
+    particles.setAttribute('particle-system', 'enabled', true);
     particles.setAttribute('visible', 'true');
 
-    // Retroalimentación visual
+    // 2. Banner de feedback
     const banner = document.getElementById('detectionBanner');
     document.getElementById('bannerTitle').textContent = `🎊 ¡CELEBRACIÓN ${countryData.name.toUpperCase()}! 🎊`;
     banner.style.display = 'block';
 
-    // Apagado automático
+    // 3. Apagado automático en 5 segundos
     setTimeout(() => {
-      particles.setAttribute('particle-system', 'enabled', 'false');
+      particles.setAttribute('particle-system', 'enabled', false);
       particles.setAttribute('visible', 'false');
       banner.style.display = 'none';
     }, 5000);
