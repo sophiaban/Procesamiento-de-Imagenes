@@ -1082,3 +1082,37 @@ function animateModel() {
     document.getElementById('animationIcon').textContent = '⏸️';
   }
 }
+function triggerCelebration() {
+  if (!currentCountry) return;
+
+  const countryData = countries[currentCountry]; // Obtenemos los datos del país 
+  const modelId = `${currentCountry}-3d`;
+  const model = document.getElementById(modelId);
+  const targetEntity = model.closest('a-entity[mindar-image-target]');
+  const particles = targetEntity.querySelector('[particle-system]');
+
+  if (particles) {
+    // 1. Configuramos los colores dinámicos del país antes de encender
+    // Usamos el color principal del país y blanco para el confeti
+    const countryColor = countryData.color;
+    particles.setAttribute('particle-system', {
+        color: `${countryColor}, #FFFFFF`,
+        enabled: true
+    });
+    
+    particles.setAttribute('visible', 'true');
+
+    // 2. Retroalimentación visual (Rúbrica: Indicadores visuales) 
+    const banner = document.getElementById('detectionBanner');
+    document.getElementById('bannerTitle').textContent = `🎊 ¡CELEBRACIÓN ${countryData.name.toUpperCase()}! 🎊`;
+    document.getElementById('bannerSubtitle').textContent = 'Efectos especiales activos';
+    banner.style.display = 'block';
+
+    // 3. Optimización para móviles: Apagado automático en 5 segundos 
+    setTimeout(() => {
+      particles.setAttribute('particle-system', 'enabled', false);
+      particles.setAttribute('visible', 'false');
+      banner.style.display = 'none';
+    }, 5000);
+  }
+}
