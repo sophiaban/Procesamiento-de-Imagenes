@@ -342,7 +342,7 @@
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <!-- TARGET 0: ARGENTINA -->
-      <a-entity mindar-image-target="targetIndex: 0">
+     <a-entity mindar-image-target="targetIndex: 0">
         <a-plane 
           src="#argentina-flag" 
           position="0 0 0" 
@@ -351,6 +351,12 @@
           rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
+
+        <a-entity 
+          position="0 0.5 0" 
+          visible="false"
+          particle-system="color: #74ACDF, #FFFFFF; particleCount: 1000; size: 0.5; velocityValue: 0 10 0; accelerationValue: 0 -10 0">
+        </a-entity>
         
         <a-gltf-model 
           id="argentina-3d"
@@ -370,12 +376,10 @@
           font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
         </a-text>
         
-        <!-- Botón de información -->
         <a-entity 
           position="0 0.8 0" 
           class="info-button" 
-          data-country="argentina"
-          mindar-face-up-button>
+          data-country="argentina">
           <a-ring color="#74ACDF" radius-inner="0.04" radius-outer="0.06"></a-ring>
           <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
         </a-entity>
