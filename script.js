@@ -427,35 +427,6 @@ const videoUrls = {
 };
 
 
-document.addEventListener('DOMContentLoaded', function () {
-  const scene = document.querySelector('a-scene');
-scene.addEventListener('loaded', function() {
-    document.querySelectorAll('.info-button').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const country = this.getAttribute('data-country');
-        showCountryInfo(country);
-      });
-    });
-
-    // 🔥 Aquí agregas lo nuevo
-    document.querySelectorAll('[mindar-image-target]').forEach((target, index) => {
-      target.addEventListener('targetFound', () => {
-        showCountryMenu(index); // activa menú y trivia
-      });
-
-      target.addEventListener('targetLost', () => {
-        const flagModel = document.getElementById(`${currentCountry}-flag-model`);
-        if (flagModel) {
-          flagModel.object3D.visible = false;
-        }
-        currentCountry = null; // resetea país
-      });
-    });
-  });
-
-  // También verificar periódicamente qué modelo está visible (fallback)
-  setInterval(detectVisibleCountry, 500);
-});
 
 
 
@@ -1065,116 +1036,49 @@ function openStatsModal() {
 
   document.getElementById('statsModal').classList.add('active');
 }
-
 function animateModel() {
   if (!currentCountry) {
     const banner = document.getElementById('detectionBanner');
     if (banner) {
-      document.getElementById('bannerTitle').textContent = ' No hay país detectado';
+      document.getElementById('bannerTitle').textContent = '⚠️ No hay país detectado';
       document.getElementById('bannerSubtitle').textContent = 'Escanea una bandera primero';
       banner.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a6f)';
       banner.style.display = 'block';
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 2000);
+      setTimeout(() => { banner.style.display = 'none'; }, 2000);
     }
     return;
   }
 
   const modelId = `${currentCountry}-3d`;
   const model = document.getElementById(modelId);
-
-  if (!model) {
-    console.warn(`Modelo no encontrado: ${modelId}`);
-    return;
-  }
+  
+  // BUSCAR EL SISTEMA DE PARTÍCULAS dentro del target actual
+  const targetEntity = model.closest('a-entity[mindar-image-target]');
+  const particles = targetEntity.querySelector('[particle-system]');
 
   animationsPaused = !animationsPaused;
 
-  const animationComponent = model.components.animation;
-  const animationBounceComponent = model.components['animation__bounce'];
-
+  // Pausar/Reanudar Modelo 3D
   if (animationsPaused) {
-    if (animationComponent) {
-      const currentAnim = model.getAttribute('animation');
-      if (currentAnim && animationComponent.tween) {
-        animationComponent.tween.pause();
-      } else if (currentAnim) {
-        const animObj = typeof currentAnim === 'string' ? {} : currentAnim;
-        model.setAttribute('animation', Object.assign({}, animObj, { paused: true }));
-      }
+    model.setAttribute('animation', {enabled: false});
+    model.setAttribute('animation__bounce', {enabled: false});
+    
+    // Apagar y ocultar partículas
+    if (particles) {
+      particles.setAttribute('visible', 'false'); 
+      particles.setAttribute('particle-system', 'enabled', false);
     }
-    if (animationBounceComponent) {
-      const currentBounce = model.getAttribute('animation__bounce');
-      if (currentBounce && animationBounceComponent.tween) {
-        animationBounceComponent.tween.pause();
-      } else if (currentBounce) {
-        const bounceObj = typeof currentBounce === 'string' ? {} : currentBounce;
-        model.setAttribute('animation__bounce', Object.assign({}, bounceObj, { paused: true }));
-      }
-    }
-
-    const icon = document.getElementById('animationIcon');
-    if (icon) {
-      icon.textContent = '▶️';
-    }
-
-    const banner = document.getElementById('detectionBanner');
-    if (banner) {
-      document.getElementById('bannerTitle').textContent = '⏸ Animación Pausada';
-      document.getElementById('bannerSubtitle').textContent = 'La animación del modelo está en pausa';
-      banner.style.background = 'linear-gradient(135deg, #fdbb2d, #b21f1f)';
-      banner.style.display = 'block';
-
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 2000);
-    }
+    document.getElementById('animationIcon').textContent = '▶️';
+    
   } else {
-    if (animationComponent) {
-      const currentAnim = model.getAttribute('animation');
-      if (currentAnim && animationComponent.tween) {
-        animationComponent.tween.resume();
-      } else if (currentAnim) {
-        const animObj = typeof currentAnim === 'string' ? {} : currentAnim;
-        const { paused, ...rest } = animObj;
-        model.setAttribute('animation', rest);
-      }
+    model.setAttribute('animation', {enabled: true});
+    model.setAttribute('animation__bounce', {enabled: true});
+    
+    // Encender y mostrar partículas
+    if (particles) {
+      particles.setAttribute('visible', 'true'); 
+      particles.setAttribute('particle-system', 'enabled', true);
     }
-    if (animationBounceComponent) {
-      const currentBounce = model.getAttribute('animation__bounce');
-      if (currentBounce && animationBounceComponent.tween) {
-        animationBounceComponent.tween.resume();
-      } else if (currentBounce) {
-        const bounceObj = typeof currentBounce === 'string' ? {} : currentBounce;
-        const { paused, ...rest } = bounceObj;
-        model.setAttribute('animation__bounce', rest);
-      }
-    }
-
-    const icon = document.getElementById('animationIcon');
-    if (icon) {
-      icon.textContent = '⏸️';
-    }
-
-    const banner = document.getElementById('detectionBanner');
-    if (banner) {
-      document.getElementById('bannerTitle').textContent = '▶ Animación Reanudada';
-      document.getElementById('bannerSubtitle').textContent = 'La animación del modelo está activa';
-      banner.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
-      banner.style.display = 'block';
-
-      setTimeout(() => {
-        banner.style.display = 'none';
-      }, 2000);
-    }
+    document.getElementById('animationIcon').textContent = '⏸️';
   }
 }
-
-document.querySelectorAll('.modal').forEach(modal => {
-  modal.addEventListener('click', function (e) {
-    if (e.target === this) {
-      this.classList.remove('active');
-    }
-  });
-}); //cambio para git
