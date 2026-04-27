@@ -610,7 +610,7 @@
         
         <a-gltf-model 
           id="ecuador-3d"
-          position="0.6 0.3 0.1" scale="0.1 0.1 0.1" 
+          position="0.6 0.3 0.1" scale="0.3 0.3 0.3" 
           src="#ecuador-model"
           animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
           animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
@@ -645,18 +645,17 @@
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
         
-<a-entity 
-  position="0 2.5 0" 
-  particle-system="preset: snow; color: #FFFFFF, #FFFFFF; particleCount: 2000; size: 0.8; velocityValue: 0 15 0; accelerationValue: 0 -15 0; enabled: false">
-</a-entity>
+        <a-entity 
+          position="0 2.5 0" 
+          particle-system="preset: snow; color: #FFFFFF, #FFFFFF; particleCount: 2000; size: 0.8; velocityValue: 0 15 0; accelerationValue: 0 -15 0; enabled: false">
+        </a-entity>
         
         <a-gltf-model 
           id="espana-3d"
-          position="0.6 0.3 0.1" 
-          scale="0.1 0.1 0.1" 
-          src="#espana-model"
-          animation="property: rotation; to: 360 0 0; loop: true; dur: 5000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 1800; loop: true; dir: alternate">
+          position="0.6 0.3 0.1" scale="0.1 0.1 0.1" 
+          src="espana-model"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
+          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
         </a-gltf-model>
         
         <a-text 
