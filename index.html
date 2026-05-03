@@ -847,35 +847,35 @@
         </a-entity>
       </a-entity>
 
-       <!-- TARGET 12: MEXICO -->
+      <!-- TARGET 12: MEXICO -->
       <a-entity mindar-image-target="targetIndex: 12">
+        <!-- Plano de la bandera (Fondo) -->
         <a-plane src="#mexico-flag" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
           material="transparent: true; opacity: 0.9; side: double">
         </a-plane>
-    
-        <a-entity 
-          position="0 2.5 0" 
+      
+        <!-- Efecto de partículas (Ajustado para caer desde el centro) -->
+        <a-entity position="0 1.5 0"
           particle-system="preset: snow; color: #FFFFFF, #FFFFFF; particleCount: 2000; size: 0.8; velocityValue: 0 15 0; accelerationValue: 0 -15 0; enabled: false">
         </a-entity>
-    
-        <a-gltf-model 
-          id="mexico-3d" 
-          position="0.6 0.3 0.1" 
-          scale="0.05 0.05 0.05" 
-          src="#mexico-model"
+      
+        <!-- MODELO 3D: Centrado y elevado -->
+        <a-gltf-model id="mexico-3d" position="0 0.4 0.1" scale="0.05 0.05 0.05" src="#mexico-model"
           animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
-          animation__bounce="property: position; to: 0.6 0.5 0.1; dur: 2000; loop: true; dir: alternate">
+          animation__bounce="property: position; to: 0 0.55 0.1; dur: 2000; loop: true; dir: alternate">
         </a-gltf-model>
-    
-      <a-text value="🇲🇽 Mexico" position="-0.6 0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF" align="center"
-        font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
-      </a-text>
-    
-      <a-entity position="0 0.8 0" class="info-button" data-country="mexico">
-        <a-ring color="#006847" radius-inner="0.04" radius-outer="0.06"></a-ring>
-        <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+      
+        <!-- Texto: Ahora debajo del modelo o sobre la bandera -->
+        <a-text value="🇲🇽 Mexico" position="0 -0.4 0" scale="0.8 0.8 0.8" color="#FFFFFF" align="center"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+      
+        <!-- Botón de info: Posicionado estratégicamente -->
+        <a-entity position="0 0.7 0" class="info-button" data-country="mexico">
+          <a-ring color="#006847" radius-inner="0.04" radius-outer="0.06"></a-ring>
+          <a-text value="ℹ️" position="0 0 0.001" align="center" scale="1.5 1.5 1.5"></a-text>
+        </a-entity>
       </a-entity>
-    </a-entity>
 
       <!-- TARGET 13: NUEVA ZELANDA -->
       <a-entity mindar-image-target="targetIndex: 13">
