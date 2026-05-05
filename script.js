@@ -872,7 +872,7 @@ const countryStats = {
 
 const videoUrls = {
   "argentina": "https://youtu.be/FA1sR2SZAlY",
-  "australia": "https://www.youtube.com/watch?v=ffKJGVPzL-M", //////////////
+  "australia": "https://www.youtube.com/watch?v=iU7BITyUsv0", //////////////
   "brasil": "https://youtu.be/AZAX5P_Q4Jg",
   "canada": "https://youtu.be/1IdDHO4GEIs?si=iHzoW9bfoNCy1fhn", // Highlights Canadá vs Croacia 2022 ///////////////
   "colombia": "https://youtu.be/GXW4upfqoMg?si=g-Aq2PE-vmI8TCw1",
