@@ -753,35 +753,35 @@ const triviaData = {
 
 // Estadísticas por país
 const countryStats = {
-  "argentina": {
+  argentina: {
     participaciones: "18",
     mejorPosicion: "Campeón",
     maximoGoleador: "Lionel Messi",
     ultimoResultado: "Campeón 2022",
     rankingFIFA: "Top 2"
   },
-  "australia": {
+  australia: {
     participaciones: "6",
     mejorPosicion: "Octavos (2006, 2022)",
     maximoGoleador: "Tim Cahill",
     ultimoResultado: "Octavos 2022",
     rankingFIFA: "Top 30"
   },
-  "brasil": {
+  brasil: {
     participaciones: "22 (único en todos)",
     mejorPosicion: "Campeón",
     maximoGoleador: "Ronaldo Nazário",
     ultimoResultado: "Cuartos 2022",
     rankingFIFA: "Top 5"
   },
-  "canada": {
+  canada: {
     participaciones: "2",
     mejorPosicion: "Fase de grupos",
     maximoGoleador: "Alphonso Davies",
     ultimoResultado: "Fase de grupos 2022",
     rankingFIFA: "Top 50"
   },
-  "colombia": {
+  colombia: {
     participaciones: "6",
     mejorPosicion: "Cuartos de final (2014)",
     maximoGoleador: "Radamel Falcao",
@@ -795,47 +795,96 @@ const countryStats = {
     ultimoResultado: "Octavos de final 2022",
     rankingFIFA: "Top 22"
   },
-   "espana": {
+   espana: {
     participaciones: "16",
     mejorPosicion: "Campeon 2010",
     maximoGoleador: "David Villa",
     ultimoResultado: "Octavos de final 2022",
     rankingFIFA: "Top 1"
   },
-   "japon": {
+   japon: {
     participaciones: "7",
     mejorPosicion: "Octavos de final 2022",
     maximoGoleador: "Kunishige Kamamoto",
     ultimoResultado: "Octavos de final 2022",
     rankingFIFA: "Top 19"
   },
-   "mexico": {
+   mexico: {
     participaciones: "17",
     mejorPosicion: "Cuartos de final 1986",
     maximoGoleador: "Javier Hernández",
     ultimoResultado: "Fases de grupos 2022",
     rankingFIFA: "Top 16"
   },
-    "tunez":{
+    tunez:{
     participaciones: "6",
     mejorPosicion: "Fases de grupos 2022",
     maximoGoleador: "Issam Jemâa",
     ultimoResultado: "Fases de grupos 2022",
     rankingFIFA: "Top 41"
   },
-   "uruguay":{
+   uruguay:{
     participaciones: "14",
     mejorPosicion: "Campeón 1950",
     maximoGoleador: "Luis Suárez",
     ultimoResultado: "Fases de grupos 2022",
     rankingFIFA: "Top 17"
   },
-  "uzbekistan":{
+  uzbekistan:{
     participaciones: "0",
     mejorPosicion: "No a clasificado",
     maximoGoleador: "Eldor Shomurodov",
     ultimoResultado: "N/A",
     rankingFIFA: "Top 64"
+  },
+  ecuador: {
+    participaciones: "4",
+    mejorPosicion: "Octavos de final (2006)",
+    maximoGoleador: "Enner Valencia",
+    ultimoResultado: "Fase de grupos 2022",
+    rankingFIFA: "Top 31"
+  },
+  iran: {
+    participaciones: "6",
+    mejorPosicion: "Fase de grupos",
+    maximoGoleador: "Ali Daei",
+    ultimoResultado: "Fase de grupos 2022",
+    rankingFIFA: "Top 20"
+  },
+  jordania: {
+    participaciones: "0",
+    mejorPosicion: "No ha clasificado",
+    maximoGoleador: "Hamza Al-Dardour",
+    ultimoResultado: "N/A",
+    rankingFIFA: "Top 71"
+  },
+  marruecos: {
+    participaciones: "6",
+    mejorPosicion: "Cuarto lugar (2022)",
+    maximoGoleador: "Ahmed Faras",
+    ultimoResultado: "Cuarto lugar 2022",
+    rankingFIFA: "Top 13"
+  },
+  "nueva-zelanda": {
+    participaciones: "2",
+    mejorPosicion: "Fase de grupos (1982, 2010)",
+    maximoGoleador: "Chris Wood",
+    ultimoResultado: "Fase de grupos 2010",
+    rankingFIFA: "Top 107"
+  },
+  paraguay: {
+    participaciones: "8",
+    mejorPosicion: "Cuartos de final (2010)",
+    maximoGoleador: "Roque Santa Cruz",
+    ultimoResultado: "Fase de grupos 2010",
+    rankingFIFA: "Top 56"
+  },
+  "usa": {
+    participaciones: "11",
+    mejorPosicion: "Tercer lugar (1930)",
+    maximoGoleador: "Clint Dempsey / Landon Donovan",
+    ultimoResultado: "Octavos de final 2022",
+    rankingFIFA: "Top 11"
   },
 
   /*
